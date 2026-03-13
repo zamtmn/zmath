@@ -191,6 +191,7 @@ function CreateScaleMatrix(const sx,sy,sz:Double): TzeTypedMatrix4d;inline;overl
 function CreateReflectionMatrix(const plane:TzeVector4d): TzeTypedMatrix4d;
 //**Создать 3D вершину
 function CreateVertex(const _x,_y,_z:Double):TzePoint3d;inline;
+function CreateVector(const _x,_y,_z:Double):TzeVector3d;inline;
 function CreateVertexFromArray(var counter:integer;const args:array of const):TzePoint3d;
 function CreateVertex2DFromArray(var counter:integer;const args:array of const):TzePoint2d;
 function CreateDoubleFromArray(var counter:integer;const args:array of const):Double; inline;
@@ -1777,7 +1778,14 @@ begin
      z:=_z;
   end;
 end;
-
+function CreateVector(const _x,_y,_z:Double):TzeVector3d;
+begin
+  with TzeVector3d((@result)^) do begin
+     x:=_x;
+     y:=_y;
+     z:=_z;
+  end;
+end;
 function CreateStringFromArray(var counter:integer;const args:array of const):String;
 begin
   case args[counter].VType of
