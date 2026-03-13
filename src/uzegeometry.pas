@@ -125,7 +125,7 @@ function VertexDmorph(const Vector1, Vector2: TzePoint3d; a: Double): TzePoint3d
 //**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
 function VertexDmorph(const Vector1, Vector2: TzePoint3s; a: Double): TzePoint3s;overload;inline;
 function Vertexangle(const Vector1, Vector2: TzePoint2d): Double;inline;
-function TwoVectorAngle(const Vector1, Vector2: TzePoint3d): Double;inline;
+function TwoVectorAngle(const Vector1, Vector2: TzePoint3d): Double;//inline;
 function oneVertexlength(const Vector1: TzePoint3d): Double;inline;
 function oneVertexlength2D(const Vector1: TzePoint2d): Double;inline;
 function SqrOneVertexlength(const Vector1: TzePoint3d): Double;inline;
@@ -171,7 +171,8 @@ function CreateRotationMatrixY(const angle: Double): TzeTypedMatrix4d;inline;
 function CreateRotationMatrixZ(const angle: Double): TzeTypedMatrix4d;inline;
 function CreateRotatedXVector(const angle: Double):TzePoint3d;inline;
 function CreateRotatedYVector(const angle: Double):TzePoint3d;inline;
-function CreateAffineRotationMatrix(const anAxis: TzePoint3d; angle: double):TzeTypedMatrix4d;inline;
+function CreateAffineRotationMatrix(const anAxis: TzePoint3d; angle: double):TzeTypedMatrix4d;overload;inline;
+function CreateAffineRotationMatrix(const AAxis,ARefV,AV:TzeVector3d):TzeTypedMatrix4d;overload;inline;
 function distance2piece(const q:TzePoint2i;const p1,p2:TzePoint2d): double;overload;inline;
 function distance2piece(const q,p1,p2:TzePoint3d): {DistAndPoint}double;overload;inline;
 
@@ -2659,6 +2660,16 @@ begin
   Result.mtr.v[ZAxisIndex].v[YAxisIndex]:=(one_minus_cosine * Axis.y * Axis.z) + (Axis.x * Sine);
   Result.mtr.v[ZAxisIndex].v[ZAxisIndex]:=(one_minus_cosine * Sqr(Axis.z)) + Cosine;
   //Result.t:=CMTRotate;
+end;
+
+function CreateAffineRotationMatrix(const AAxis,ARefV,AV:TzeVector3d):TzeTypedMatrix4d;
+var
+  Angle:Double;
+begin
+  Angle:=twoVectorAngle(ARefV,AV);
+  if VectorDot(ARefV,AV).z>0 then
+    Angle:=2*pi-Angle;
+  Result:=CreateAffineRotationMatrix(AAxis,Angle);
 end;
 
 function TwoVectorAngle(const Vector1, Vector2: TzePoint3d): Double;inline;
