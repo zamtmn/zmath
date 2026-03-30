@@ -262,6 +262,7 @@ type
   end;
   TzePoint2DHlpr=type helper for TzePoint2d
     function asVector2d:TzeVector2d;inline;
+    function asPoint3d:TzePoint3d;inline;
   end;
 
 const
@@ -320,6 +321,12 @@ end;
 function TzePoint2DHlpr.asVector2d:TzeVector2d;
 begin
   result:=TzeVector2d(self);
+end;
+function TzePoint2DHlpr.asPoint3d:TzeVector3d;
+begin
+  result.x:=x;
+  result.y:=y;
+  result.z:=0;
 end;
 
 constructor GMatrix4<TMtr>.CreateRec(AMtr:TMtr;At:TzeMatrixTypes);
