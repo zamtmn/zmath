@@ -124,7 +124,8 @@ type
   TzeYUnits=Double;
   TzeZUnits=Double;
 
-
+  TzeVector2d=GVector2<double,double>;
+  PzeVector2d=^TzePoint2d;
   TzePoint2d=GVector2<double,double>;
   PzePoint2d=^TzePoint2d;
   TzePoint2i=GVector2i<integer,integer>;
@@ -256,6 +257,12 @@ type
   TzePointHlpr=type helper for TzePoint3d
     function asVector3d:TzeVector3d;inline;
   end;
+  TzeVector2dHlpr=type helper for TzeVector2d
+    function asPoint2d:TzePoint2d;inline;
+  end;
+  TzePoint2DHlpr=type helper for TzePoint2d
+    function asVector2d:TzeVector2d;inline;
+  end;
 
 const
  CMTScale=[MTIdentity,MTScale];
@@ -303,6 +310,16 @@ end;
 function TzePointHlpr.asVector3d:TzeVector3d;
 begin
   result:=TzeVector3d(self);
+end;
+
+function TzeVector2dHlpr.asPoint2d:TzePoint2d;
+begin
+  result:=TzePoint2d(self);
+end;
+
+function TzePoint2DHlpr.asVector2d:TzeVector2d;
+begin
+  result:=TzeVector2d(self);
 end;
 
 constructor GMatrix4<TMtr>.CreateRec(AMtr:TMtr;At:TzeMatrixTypes);
