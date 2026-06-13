@@ -155,6 +155,7 @@ function VectorTransform(const V:TzeVector4d;const M:TzeTypedMatrix4s):TzeVector
 function VectorTransform(const V:TzeVector4s;const M:TzeTypedMatrix4s):TzeVector4s;overload;inline;
 procedure normalize4d(var tv:TzeVector4d);overload;inline;
 procedure normalize4F(var tv:TzeVector4s);overload;inline;
+function VectorTransform2D(const V:TzePoint2d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4s):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzePoint3s;const M:TzeTypedMatrix4d):TzePoint3s;overload;inline;
@@ -1249,6 +1250,22 @@ begin
       y:=y/w;
       z:=z/w;
     end;
+  end;
+end;
+function VectorTransform2D(const V:TzePoint2d;const M:TzeTypedMatrix4d):TzePoint3d;
+var TV: TzeVector4d;
+begin
+  if M.t=CMTIdentity then
+    Result:=CreateVertex(v.x,v.y,0)
+  else begin
+    PzePoint2d(@tv)^:=v;
+    tv.z:=0;
+    tv.w:=1;
+    tv:=VectorTransform(tv,m);
+
+    normalize4d(tv);
+
+    Result := PzePoint3d(@tv)^
   end;
 end;
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4d):TzePoint3d;
