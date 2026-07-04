@@ -546,9 +546,16 @@ begin
   //  result:=false;
 end;
 
-function IsValidRange(const d1,d2:Double):boolean;inline;
+function IsValidRange(const d1,d2:Double):boolean;
 begin
-  result:=abs(d2.Exponent-d1.Exponent)<45;
+  if abs(d2)<eps then begin
+    result:=abs(d1.Exponent)<45;
+  end else begin
+    if abs(d1)<eps then
+      result:=abs(d2.Exponent)<45
+    else
+      result:=abs(d2.Exponent-d1.Exponent)<45;
+  end;
 end;
 
 function GetXfFromZ(const oz:TzePoint3d):TzePoint3d;
