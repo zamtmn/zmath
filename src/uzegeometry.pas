@@ -275,10 +275,91 @@ function myPickMatrix(const x,y,deltax,deltay:Double;const vp:TzeVector4i): TzeT
 function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzePoint3d; const PointInWCS:TzePoint3d; out scale:TzePoint3d):GDBObj2dprop;
 function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzePoint3d):GDBObj2dprop;
 
+function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer):integer;overload;
+function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer;var ActualDivCount:Integer):integer;overload;
+procedure CalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;var pts:array of TzePoint2d;divcount:integer);
+
 type
   TLineClipArray=array[0..5]of Double;
 
 implementation
+
+function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer):integer;overload;
+begin
+  if divcount<1 then
+    result:=(1 shl (min(max(2,abs(round(bulge*2))),5)))+1
+  else
+    result:=(1 shl (divcount))+1;
+end;
+
+function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer;var ActualDivCount:Integer):integer;overload;
+begin
+  if divcount<1 then
+    ActualDivCount:=min(max(2,abs(round(bulge*2))),5)
+  else
+    ActualDivCount:=divcount;
+  result:=(1 shl ActualDivCount)+1;
+end;
+
+(*
+procedure CalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;var pts:TZctnrVectorTzePoint2d;divcount:integer);//inline;  dg
+var
+  d,pc,pac,n:TzePoint2d;
+  l,h,nextbulge:double;
+begin
+  d:=p2-p1;
+  l:=d.Length;
+  h:=l*bulge/2;
+  pc:=(p1+p2)/2;
+  n.x:=-d.y;
+  n.y:=d.x;
+  n:=n.NormalizeVertex;
+  pac:=pc-n*h;
+  if divcount=-1 then begin
+    //пытаемся сделать лод. вариантов не много
+    divcount:=min(max(2,abs(round(bulge*2))),5);
+    {if abs(h)*2>l then
+      divcount:=3
+    else
+      divcount:=2}
+  end;
+  if divcount=0 then begin
+    pts.PushBackData(p1);
+    pts.PushBackData(pac);
+  end else begin
+    Dec(divcount);
+    nextbulge:=bulge/(1+sqrt(1+bulge*bulge));
+    CalcBulgeToArcSegment(p1,pac,nextbulge,pts,divcount);
+    CalcBulgeToArcSegment(pac,p2,nextbulge,pts,divcount);
+  end;
+end;
+*)
+
+procedure CalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;var pts:array of TzePoint2d;divcount:integer);
+var
+  d,pc,pac,n:TzePoint2d;
+  l,h,nextbulge:double;
+  mid:integer;
+begin
+  d:=p2-p1;
+  l:=d.Length;
+  h:=l*bulge/2;
+  pc:=(p1+p2)/2;
+  n.x:=-d.y;
+  n.y:=d.x;
+  n:=n.NormalizeVertex;
+  pac:=pc-n*h;
+  if divcount=1 then begin
+    pts[low(pts)]:=p1;
+    pts[low(pts)+1]:=pac;
+  end else begin
+    Dec(divcount);
+    nextbulge:=bulge/(1+sqrt(1+bulge*bulge));
+    mid:=length(pts) div 2;
+    CalcBulgeToArcSegment(p1,pac,nextbulge,pts[0..mid-1],divcount);
+    CalcBulgeToArcSegment(pac,p2,nextbulge,pts[mid..high(pts)],divcount);
+  end;
+end;
 
 function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzePoint3d; const PointInWCS:TzePoint3d; out scale:TzePoint3d):GDBObj2dprop;
 var
