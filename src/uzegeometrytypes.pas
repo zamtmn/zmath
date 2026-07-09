@@ -265,6 +265,22 @@ type
     function asPoint3d:TzePoint3d;inline;
   end;
 
+  InterceptProp<T>=record
+    private
+      FisIntercept:Boolean;//**< Есть это пересение или нет
+      FInterceptCoord:T;   //**< Точка пересечения X,Y,Z
+      Ft1,Ft2:Double;      //**< позиция на линии 1 и 2 в виде относительных цифр от 0 до 1
+    Public
+      Property isIntercept:Boolean read FisIntercept write FisIntercept;
+      Property InterceptCoord:T read FInterceptCoord write FInterceptCoord;
+      Property t1:Double read Ft1 write Ft1;
+      Property t2:Double read Ft2 write Ft2;
+  end;
+
+  Intercept3DProp=InterceptProp<TzePoint3d>;
+
+  Intercept2DProp=InterceptProp<TzePoint2d>;
+
 const
  CMTScale=[MTIdentity,MTScale];
  CMTTranslate=[MTIdentity,MTTranslate];

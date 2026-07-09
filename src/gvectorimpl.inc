@@ -97,3 +97,13 @@ begin
   end;
 end;
 {$EndIf}
+
+class function VectorTypeName<T,TT>.Make(AData:TCoordArray):TSelf;
+begin
+  result.v:=AData;
+end;
+
+constructor VectorTypeName<T,TT>.CreateRec(AData:TCoordArray);
+begin
+  self.v:=AData;
+end;

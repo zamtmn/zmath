@@ -75,16 +75,6 @@ const
   YWCS2D:TzePoint2d=(x:0;y:1);
   BBNul:TBoundingBox=(LBN:(x:0;y:0;z:0);RTF:(x:0;y:0;z:0));
 type
-  Intercept3DProp=record
-    isintercept:Boolean;   //**< Есть это пересение или нет
-    interceptcoord:TzePoint3d; //**< Точка пересечения X,Y,Z
-    t1,t2:Double;          //**< позиция на линии 1 и 2 в виде относительных цифр от 0 до 1
-  end;
-  Intercept2DProp=record
-    isintercept:Boolean;
-    interceptcoord:TzePoint2d;
-    t1,t2:Double;
-  end;
   DistAndPoint=record
     point:TzePoint3d;
     d:Double;
@@ -1739,8 +1729,9 @@ begin
     begin
       with TzePoint2d((@l1begin)^) do
       begin
-        result.interceptcoord.x := x + (l1end.x - x) * _t2;
-        result.interceptcoord.y := y + (l1end.y - y) * _t2;
+        result.interceptcoord:=CreateVertex2D(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2);
+        {result.interceptcoord.x := x + (l1end.x - x) * _t2;
+        result.interceptcoord.y := y + (l1end.y - y) * _t2;}
       end;
       //if abs(result.interceptcoord.z-z)<eps then
       begin
@@ -1771,9 +1762,10 @@ begin
     begin
       with TzePoint3d((@l1begin)^) do
       begin
-        result.interceptcoord.x := x + (l1end.x - x) * _t2;
+        result.interceptcoord:=CreateVertex(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2,z+(l1end.z-z)*_t2);
+        {result.interceptcoord.x := x + (l1end.x - x) * _t2;
         result.interceptcoord.y := y + (l1end.y - y) * _t2;
-        result.interceptcoord.z := z + (l1end.z - z) * _t2;
+        result.interceptcoord.z := z + (l1end.z - z) * _t2;}
       end;
       z:=l2begin.z + (l2end.z - l2begin.z) * _t1;
       if abs(result.interceptcoord.z-z)<eps then
@@ -1829,9 +1821,10 @@ begin
 
    //if ((result.t1 <= 1) and (result.t1 >= 0) and (result.t2 >= 0) and (result.t2 <= 1)) then
    begin
-   result.interceptcoord.x:= l1begin.x + t1 * p21.x;
+     result.interceptcoord:=CreateVertex(l1begin.x+t1*p21.x,l1begin.y+t1* p21.y,l1begin.z+t1*p21.z);
+   {result.interceptcoord.x:= l1begin.x + t1 * p21.x;
    result.interceptcoord.y:= l1begin.y + t1 * p21.y;
-   result.interceptcoord.z:= l1begin.z + t1 * p21.z;
+   result.interceptcoord.z:= l1begin.z + t1 * p21.z;}
    //pp.x:= l2begin.x + t2 * p43.x;
    //pp.y:= l2begin.y + t2 * p43.y;
    //pp.z:= l2begin.z + t2 * p43.z;
@@ -2850,9 +2843,11 @@ begin
   if abs(result.t2-1)<bigeps then result.t2:=1;
   if abs(result.t2)<bigeps then result.t2:=0;
   if ((result.t1 <= 1) and (result.t1 >= 0) and (result.t2 >= 0) and (result.t2 <= 1)) then begin
-    result.interceptcoord.x:= l1begin.x + t1 * p21.x;
+    result.interceptcoord:=CreateVertex(l1begin.x+t1*p21.x,l1begin.y+t1*p21.y,l1begin.z+t1*p21.z);
+    //result.interceptcoord:=TzePoint3d.Make([l1begin.x+t1*p21.x,l1begin.y+t1*p21.y,l1begin.z+t1*p21.z]);
+    {result.interceptcoord.x:= l1begin.x + t1 * p21.x;
     result.interceptcoord.y:= l1begin.y + t1 * p21.y;
-    result.interceptcoord.z:= l1begin.z + t1 * p21.z;
+    result.interceptcoord.z:= l1begin.z + t1 * p21.z;}
     pp.x:= l2begin.x + t2 * p43.x;
     pp.y:= l2begin.y + t2 * p43.y;
     pp.z:= l2begin.z + t2 * p43.z;

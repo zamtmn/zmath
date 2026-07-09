@@ -22,3 +22,5 @@
     {$IfNDef IntParam}
     class operator /(const l:TSelf;const r:Real):TSelf;inline;
     {$EndIf}
+    class function Make(AData:TCoordArray):TSelf;static;inline;
+    constructor CreateRec(AData:TCoordArray);
