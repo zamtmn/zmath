@@ -1,7 +1,7 @@
     type
-      TCoordType=TT;
+      TCoordType=T;
       TCoordArray=array [0..ArrS-1] of T;
-      TSelf=VectorTypeName<T,TT>;
+      TSelf=VectorTypeName<T>;
     const
       ArrH=High(TCoordArray);
       ArrL=Low(TCoordArray);
@@ -22,5 +22,5 @@
     {$IfNDef IntParam}
     class operator /(const l:TSelf;const r:Real):TSelf;inline;
     {$EndIf}
-    class function Make(AData:TCoordArray):TSelf;static;inline;
-    constructor CreateRec(AData:TCoordArray);
+    class function Make(const AData:TCoordArray):TSelf;static;inline;
+    constructor CreateRec(const AData:TCoordArray);

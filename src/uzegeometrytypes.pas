@@ -22,8 +22,8 @@ unit uzegeometrytypes;
 
 interface
 const
-  EPSILON  : Single = 1e-40;
-  EPSILON2 : Single = 1e-30;
+  EPSILON:single=1e-40;
+  EPSILON2:single=1e-30;
   eps=1e-14;
   floateps=1e-6;
   sqreps=1e-7;
@@ -38,44 +38,55 @@ type
     mtr:TMtr;
     t:TzeMatrixTypes;
     constructor CreateRec(AMtr:TMtr;At:TzeMatrixTypes);
-    function IsIdentity:Boolean;inline;
+    function IsIdentity:boolean;inline;
   end;
-  GVector4<T;TT:record>=record
+  GVector4<T>=record
     const
       ArrS=4;
+    type
+      TCoordRec=record x,y,z,w:T end;
     {$Define VectorTypeName := GVector4}
     {$Include gvectorintf.inc}
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y,z,w:TT);
+        0:(x,y,z,w:T);
         1:(v:TCoordArray);
+        2:(r:TCoordRec);
   end;
-  GVector3<T;TT:record>=record
+  GVector3<T>=record
     const
       ArrS=3;
+    type
+      TCoordRec=record x,y,z:T end;
     {$Define VectorTypeName := GVector3}
     {$Include gvectorintf.inc}
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y,z:TT);
+        0:(x,y,z:T);
         1:(v:TCoordArray);
+        2:(r:TCoordRec);
   end;
-  GVector2<T;TT:record>=record
+  GVector2<T>=record
     const
       ArrS=2;
+    type
+      TCoordRec=record x,y:T end;
     {$Define VectorTypeName := GVector2}
     {$Include gvectorintf.inc}
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y:TT);
+        0:(x,y:T);
         1:(v:TCoordArray);
+        2:(r:TCoordRec);
   end;
-  GVector4i<T;TT:record>=record
+  GVector4i<T>=record
     const
       ArrS=4;
+    type
+      TCoordRec=record x,y,z,w:T end;
     {$Define VectorTypeName := GVector4i}
     {$Define IntParam}
     {$Include gvectorintf.inc}
@@ -83,12 +94,15 @@ type
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y,z,w:TT);
+        0:(x,y,z,w:T);
         1:(v:TCoordArray);
+        2:(r:TCoordRec);
   end;
-  GVector3i<T;TT:record>=record
+  GVector3i<T>=record
     const
       ArrS=3;
+    type
+      TCoordRec=record x,y,z:T end;
     {$Define VectorTypeName := GVector3i}
     {$Define IntParam}
     {$Include gvectorintf.inc}
@@ -96,12 +110,15 @@ type
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y,z:TT);
+        0:(x,y,z:T);
         1:(v:TCoordArray);
+        2:(r:TCoordRec);
   end;
-  GVector2i<T;TT:record>=record
+  GVector2i<T>=record
     const
       ArrS=2;
+    type
+      TCoordRec=record x,y:T end;
     {$Define VectorTypeName := GVector2i}
     {$Define IntParam}
     {$Include gvectorintf.inc}
@@ -109,8 +126,9 @@ type
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y:TT);
+        0:(x,y:T);
         1:(v:TCoordArray);
+        2:(r:TCoordRec);
   end;
 
   PTZeDimLess=^TZeDimLess;
@@ -124,27 +142,27 @@ type
   TzeYUnits=Double;
   TzeZUnits=Double;
 
-  TzeVector2d=GVector2<double,double>;
+  TzeVector2d=GVector2<double>;
   PzeVector2d=^TzePoint2d;
-  TzePoint2d=GVector2<double,double>;
+  TzePoint2d=GVector2<double>;
   PzePoint2d=^TzePoint2d;
-  TzePoint2i=GVector2i<integer,integer>;
+  TzePoint2i=GVector2i<integer>;
   PzePoint2i=^TzePoint2i;
-  TzeVector3d=GVector3<Double,Double>;
+  TzeVector3d=GVector3<Double>;
   PzeVector3d=^TzeVector3d;
-  TzePoint3d=GVector3<Double,Double>;
+  TzePoint3d=GVector3<Double>;
   PzePoint3d=^TzePoint3d;
 
-  TzeVector4d=GVector4<Double,Double>;
+  TzeVector4d=GVector4<Double>;
   PzeVector4d=^TzeVector4d;
 
-  TzeVector4s=GVector4<Single,Single>;
+  TzeVector4s=GVector4<Single>;
   PzeVector4s=^TzeVector4s;
 
-  TzeVector4i=GVector4i<Integer,Integer>;
+  TzeVector4i=GVector4i<Integer>;
   PzeVector4i=^TzeVector4i;
 
-  TzePoint3s=GVector3<Single,Single>;
+  TzePoint3s=GVector3<Single>;
   PzePoint3s=^TzePoint3s;
 
   {$if FPC_FULLVERSION >=30205}
@@ -212,7 +230,7 @@ type
 
   FontFloat=Double;
   PFontFloat=^FontFloat;
-  GDBFontVertex2D=GVector2<FontFloat,FontFloat>;
+  GDBFontVertex2D=GVector2<FontFloat>;
   PGDBFontVertex2D=^GDBFontVertex2D;
 
   GDBPolyVertex2D=record
@@ -221,7 +239,7 @@ type
   end;
   PGDBPolyVertex2D=^GDBPolyVertex2D;
 
-  TzePoint2s=GVector2<Single,Single>;
+  TzePoint2s=GVector2<Single>;
   PzePoint2s=^TzePoint2s;
   tmatrixs=record
     pmodelMatrix:PzeTypedMatrix4d;
