@@ -107,3 +107,16 @@ constructor VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.CreateRec(co
 begin
   self.v:=AData;
 end;
+
+{$IfDef TwoDimension}
+function VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.Turn90R:TSelf;
+begin
+ result.x:=y;
+ result.y:=-x;
+end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.Turn90L:TSelf;inline;
+begin
+ result.x:=-y;
+ result.y:=x;
+end;
+{$EndIf}

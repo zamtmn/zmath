@@ -24,3 +24,7 @@
     {$EndIf}
     class function Make(const AData:TCoordArray):TSelf;static;inline;
     constructor CreateRec(const AData:TCoordArray);
+    {$IfDef TwoDimension}
+    function Turn90R:TSelf;inline;
+    function Turn90L:TSelf;inline;
+    {$EndIf}

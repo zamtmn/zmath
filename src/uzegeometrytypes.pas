@@ -74,7 +74,9 @@ type
     type
       TCoordRec=record x,y:T end;
     {$Define VectorTypeName := GVector2}
+    {$Define TwoDimension}
     {$Include gvectorintf.inc}
+    {$UnDef TwoDimension}
     {$UnDef VectorTypeName}
     var
       case Integer of
@@ -121,7 +123,9 @@ type
       TCoordRec=record x,y:T end;
     {$Define VectorTypeName := GVector2i}
     {$Define IntParam}
+    {$Define TwoDimension}
     {$Include gvectorintf.inc}
+    {$UnDef TwoDimension}
     {$UnDef IntParam}
     {$UnDef VectorTypeName}
     var
@@ -316,7 +320,9 @@ implementation
 {$UnDef VectorTypeName}
 
 {$DEFINE VectorTypeName := GVector2}
+{$Define TwoDimension}
 {$Include gvectorimpl.inc}
+{$UnDef TwoDimension}
 {$UnDef VectorTypeName}
 
 {$Define VectorTypeName := GVector4i}
@@ -333,7 +339,9 @@ implementation
 
 {$DEFINE VectorTypeName := GVector2i}
 {$Define IntParam}
+{$Define TwoDimension}
 {$Include gvectorimpl.inc}
+{$UnDef TwoDimension}
 {$UnDef IntParam}
 {$UnDef VectorTypeName}
 
