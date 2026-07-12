@@ -40,7 +40,7 @@ type
     constructor CreateRec(AMtr:TMtr;At:TzeMatrixTypes);
     function IsIdentity:boolean;inline;
   end;
-  GVector4<T>=record
+  GVector4<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
     const
       ArrS=4;
     type
@@ -50,11 +50,11 @@ type
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y,z,w:T);
+        0:(x,y,z,w:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
   end;
-  GVector3<T>=record
+  GVector3<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
     const
       ArrS=3;
     type
@@ -64,11 +64,11 @@ type
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y,z:T);
+        0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
   end;
-  GVector2<T>=record
+  GVector2<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
     const
       ArrS=2;
     type
@@ -78,11 +78,11 @@ type
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y:T);
+        0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
   end;
-  GVector4i<T>=record
+  GVector4i<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
     const
       ArrS=4;
     type
@@ -94,11 +94,11 @@ type
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y,z,w:T);
+        0:(x,y,z,w:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
   end;
-  GVector3i<T>=record
+  GVector3i<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
     const
       ArrS=3;
     type
@@ -110,11 +110,11 @@ type
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y,z:T);
+        0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
   end;
-  GVector2i<T>=record
+  GVector2i<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
     const
       ArrS=2;
     type
@@ -126,7 +126,7 @@ type
     {$UnDef VectorTypeName}
     var
       case Integer of
-        0:(x,y:T);
+        0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
   end;
@@ -142,27 +142,27 @@ type
   TzeYUnits=Double;
   TzeZUnits=Double;
 
-  TzeVector2d=GVector2<double>;
+  TzeVector2d=GVector2<double{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzeVector2d=^TzePoint2d;
-  TzePoint2d=GVector2<double>;
+  TzePoint2d=GVector2<double{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzePoint2d=^TzePoint2d;
-  TzePoint2i=GVector2i<integer>;
+  TzePoint2i=GVector2i<integer{$if FPC_FULLVERSION<30205},integer{$endif}>;
   PzePoint2i=^TzePoint2i;
-  TzeVector3d=GVector3<Double>;
+  TzeVector3d=GVector3<double{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzeVector3d=^TzeVector3d;
-  TzePoint3d=GVector3<Double>;
+  TzePoint3d=GVector3<double{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzePoint3d=^TzePoint3d;
 
-  TzeVector4d=GVector4<Double>;
+  TzeVector4d=GVector4<double{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzeVector4d=^TzeVector4d;
 
-  TzeVector4s=GVector4<Single>;
+  TzeVector4s=GVector4<single{$if FPC_FULLVERSION<30205},single{$endif}>;
   PzeVector4s=^TzeVector4s;
 
-  TzeVector4i=GVector4i<Integer>;
+  TzeVector4i=GVector4i<integer{$if FPC_FULLVERSION<30205},integer{$endif}>;
   PzeVector4i=^TzeVector4i;
 
-  TzePoint3s=GVector3<Single>;
+  TzePoint3s=GVector3<single{$if FPC_FULLVERSION<30205},single{$endif}>;
   PzePoint3s=^TzePoint3s;
 
   {$if FPC_FULLVERSION >=30205}
@@ -230,7 +230,7 @@ type
 
   FontFloat=Double;
   PFontFloat=^FontFloat;
-  GDBFontVertex2D=GVector2<FontFloat>;
+  GDBFontVertex2D=GVector2<FontFloat{$if FPC_FULLVERSION<30205},FontFloat{$endif}>;
   PGDBFontVertex2D=^GDBFontVertex2D;
 
   GDBPolyVertex2D=record
@@ -239,7 +239,7 @@ type
   end;
   PGDBPolyVertex2D=^GDBPolyVertex2D;
 
-  TzePoint2s=GVector2<Single>;
+  TzePoint2s=GVector2<Single{$if FPC_FULLVERSION<30205},Single{$endif}>;
   PzePoint2s=^TzePoint2s;
   tmatrixs=record
     pmodelMatrix:PzeTypedMatrix4d;

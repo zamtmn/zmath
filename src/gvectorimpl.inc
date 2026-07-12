@@ -1,4 +1,4 @@
-function VectorTypeName<T>.SqrLength:Double;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.SqrLength:Double;
 var
   i:integer;
 begin
@@ -8,13 +8,13 @@ begin
     result:=result+sqr(v[i]);
   end;
 end;
-function VectorTypeName<T>.Length:Double;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.Length:Double;
 begin
   //result:=norm(v);
   result:=Sqrt(SqrLength);
 end;
 {$IfNDef IntParam}
-function VectorTypeName<T>.NormalizeVertex:TSelf;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.NormalizeVertex:TSelf;
 var
   len:Double;
   i:integer;
@@ -30,7 +30,7 @@ begin
   end;
 end;
 {$EndIf}
-function VectorTypeName<T>.Add(const Vector2:TSelf):TSelf;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.Add(const Vector2:TSelf):TSelf;
 var
   i:integer;
 begin
@@ -38,7 +38,7 @@ begin
     result.v[i]:=v[i]+Vector2.v[i];
   end;
 end;
-function VectorTypeName<T>.Sub(const Vector2:TSelf):TSelf;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.Sub(const Vector2:TSelf):TSelf;
 var
   i:integer;
 begin
@@ -46,7 +46,7 @@ begin
     result.v[i]:=v[i]-Vector2.v[i];
   end;
 end;
-class operator VectorTypeName<T>.+(const l,r:TSelf):TSelf;
+class operator VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.+(const l,r:TSelf):TSelf;
 var
   i:integer;
 begin
@@ -54,7 +54,7 @@ begin
     result.v[i]:=l.v[i]+r.v[i];
   end;
 end;
-class operator VectorTypeName<T>.-(const l,r:TSelf):TSelf;
+class operator VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.-(const l,r:TSelf):TSelf;
 var
   i:integer;
 begin
@@ -62,7 +62,7 @@ begin
     result.v[i]:=l.v[i]-r.v[i];
   end;
 end;
-class operator VectorTypeName<T>.-(const r:TSelf):TSelf;
+class operator VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.-(const r:TSelf):TSelf;
 var
   i:integer;
 begin
@@ -70,7 +70,7 @@ begin
     result.v[i]:=-r.v[i];
   end;
 end;
-class operator VectorTypeName<T>.*(const l:TSelf;const r:T):TSelf;
+class operator VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.*(const l:TSelf;const r:T):TSelf;
 var
   i:integer;
 begin
@@ -78,7 +78,7 @@ begin
     result.v[i]:=l.v[i]*r;
   end;
 end;
-class operator VectorTypeName<T>.*(const l,r:TSelf):Real;
+class operator VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.*(const l,r:TSelf):Real;
 var
   i:integer;
 begin
@@ -88,7 +88,7 @@ begin
   end;
 end;
 {$IfNDef IntParam}
-class operator VectorTypeName<T>./(const l:TSelf;const r:Real):TSelf;
+class operator VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>./(const l:TSelf;const r:Real):TSelf;
 var
   i:integer;
 begin
@@ -98,12 +98,12 @@ begin
 end;
 {$EndIf}
 
-class function VectorTypeName<T>.Make(const AData:TCoordArray):TSelf;
+class function VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.Make(const AData:TCoordArray):TSelf;
 begin
   result.v:=AData;
 end;
 
-constructor VectorTypeName<T>.CreateRec(const AData:TCoordArray);
+constructor VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>.CreateRec(const AData:TCoordArray);
 begin
   self.v:=AData;
 end;

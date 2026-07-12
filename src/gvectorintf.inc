@@ -1,7 +1,7 @@
     type
-      TCoordType=T;
+      TCoordType={$if FPC_FULLVERSION<30205}TT{$else}T{$endif};
       TCoordArray=array [0..ArrS-1] of T;
-      TSelf=VectorTypeName<T>;
+      TSelf=VectorTypeName<T{$if FPC_FULLVERSION<30205},TT{$endif}>;
     const
       ArrH=High(TCoordArray);
       ArrL=Low(TCoordArray);
