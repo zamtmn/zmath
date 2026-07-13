@@ -40,7 +40,7 @@ type
     constructor CreateRec(AMtr:TMtr;At:TzeMatrixTypes);
     function IsIdentity:boolean;inline;
   end;
-  GVector4<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
+  GVector4<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
     const
       ArrS=4;
     type
@@ -53,8 +53,9 @@ type
         0:(x,y,z,w:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
+        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector3<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
+  GVector3<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
     const
       ArrS=3;
     type
@@ -67,8 +68,9 @@ type
         0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
+        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector2<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
+  GVector2<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
     const
       ArrS=2;
     type
@@ -83,8 +85,9 @@ type
         0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
+        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector4i<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
+  GVector4i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
     const
       ArrS=4;
     type
@@ -99,8 +102,9 @@ type
         0:(x,y,z,w:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
+        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector3i<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
+  GVector3i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
     const
       ArrS=3;
     type
@@ -115,8 +119,9 @@ type
         0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
+        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector2i<T{$if FPC_FULLVERSION<30205};TT:record{$endif}>=record
+  GVector2i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
     const
       ArrS=2;
     type
@@ -133,6 +138,7 @@ type
         0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
         2:(r:TCoordRec);
+        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
 
   PTZeDimLess=^TZeDimLess;
@@ -146,28 +152,40 @@ type
   TzeYUnits=Double;
   TzeZUnits=Double;
 
-  TzeVector2d=GVector2<double{$if FPC_FULLVERSION<30205},double{$endif}>;
+  TzeVector2d=GVector2<double,double{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzeVector2d=^TzePoint2d;
-  TzePoint2d=GVector2<double{$if FPC_FULLVERSION<30205},double{$endif}>;
+  TzePoint2d=GVector2<double,double{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzePoint2d=^TzePoint2d;
-  TzePoint2i=GVector2i<integer{$if FPC_FULLVERSION<30205},integer{$endif}>;
+
+  TzePoint2s=GVector2<single,single{$if FPC_FULLVERSION<30205},double{$endif}>;
+  PzePoint2s=^TzePoint2s;
+
+  TzeVector2s=GVector2<single,single{$if FPC_FULLVERSION<30205},double{$endif}>;
+  PzeeVector2s=^TzeVector2s;
+
+  TzePoint2i=GVector2i<integer,integer{$if FPC_FULLVERSION<30205},integer{$endif}>;
   PzePoint2i=^TzePoint2i;
-  TzeVector3d=GVector3<double{$if FPC_FULLVERSION<30205},double{$endif}>;
+
+  TzeVector2i=GVector2i<integer,integer{$if FPC_FULLVERSION<30205},integer{$endif}>;
+  PzeVector2i=^TzeVector2i;
+
+  TzeVector3d=GVector3<double,TzeVector2d{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzeVector3d=^TzeVector3d;
-  TzePoint3d=GVector3<double{$if FPC_FULLVERSION<30205},double{$endif}>;
+  TzePoint3d=GVector3<double,TzePoint2d{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzePoint3d=^TzePoint3d;
-
-  TzeVector4d=GVector4<double{$if FPC_FULLVERSION<30205},double{$endif}>;
-  PzeVector4d=^TzeVector4d;
-
-  TzeVector4s=GVector4<single{$if FPC_FULLVERSION<30205},single{$endif}>;
-  PzeVector4s=^TzeVector4s;
-
-  TzeVector4i=GVector4i<integer{$if FPC_FULLVERSION<30205},integer{$endif}>;
-  PzeVector4i=^TzeVector4i;
-
-  TzePoint3s=GVector3<single{$if FPC_FULLVERSION<30205},single{$endif}>;
+  TzeVector3s=GVector3<single,TzeVector2s{$if FPC_FULLVERSION<30205},double{$endif}>;
+  PzeVector3s=^TzeVector3s;
+  TzePoint3s=GVector3<single,TzePoint2s{$if FPC_FULLVERSION<30205},single{$endif}>;
   PzePoint3s=^TzePoint3s;
+  TzeVector3i=GVector2i<integer,TzeVector2i{$if FPC_FULLVERSION<30205},integer{$endif}>;
+  PzeVector3i=^TzeVector3i;
+
+  TzeVector4d=GVector4<double,TzeVector3d{$if FPC_FULLVERSION<30205},double{$endif}>;
+  PzeVector4d=^TzeVector4d;
+  TzeVector4s=GVector4<single,TzePoint3s{$if FPC_FULLVERSION<30205},single{$endif}>;
+  PzeVector4s=^TzeVector4s;
+  TzeVector4i=GVector4i<integer,TzeVector3i{$if FPC_FULLVERSION<30205},integer{$endif}>;
+  PzeVector4i=^TzeVector4i;
 
   {$if FPC_FULLVERSION >=30205}
   GRawMatrix4<GRow>=record
@@ -234,7 +252,7 @@ type
 
   FontFloat=Double;
   PFontFloat=^FontFloat;
-  GDBFontVertex2D=GVector2<FontFloat{$if FPC_FULLVERSION<30205},FontFloat{$endif}>;
+  GDBFontVertex2D=GVector2<FontFloat,FontFloat{$if FPC_FULLVERSION<30205},FontFloat{$endif}>;
   PGDBFontVertex2D=^GDBFontVertex2D;
 
   GDBPolyVertex2D=record
@@ -243,8 +261,6 @@ type
   end;
   PGDBPolyVertex2D=^GDBPolyVertex2D;
 
-  TzePoint2s=GVector2<Single{$if FPC_FULLVERSION<30205},Single{$endif}>;
-  PzePoint2s=^TzePoint2s;
   tmatrixs=record
     pmodelMatrix:PzeTypedMatrix4d;
     pprojMatrix:PzeTypedMatrix4d;
