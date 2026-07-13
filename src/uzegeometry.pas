@@ -383,40 +383,43 @@ function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzeP
 var
   BX,BY,BZ,T:TzePoint3d;
 begin
-  BX:=PzePoint3d(@matrix.mtr.v[0])^;
-  BY:=PzePoint3d(@matrix.mtr.v[1])^;
-  BZ:=PzePoint3d(@matrix.mtr.v[2])^;
-  T:=PzePoint3d(@matrix.mtr.v[3])^;
+  BX:=matrix.mtr.v[0].Slice;
+  BY:=matrix.mtr.v[1].Slice;
+  BZ:=matrix.mtr.v[2].Slice;
+  T:=matrix.mtr.v[3].Slice;
   result:=GetPointInOCSByBasis(BX,BY,BZ,T,scale);
 end;
 
 function VertexSub(const Vector1, Vector2: TzePoint3d): TzePoint3d;
 begin
-  with TzePoint3d((@Result)^) do
+  result:=Vector1-Vector2;
+  {with TzePoint3d((@Result)^) do
   begin
     X := Vector1.x - Vector2.x;
     Y := Vector1.y - Vector2.y;
     Z := Vector1.z - Vector2.z;
-  end;
+  end;}
 end;
 
 function VertexSub(const Vector1, Vector2: TzePoint2d): TzePoint2d;
 begin
-  with TzePoint2d((@Result)^) do
+  result:=Vector1-Vector2;
+  {with TzePoint2d((@Result)^) do
   begin
     X := Vector1.x - Vector2.x;
     Y := Vector1.y - Vector2.y;
-  end;
+  end;}
 end;
 
 function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;
 begin
-  with TzePoint3s((@Result)^) do
+  result:=Vector1-Vector2;
+  {with TzePoint3s((@Result)^) do
   begin
     X := Vector1.x - Vector2.x;
     Y := Vector1.y - Vector2.y;
     Z := Vector1.z - Vector2.z;
-  end;
+  end;}
 end;
 
 function ToTzeVector4s(const m:TzeVector4d):TzeVector4s; inline;
@@ -1386,54 +1389,50 @@ begin
   Result.z:=tv.z;
 end;
 
-function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4d;MatrixAlreadyTransposed:boolean=false):TzeFrustum;
+function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4d;MatrixAlreadyTransposed:boolean=False):TzeFrustum;
 var
   m1:TzeTypedMatrix4d;
 begin
   if MatrixAlreadyTransposed then begin
-    PzeVector4d(@Result.v[0])^:=VectorTransform(PzeVector4d(@frustum.v[0])^,M);
-    PzeVector4d(@Result.v[1])^:=VectorTransform(PzeVector4d(@frustum.v[1])^,M);
-    PzeVector4d(@Result.v[2])^:=VectorTransform(PzeVector4d(@frustum.v[2])^,M);
-    PzeVector4d(@Result.v[3])^:=VectorTransform(PzeVector4d(@frustum.v[3])^,M);
-    PzeVector4d(@Result.v[4])^:=VectorTransform(PzeVector4d(@frustum.v[4])^,M);
-    PzeVector4d(@Result.v[5])^:=VectorTransform(PzeVector4d(@frustum.v[5])^,M);
+    Result.v[0]:=VectorTransform(frustum.v[0],M);
+    Result.v[1]:=VectorTransform(frustum.v[1],M);
+    Result.v[2]:=VectorTransform(frustum.v[2],M);
+    Result.v[3]:=VectorTransform(frustum.v[3],M);
+    Result.v[4]:=VectorTransform(frustum.v[4],M);
+    Result.v[5]:=VectorTransform(frustum.v[5],M);
   end else begin
     m1:=M;
     MatrixTranspose(m1);
-    PzeVector4d(@Result.v[0])^:=VectorTransform(PzeVector4d(@frustum.v[0])^,m1);
-    PzeVector4d(@Result.v[1])^:=VectorTransform(PzeVector4d(@frustum.v[1])^,m1);
-    PzeVector4d(@Result.v[2])^:=VectorTransform(PzeVector4d(@frustum.v[2])^,m1);
-    PzeVector4d(@Result.v[3])^:=VectorTransform(PzeVector4d(@frustum.v[3])^,m1);
-    PzeVector4d(@Result.v[4])^:=VectorTransform(PzeVector4d(@frustum.v[4])^,m1);
-    PzeVector4d(@Result.v[5])^:=VectorTransform(PzeVector4d(@frustum.v[5])^,m1);
+    Result.v[0]:=VectorTransform(frustum.v[0],m1);
+    Result.v[1]:=VectorTransform(frustum.v[1],m1);
+    Result.v[2]:=VectorTransform(frustum.v[2],m1);
+    Result.v[3]:=VectorTransform(frustum.v[3],m1);
+    Result.v[4]:=VectorTransform(frustum.v[4],m1);
+    Result.v[5]:=VectorTransform(frustum.v[5],m1);
   end;
 end;
 
-function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4s; MatrixAlreadyTransposed:Boolean=false):TzeFrustum;
+function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4s;MatrixAlreadyTransposed:boolean=False):TzeFrustum;
 var
-   m1:TzeTypedMatrix4s;
+  m1:TzeTypedMatrix4s;
 begin
-     if MatrixAlreadyTransposed
-      then
-        begin
-          PzeVector4d(@result.v[0])^:=VectorTransform(PzeVector4d(@frustum.v[0])^,M);
-          PzeVector4d(@result.v[1])^:=VectorTransform(PzeVector4d(@frustum.v[1])^,M);
-          PzeVector4d(@result.v[2])^:=VectorTransform(PzeVector4d(@frustum.v[2])^,M);
-          PzeVector4d(@result.v[3])^:=VectorTransform(PzeVector4d(@frustum.v[3])^,M);
-          PzeVector4d(@result.v[4])^:=VectorTransform(PzeVector4d(@frustum.v[4])^,M);
-          PzeVector4d(@result.v[5])^:=VectorTransform(PzeVector4d(@frustum.v[5])^,M);
-        end
-      else
-        begin
-          m1:=M;
-          MatrixTranspose(m1);
-          PzeVector4d(@result.v[0])^:=VectorTransform(PzeVector4d(@frustum.v[0])^,m1);
-          PzeVector4d(@result.v[1])^:=VectorTransform(PzeVector4d(@frustum.v[1])^,m1);
-          PzeVector4d(@result.v[2])^:=VectorTransform(PzeVector4d(@frustum.v[2])^,m1);
-          PzeVector4d(@result.v[3])^:=VectorTransform(PzeVector4d(@frustum.v[3])^,m1);
-          PzeVector4d(@result.v[4])^:=VectorTransform(PzeVector4d(@frustum.v[4])^,m1);
-          PzeVector4d(@result.v[5])^:=VectorTransform(PzeVector4d(@frustum.v[5])^,m1);
-        end;
+  if MatrixAlreadyTransposed then begin
+    Result.v[0]:=VectorTransform(frustum.v[0],M);
+    Result.v[1]:=VectorTransform(frustum.v[1],M);
+    Result.v[2]:=VectorTransform(frustum.v[2],M);
+    Result.v[3]:=VectorTransform(frustum.v[3],M);
+    Result.v[4]:=VectorTransform(frustum.v[4],M);
+    Result.v[5]:=VectorTransform(frustum.v[5],M);
+  end else begin
+    m1:=M;
+    MatrixTranspose(m1);
+    Result.v[0]:=VectorTransform(frustum.v[0],m1);
+    Result.v[1]:=VectorTransform(frustum.v[1],m1);
+    Result.v[2]:=VectorTransform(frustum.v[2],m1);
+    Result.v[3]:=VectorTransform(frustum.v[3],m1);
+    Result.v[4]:=VectorTransform(frustum.v[4],m1);
+    Result.v[5]:=VectorTransform(frustum.v[5],m1);
+  end;
 end;
 
 function Vertexlength(const Vector1,Vector2:TzePoint3d):double;
