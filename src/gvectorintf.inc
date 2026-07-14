@@ -1,7 +1,7 @@
     type
       TCoordType={$if FPC_FULLVERSION<30205}TT{$else}T{$endif};
       TCoordArray=array [0..ArrS-1] of T;
-      TSelf=VectorTypeName<T{$if FPC_FULLVERSION<30205},GSlice,TT{$else},GSlice{$endif}>;
+      TSelf=VectorTypeName<T{$if FPC_FULLVERSION<30205},GSlice,TT{$else},GSlice{$endif},GDummy>;
       TSlice=GSlice;
     const
       ArrH=High(TCoordArray);
@@ -16,8 +16,8 @@
     function Sub(const Vector2:TSelf):TSelf;inline;
 
     class operator +(const l,r:TSelf):TSelf;inline;
-    class operator -(const l,r:TSelf):TSelf;inline;
-    class operator -(const r:TSelf):TSelf;inline;
+    class operator -(const l,r:TSelf):TSelf;inline;overload;
+    class operator -(const r:TSelf):TSelf;inline;overload;
     class operator *(const l:TSelf;const r:T):TSelf;inline;
     class operator *(const l,r:TSelf):Real;inline;
     {$IfNDef IntParam}
@@ -29,3 +29,4 @@
     function Turn90R:TSelf;inline;
     function Turn90L:TSelf;inline;
     {$EndIf}
+    function IsNul:boolean;inline;

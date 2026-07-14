@@ -17,6 +17,7 @@
 }
 
 unit uzegeometry;
+{$Mode objfpc}{$ModeSwitch advancedrecords}{$ModeSwitch typehelpers}{$H+}
 {Inline off}
 
 interface
@@ -64,11 +65,13 @@ const
   NulVertex4D:TzeVector4d=(x:0;y:0;z:0;w:1);
   NulVector4D:TzeVector4d=(v:(0,0,0,0));
   NulVector4D2:TzeVector4d=(v:(0,0,0,1));
-  NulVertex:TzePoint3d=(x:0;y:0;z:0);
-  NulVertex3S:TzePoint3s=(x:0;y:0;z:0);
-  XWCS:TzePoint3d=(x:1;y:0;z:0);
-  YWCS:TzePoint3d=(x:0;y:1;z:0);
-  ZWCS:TzePoint3d=(x:0;y:0;z:1);
+  NulVertex:TzeVector3d=(x:0;y:0;z:0);
+  NulPoint:TzePoint3d=(x:0;y:0;z:0);
+  NulVertex3S:TzeVector3s=(x:0;y:0;z:0);
+  NulPoint3S:TzePoint3s=(x:0;y:0;z:0);
+  XWCS:TzeVector3d=(x:1;y:0;z:0);
+  YWCS:TzeVector3d=(x:0;y:1;z:0);
+  ZWCS:TzeVector3d=(x:0;y:0;z:1);
   XWCS4D:TzeVector4d=(v:(1,0,0,1));
   YWCS4D:TzeVector4d=(v:(0,1,0,1));
   ZWCS4D:TzeVector4d=(v:(0,0,1,1));
@@ -119,13 +122,13 @@ function VertexDmorph(const Vector1, Vector2: TzePoint3d; a: Double): TzePoint3d
 //**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
 function VertexDmorph(const Vector1, Vector2: TzePoint3s; a: Double): TzePoint3s;overload;inline;
 function Vertexangle(const Vector1, Vector2: TzePoint2d): Double;inline;
-function TwoVectorAngle(const Vector1, Vector2: TzePoint3d): Double;//inline;
-function oneVertexlength(const Vector1: TzePoint3d): Double;inline;
-function oneVertexlength2D(const Vector1: TzePoint2d): Double;inline;
-function SqrOneVertexlength(const Vector1: TzePoint3d): Double;inline;
+function TwoVectorAngle(const Vector1, Vector2: TzeVector3d): Double;//inline;
+function oneVertexlength(const Vector1: TzeVector3d): Double;inline;
+function oneVertexlength2D(const Vector1: TzeVector2d): Double;inline;
+function SqrOneVertexlength(const Vector1: TzeVector3d): Double;inline;
 function vertexlen2df(const x1, y1, x2, y2: Single): Single;inline;
-function NormalizeVertex(const Vector1: TzePoint3d): TzePoint3d;inline;
-function NormalizeVertex2D(const Vector1: TzePoint2d): TzePoint2d;inline;
+function NormalizeVertex(const Vector1: TzeVector3d): TzeVector3d;inline;
+function NormalizeVertex2D(const Vector1: TzeVector2d): TzeVector2d;inline;
 function VertexMulOnSc(const Vector1:TzePoint3d;sc:Double): TzePoint3d;inline;
 function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:Double): TzePoint2d;inline;
 
@@ -138,7 +141,7 @@ function VertexSub(const Vector1, Vector2: TzePoint2d): TzePoint2d;overload;inli
 function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;overload;inline;
 //function MinusVertex(const Vector1: TzePoint3d): TzePoint3d;inline;
 function vertexlen2id(const x1, y1, x2, y2: Integer): Double;inline;
-function Vertexdmorphabs(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
+function Vertexdmorphabs(const Vector1, Vector2: TzeVector3d;a: Double): TzePoint3d;inline;
 function Vertexmorphabs(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
 function Vertexmorphabs2(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
 function MatrixMultiply(const M1, M2: TzeTypedMatrix4d):TzeTypedMatrix4d;overload;inline;
@@ -151,6 +154,7 @@ procedure normalize4d(var tv:TzeVector4d);overload;inline;
 procedure normalize4F(var tv:TzeVector4s);overload;inline;
 function VectorTransform2D(const V:TzePoint2d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
+function VectorTransform3D(const V:TzeVector3d;const M:TzeTypedMatrix4d):TzeVector3d;overload;inline;
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4s):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzePoint3s;const M:TzeTypedMatrix4d):TzePoint3s;overload;inline;
 function VectorTransform3D(const V:TzePoint3s;const M:TzeTypedMatrix4s):TzePoint3s;overload;inline;
@@ -164,9 +168,9 @@ procedure MatrixNormalize(var M: TzeTypedMatrix4d);inline;
 function CreateRotationMatrixX(const angle: Double): TzeTypedMatrix4d;inline;
 function CreateRotationMatrixY(const angle: Double): TzeTypedMatrix4d;inline;
 function CreateRotationMatrixZ(const angle: Double): TzeTypedMatrix4d;inline;
-function CreateRotatedXVector(const angle: Double):TzePoint3d;inline;
-function CreateRotatedYVector(const angle: Double):TzePoint3d;inline;
-function CreateAffineRotationMatrix(const anAxis: TzePoint3d; angle: double):TzeTypedMatrix4d;overload;inline;
+function CreateRotatedXVector(const angle: Double):TzeVector3d;inline;
+function CreateRotatedYVector(const angle: Double):TzeVector3d;inline;
+function CreateAffineRotationMatrix(const anAxis: TzeVector3d; angle: double):TzeTypedMatrix4d;overload;inline;
 function CreateAffineRotationMatrix(const AAxis,ARefV,AV:TzeVector3d):TzeTypedMatrix4d;overload;inline;
 function distance2piece(const q:TzePoint2i;const p1,p2:TzePoint2d): double;overload;inline;
 function distance2piece(const q,p1,p2:TzePoint3d): {DistAndPoint}double;overload;inline;
@@ -206,14 +210,14 @@ function IsBBNul(const bb:TBoundingBox):boolean; overload; inline;
 function boundingintersect(const bb1,bb2:TBoundingBox):Boolean;inline;
 function ScaleBB(const bb:TBoundingBox;const k:Double):TBoundingBox;
 procedure MatrixInvert(var M: TzeTypedMatrix4d);inline;
-function VectorDot(const v1,v2:TzePoint3d):TzePoint3d;inline;
-function scalardot(const v1,v2:TzePoint3d):Double;inline;
+function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;inline;
+function scalardot(const v1,v2:TzeVector3d):Double;inline;
 function vertexeq(const v1,v2:TzePoint3d):Boolean;inline;
 function SQRdist_Point_to_Segment(const p:TzePoint3d;const s0,s1:TzePoint3d):Double;inline;
 function NearestPointOnSegment(const p:TzePoint3d;const s0,s1:TzePoint3d):TzePoint3d;inline;
 function IsPointEqual(const p1,p2:TzePoint3d;const _eps:Double=eps):boolean;inline;
 function IsPoint2DEqual(const p1,p2:TzePoint2d):boolean;inline;
-function IsVectorNul(const p2:TzePoint3d):boolean;inline;
+function IsVectorNul(const p2:TzeVector3d):boolean;inline;
 function IsDoubleNotEqual(const d1,d2:Double;const _eps:Double=eps):boolean;inline;
 function IsDoubleEqual(const d1,d2:Double;const _eps:Double=eps):boolean;inline;
 function IsFloatNotEqual(const d1,d2:Single;const _floateps:Single=floateps):boolean;inline;
@@ -223,7 +227,7 @@ function IsNotZero(const d:Double;const _eps:Double=eps):boolean;inline;
 //проверка вектора на близость к оси Z (координаты x и y меньше 1/64
 //используется для Arbitrary Axis Algorithm (DXF)
 //TODO: заменить в коде все проверки на функцию
-function IsNearToZ(const v:TzePoint3d):boolean;inline;
+function IsNearToZ(const v:TzeVector3d):boolean;inline;
 function IsValidRange(const d1,d2:Double):boolean;inline;
 
 procedure _myGluProject(const objx,objy,objz:Double;const modelMatrix,projMatrix:PzeTypedMatrix4d;const viewport:PzeVector4i; out winx,winy,winz:Double);inline;
@@ -232,7 +236,7 @@ procedure _myGluUnProject(const winx,winy,winz:Double;const modelMatrix,projMatr
 
 function ortho(const xmin,xmax,ymin,ymax,zmin,zmax:Double;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;{inline;}
 function Perspective(const fovy,W_H,zmin,zmax:Double;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;inline;
-function LookAt(point,ex,ey,ez:TzePoint3d;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;inline;
+function LookAt(point:TzePoint3d;ex,ey,ez:TzeVector3d;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;inline;
 
 function calcfrustum(const clip:PzeTypedMatrix4d):TzeFrustum;inline;
 function PointOf3PlaneIntersect(const P1,P2,P3:TzeVector4d):TzePoint3d;inline;
@@ -247,11 +251,11 @@ function CalcPointTrueInFrustum (const lbegin:TzePoint3d; const frustum:TzeFrust
 function CalcOutBound4VInFrustum (const OutBound:OutBound4V; const frustum:TzeFrustum):TInBoundingVolume;inline;
 function CalcAABBInFrustum (const AABB:TBoundingBox; const frustum:TzeFrustum):TInBoundingVolume;inline;
 
-function GetXfFromZ(const oz:TzePoint3d):TzePoint3d;inline;
+function GetXfFromZ(const oz:TzeVector3d):TzeVector3d;inline;
 
 function MatrixDeterminant(const M: TzeTypedMatrix4d):Double;
-function CreateMatrixFromBasis(const ox,oy,oz:TzePoint3d):TzeTypedMatrix4d; inline;
-procedure CreateBasisFromMatrix(const m:TzeTypedMatrix4d;out ox,oy,oz:TzePoint3d); inline;
+function CreateMatrixFromBasis(const ox,oy,oz:TzeVector3d):TzeTypedMatrix4d; inline;
+procedure CreateBasisFromMatrix(const m:TzeTypedMatrix4d;out ox,oy,oz:TzeVector3d); inline;
 
 function QuaternionFromMatrix(const mat : TzeTypedMatrix4d) : TzeQuaternion;
 function QuaternionSlerp(const source, dest: TzeQuaternion; const t: Double): TzeQuaternion;
@@ -262,12 +266,12 @@ function GetArcParamFrom3Point2D(const PointData:tarcrtmodify;out ad:TArcData):B
 function isNotReadableAngle(Angle:Double):Boolean; inline;
 function CorrectAngleIfNotReadable(Angle:Double):Double; inline;
 
-function GetCSDirFrom0x0y2D(const ox,oy:TzePoint3d):TCSDir;
+function GetCSDirFrom0x0y2D(const ox,oy:TzeVector3d):TCSDir;
 
 function CalcDisplaySubFrustum(const x,y,w,h:Double;const mm,pm:TzeTypedMatrix4d;const vp:TzeVector4i):TzeFrustum;
 function myPickMatrix(const x,y,deltax,deltay:Double;const vp:TzeVector4i): TzeTypedMatrix4d;
 
-function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzePoint3d; const PointInWCS:TzePoint3d; out scale:TzePoint3d):GDBObj2dprop;
+function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d; const PointInWCS:TzePoint3d; out scale:TzePoint3d):GDBObj2dprop;
 function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzePoint3d):GDBObj2dprop;
 
 function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer):integer;overload;
@@ -277,7 +281,27 @@ procedure CalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;var
 type
   TLineClipArray=array[0..5]of Double;
 
+{operator-(const l,r:TzePoint3s):TzePoint3s;
+operator/(const l:TzeVector3d;const r:double):TzeVector3d;}
+
 implementation
+
+{operator-(const l,r:TzePoint3s):TzePoint3s;
+begin
+  with TzePoint3s((@Result)^) do
+  begin
+    x:=l.x-r.x;
+    y:=l.y-r.y;
+    z:=l.z-r.z;
+  end;
+end;
+
+operator/(const l:TzePoint3d;const r:double):TzePoint3d;
+begin
+  result.x:=l.x/r;
+  result.y:=l.y/r;
+  result.z:=l.z/r;
+end;}
 
 function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer):integer;overload;
 begin
@@ -322,14 +346,14 @@ begin
   end;
 end;
 
-function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzePoint3d; const PointInWCS:TzePoint3d; out scale:TzePoint3d):GDBObj2dprop;
+function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d; const PointInWCS:TzePoint3d; out scale:TzePoint3d):GDBObj2dprop;
 var
   //tznam,tr:Double;
-  BX,BY,BZ:TzePoint3d;
+  BX,BY,BZ:TzeVector3d;
 begin
-  scale.x:=oneVertexlength(ScaledBX);
-  scale.y:=oneVertexlength(ScaledBY);
-  scale.z:=oneVertexlength(ScaledBZ);
+  scale.x:=ScaledBX.Length;//oneVertexlength(ScaledBX);
+  scale.y:=ScaledBY.Length;//oneVertexlength(ScaledBY);
+  scale.z:=ScaledBZ.Length;//oneVertexlength(ScaledBZ);
   if (abs(scale.x)>eps)and(abs(scale.y)>eps)and(abs(scale.z)>eps)then begin
 
     BX:=ScaledBX/scale.x;
@@ -344,8 +368,8 @@ begin
     result.Basis.oy:=BY;
     result.Basis.oz:=BZ;
 
-    BX:=NormalizeVertex(GetXfFromZ(BZ));
-    BY:=NormalizeVertex(VectorDot(BZ,Bx));
+    BX:=GetXfFromZ(BZ).NormalizeVertex;
+    BY:=VectorDot(BZ,Bx).NormalizeVertex;
 
     //вариант из https://ezdxf.readthedocs.io/en/stable/concepts/ocs.html#arbitrary-axis-algorithm
     result.P_insert.x:=PointInWCS.x*BX.x+PointInWCS.y*BX.y+PointInWCS.z*BX.z;
@@ -381,13 +405,14 @@ end;
 
 function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzePoint3d):GDBObj2dprop;
 var
-  BX,BY,BZ,T:TzePoint3d;
+  BX,BY,BZ:TzeVector3d;
+  pt:TzePoint3d;
 begin
   BX:=matrix.mtr.v[0].Slice;
   BY:=matrix.mtr.v[1].Slice;
   BZ:=matrix.mtr.v[2].Slice;
-  T:=matrix.mtr.v[3].Slice;
-  result:=GetPointInOCSByBasis(BX,BY,BZ,T,scale);
+  pt:=matrix.mtr.v[3].Slice.asPoint3d;
+  result:=GetPointInOCSByBasis(BX,BY,BZ,pt,scale);
 end;
 
 function VertexSub(const Vector1, Vector2: TzePoint3d): TzePoint3d;
@@ -498,7 +523,7 @@ begin
 end;
 
 
-function IsNearToZ(const v:TzePoint3d):boolean;
+function IsNearToZ(const v:TzeVector3d):boolean;
 const
   tol=1/64;
 begin
@@ -521,7 +546,7 @@ begin
   end;
 end;
 
-function GetXfFromZ(const oz:TzePoint3d):TzePoint3d;
+function GetXfFromZ(const oz:TzeVector3d):TzeVector3d;
 begin
   //if (abs (oz.x) < 1/64) and (abs (oz.y) < 1/64) then
   if IsNearToZ(oz)then
@@ -636,10 +661,10 @@ var
 begin
   //* Находим A, B, C, D для ПРАВОЙ плоскости */
   with TzeVector4d((@result.v[0])^) do begin
-    v[0]:=clip.mtr.v[0].v[3]-clip.mtr.v[0].v[0];
-    v[1]:=clip.mtr.v[1].v[3]-clip.mtr.v[1].v[0];
-    v[2]:=clip.mtr.v[2].v[3]-clip.mtr.v[2].v[0];
-    v[3]:=clip.mtr.v[3].v[3]-clip.mtr.v[3].v[0];
+    v[0]:=clip^.mtr.v[0].v[3]-clip^.mtr.v[0].v[0];
+    v[1]:=clip^.mtr.v[1].v[3]-clip^.mtr.v[1].v[0];
+    v[2]:=clip^.mtr.v[2].v[3]-clip^.mtr.v[2].v[0];
+    v[3]:=clip^.mtr.v[3].v[3]-clip^.mtr.v[3].v[0];
     t:=sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
     v[0]:=v[0]/t;
     v[1]:=v[1]/t;
@@ -649,10 +674,10 @@ begin
 
   //* Находим A, B, C, D для ЛЕВОЙ плоскости */
   with TzeVector4d((@result.v[1])^) do begin
-    v[0]:=clip.mtr.v[0].v[3]+clip.mtr.v[0].v[0];
-    v[1]:=clip.mtr.v[1].v[3]+clip.mtr.v[1].v[0];
-    v[2]:=clip.mtr.v[2].v[3]+clip.mtr.v[2].v[0];
-    v[3]:=clip.mtr.v[3].v[3]+clip.mtr.v[3].v[0];
+    v[0]:=clip^.mtr.v[0].v[3]+clip^.mtr.v[0].v[0];
+    v[1]:=clip^.mtr.v[1].v[3]+clip^.mtr.v[1].v[0];
+    v[2]:=clip^.mtr.v[2].v[3]+clip^.mtr.v[2].v[0];
+    v[3]:=clip^.mtr.v[3].v[3]+clip^.mtr.v[3].v[0];
     t:=sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
     v[0]:=v[0]/t;
     v[1]:=v[1]/t;
@@ -662,10 +687,10 @@ begin
 
   //* Находим A, B, C, D для НИЖНЕЙ плоскости */
   with TzeVector4d((@result.v[2])^) do begin
-    v[0]:=clip.mtr.v[0].v[3]+clip.mtr.v[0].v[1];
-    v[1]:=clip.mtr.v[1].v[3]+clip.mtr.v[1].v[1];
-    v[2]:=clip.mtr.v[2].v[3]+clip.mtr.v[2].v[1];
-    v[3]:=clip.mtr.v[3].v[3]+clip.mtr.v[3].v[1];
+    v[0]:=clip^.mtr.v[0].v[3]+clip^.mtr.v[0].v[1];
+    v[1]:=clip^.mtr.v[1].v[3]+clip^.mtr.v[1].v[1];
+    v[2]:=clip^.mtr.v[2].v[3]+clip^.mtr.v[2].v[1];
+    v[3]:=clip^.mtr.v[3].v[3]+clip^.mtr.v[3].v[1];
     t:=sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
     v[0]:=v[0]/t;
     v[1]:=v[1]/t;
@@ -675,10 +700,10 @@ begin
 
   //* ВЕРХНЯЯ плоскость */
   with TzeVector4d((@result.v[3])^) do begin
-    v[0]:=clip.mtr.v[0].v[3]-clip.mtr.v[0].v[1];
-    v[1]:=clip.mtr.v[1].v[3]-clip.mtr.v[1].v[1];
-    v[2]:=clip.mtr.v[2].v[3]-clip.mtr.v[2].v[1];
-    v[3]:=clip.mtr.v[3].v[3]-clip.mtr.v[3].v[1];
+    v[0]:=clip^.mtr.v[0].v[3]-clip^.mtr.v[0].v[1];
+    v[1]:=clip^.mtr.v[1].v[3]-clip^.mtr.v[1].v[1];
+    v[2]:=clip^.mtr.v[2].v[3]-clip^.mtr.v[2].v[1];
+    v[3]:=clip^.mtr.v[3].v[3]-clip^.mtr.v[3].v[1];
     t:=sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
     v[0]:=v[0]/t;
     v[1]:=v[1]/t;
@@ -688,10 +713,10 @@ begin
 
   //* ПЕРЕДНЯЯ плоскость */
   with TzeVector4d((@result.v[4])^) do begin
-    v[0]:=clip.mtr.v[0].v[3]+clip.mtr.v[0].v[2];
-    v[1]:=clip.mtr.v[1].v[3]+clip.mtr.v[1].v[2];
-    v[2]:=clip.mtr.v[2].v[3]+clip.mtr.v[2].v[2];
-    v[3]:=clip.mtr.v[3].v[3]+clip.mtr.v[3].v[2];
+    v[0]:=clip^.mtr.v[0].v[3]+clip^.mtr.v[0].v[2];
+    v[1]:=clip^.mtr.v[1].v[3]+clip^.mtr.v[1].v[2];
+    v[2]:=clip^.mtr.v[2].v[3]+clip^.mtr.v[2].v[2];
+    v[3]:=clip^.mtr.v[3].v[3]+clip^.mtr.v[3].v[2];
     t:=sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
     v[0]:=v[0]/t;
     v[1]:=v[1]/t;
@@ -701,10 +726,10 @@ begin
 
    //* ЗАДНЯЯ?? плоскость */
   with TzeVector4d((@result.v[5])^) do begin
-    v[0]:=clip.mtr.v[0].v[3]-clip.mtr.v[0].v[2];
-    v[1]:=clip.mtr.v[1].v[3]-clip.mtr.v[1].v[2];
-    v[2]:=clip.mtr.v[2].v[3]-clip.mtr.v[2].v[2];
-    v[3]:=clip.mtr.v[3].v[3]-clip.mtr.v[3].v[2];
+    v[0]:=clip^.mtr.v[0].v[3]-clip^.mtr.v[0].v[2];
+    v[1]:=clip^.mtr.v[1].v[3]-clip^.mtr.v[1].v[2];
+    v[2]:=clip^.mtr.v[2].v[3]-clip^.mtr.v[2].v[2];
+    v[3]:=clip^.mtr.v[3].v[3]-clip^.mtr.v[3].v[2];
     t:=sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2]);
     v[0]:=v[0]/t;
     v[1]:=v[1]/t;
@@ -1127,13 +1152,13 @@ begin
   Result.t:=CMTRotate;
 end;
 
-function CreateRotatedXVector(const angle:double):TzePoint3d;
+function CreateRotatedXVector(const angle:double):TzeVector3d;
 begin
   SinCos(angle,Result.y,Result.x);
   Result.z:=0;
 end;
 
-function CreateRotatedYVector(const angle:double):TzePoint3d;
+function CreateRotatedYVector(const angle:double):TzeVector3d;
 begin
   Result:=CreateRotatedXVector(angle+pi/2);
 end;
@@ -1338,6 +1363,11 @@ begin
   end;
 end;
 
+function VectorTransform3D(const V:TzeVector3d;const M:TzeTypedMatrix4d):TzeVector3d;overload;
+begin
+  result:=VectorTransform3D(V.asPoint3d,M).asVector3d;
+end;
+
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4s):TzePoint3d;
 var
   TV:TzeVector4d;
@@ -1459,19 +1489,19 @@ begin
     Result:=(sqr(x-vector2.x)+sqr(y-vector2.y));
 end;
 
-function oneVertexlength(const Vector1:TzePoint3d):double;
+function oneVertexlength(const Vector1:TzeVector3d):double;
 begin
   with TzePoint3d((@vector1)^) do
     Result:=sqrt(sqr(x)+sqr(y)+sqr(z));
 end;
 
-function oneVertexlength2D(const Vector1:TzePoint2d):double;
+function oneVertexlength2D(const Vector1:TzeVector2d):double;
 begin
   with TzePoint2d((@vector1)^) do
     Result:=sqrt(sqr(x)+sqr(y));
 end;
 
-function SqrOneVertexlength(const Vector1:TzePoint3d):double;
+function SqrOneVertexlength(const Vector1:TzeVector3d):double;
 begin
   with TzePoint3d((@vector1)^) do
     Result:=(sqr(x)+sqr(y)+sqr(z));
@@ -1546,7 +1576,7 @@ begin
   end;
 end;
 
-function Vertexdmorphabs(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
+function Vertexdmorphabs(const Vector1,Vector2:TzeVector3d;a:double):TzePoint3d;
 var
   l:double;
 begin
@@ -1594,7 +1624,7 @@ begin
   end;
 end;
 
-function NormalizeVertex(const Vector1:TzePoint3d):TzePoint3d;
+function NormalizeVertex(const Vector1:TzeVector3d):TzeVector3d;
 
   procedure dbz;
   begin
@@ -1617,7 +1647,7 @@ begin
   end;
 end;
 
-function NormalizeVertex2D(const Vector1:TzePoint2d):TzePoint2d;
+function NormalizeVertex2D(const Vector1:TzeVector2d):TzeVector2d;
 var
   len:double;
 begin
@@ -1839,7 +1869,7 @@ begin
   end;
 end;
 
-function VectorDot(const v1,v2:TzePoint3d):TzePoint3d;
+function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;
 begin
   with TzePoint3d((@v1)^) do begin
     Result.x:=y*v2.z-z*v2.y;
@@ -1848,7 +1878,7 @@ begin
   end;
 end;
 
-function scalardot(const v1,v2:TzePoint3d):double;
+function scalardot(const v1,v2:TzeVector3d):double;
 begin
   with TzePoint3d((@v1)^) do
     Result:=x*v2.x+y*v2.y+z*v2.z;
@@ -2010,8 +2040,8 @@ begin
   b2.y:=(bb2.RTF.y-bb2.LBN.y)/2;
   b2.z:=(bb2.RTF.z-bb2.LBN.z)/2;
   //центры боксов
-  b1c:=VertexAdd(bb1.LBN,b1);
-  b2c:=VertexAdd(bb2.LBN,b2);
+  b1c:=bb1.LBN+b1;
+  b2c:=bb2.LBN+b2;
   //расстояние между центрами
   dist:=VertexSub(b1c,b2c);
   dist.x:=abs(dist.x);
@@ -2023,21 +2053,21 @@ begin
     Result:=true;
 end;
 
-function CreateMatrixFromBasis(const ox,oy,oz:TzePoint3d):TzeTypedMatrix4d;
+function CreateMatrixFromBasis(const ox,oy,oz:TzeVector3d):TzeTypedMatrix4d;
 begin
   Result.CreateRec(OneMtr,CMTRotate);
   //result:=onematrix;
-  PzePoint3d(@Result.mtr.v[0])^:=ox;
-  PzePoint3d(@Result.mtr.v[1])^:=oy;
-  PzePoint3d(@Result.mtr.v[2])^:=oz;
+  Result.mtr.v[0].Slice:=ox;
+  Result.mtr.v[1].Slice:=oy;
+  Result.mtr.v[2].Slice:=oz;
   //result.t:=CMTRotate;
 end;
 
-procedure CreateBasisFromMatrix(const m:TzeTypedMatrix4d;out ox,oy,oz:TzePoint3d);
+procedure CreateBasisFromMatrix(const m:TzeTypedMatrix4d;out ox,oy,oz:TzeVector3d);
 begin
-  ox:=PzePoint3d(@m.mtr.v[0])^;
-  oy:=PzePoint3d(@m.mtr.v[1])^;
-  oz:=PzePoint3d(@m.mtr.v[2])^;
+  ox:=m.mtr.v[0].Slice;
+  oy:=m.mtr.v[1].Slice;
+  oz:=m.mtr.v[2].Slice;
 end;
 
 function QuaternionMagnitude(const q:TzeQuaternion):double;
@@ -2052,7 +2082,7 @@ begin
   m:=QuaternionMagnitude(q);
   if m>EPSILON2 then begin
     f:=1/m;
-    q.ImagPart:=VertexMulOnSc(q.ImagPart,f);
+    q.ImagPart:=q.ImagPart*f;
     q.RealPart:=q.RealPart*f;
   end else
     q:=IdentityQuaternion;
@@ -2268,7 +2298,7 @@ begin
     Result:=true;
 end;
 
-function IsVectorNul(const p2:TzePoint3d):boolean;
+function IsVectorNul(const p2:TzeVector3d):boolean;
 begin
   if SqrOneVertexlength(p2)>sqreps then
     Result:=false
@@ -2276,7 +2306,7 @@ begin
     Result:=true;
 end;
 
-function GetCSDirFrom0x0y2D(const ox,oy:TzePoint3d):TCSDir;
+function GetCSDirFrom0x0y2D(const ox,oy:TzeVector3d):TCSDir;
 begin
   if vectordot(ox,oy).z>eps then
     Result:=TCSDLeft
@@ -2498,29 +2528,29 @@ end;
 
 function PointOf3PlaneIntersect(const P1,P2,P3:TzeVector4d):TzePoint3d;
 var
-  N1,N2,N3,N12,N23,N31,a1,a2,a3:TzePoint3d;
+  N1,N2,N3,N12,N23,N31,a1,a2,a3:TzeVector3d;
   a4:double;
 begin
-  Result:=nulvertex;
-  n1:=createvertex(p1.v[0],p1.v[1],p1.v[2]);
-  n2:=createvertex(p2.v[0],p2.v[1],p2.v[2]);
-  n3:=createvertex(p3.v[0],p3.v[1],p3.v[2]);
+  Result:=NulPoint;
+  n1:=p1.Slice;//createvertex(p1.v[0],p1.v[1],p1.v[2]);
+  n2:=p2.Slice;//createvertex(p2.v[0],p2.v[1],p2.v[2]);
+  n3:=p3.Slice;//createvertex(p3.v[0],p3.v[1],p3.v[2]);
   n12:=vectordot(n1,n2);
   n23:=vectordot(n2,n3);
   n31:=vectordot(n3,n1);
 
-  a1:=VertexMulOnSc(n23,p1.v[3]);
-  a2:=VertexMulOnSc(n31,p2.v[3]);
-  a3:=VertexMulOnSc(n12,p3.v[3]);
+  a1:=n23*p1.CutOff;//VertexMulOnSc(n23,p1.v[3]);
+  a2:=n31*p2.CutOff;//VertexMulOnSc(n31,p2.v[3]);
+  a3:=n12*p3.CutOff;//VertexMulOnSc(n12,p3.v[3]);
   a4:=scalardot(n1,n23);
   if abs(a4)<eps then
     exit;
   a4:=1/a4;
 
-  a1:=VertexAdd(a1,a2);
-  a1:=VertexAdd(a1,a3);
+  a1:=a1+a2;//VertexAdd(a1,a2);
+  a1:=a1+a3;//VertexAdd(a1,a3);
 
-  Result:=VertexMulOnSc(a1,-a4);
+  Result:=(a1*-a4).asPoint3d;//VertexMulOnSc(a1,-a4);
 end;
 
 function PointOfRayPlaneIntersect(const p1,d:TzePoint3d;const plane:TzeVector4d;out point:TzePoint3d):boolean;
@@ -2558,7 +2588,7 @@ begin
     Result:=false;
 end;
 
-function ortho;
+function ortho(const xmin,xmax,ymin,ymax,zmin,zmax:Double;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;
 var
   xmaxminusxmin,ymaxminusymin,zmaxminuszmin,xmaxplusxmin,ymaxplusymin,zmaxpluszmin:double;
   m:TzeTypedMatrix4d;
@@ -2586,7 +2616,7 @@ begin
   //glMultMatrixd(@m);
 end;
 
-function Perspective;
+function Perspective(const fovy,W_H,zmin,zmax:Double;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;
 var
   sine,cosine,cotangent,deltaZ,radians:double;
   m:TzeTypedMatrix4d;
@@ -2605,7 +2635,7 @@ begin
   Result:=MatrixMultiply(m,matrix^);
 end;
 
-function lookat;
+function lookat(point:TzePoint3d;ex,ey,ez:TzeVector3d;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;
 var
   m:TzeTypedMatrix4d;
   m2:TzeTypedMatrix4d;
@@ -2630,8 +2660,8 @@ begin
   _in.z:=winz;
   _in.w:=1.0;
 
-  _in.x:=(_in.x-viewport.v[0])/viewport.v[2];
-  _in.y:=(_in.y-viewport.v[1])/viewport.v[3];
+  _in.x:=(_in.x-viewport^.v[0])/viewport^.v[2];
+  _in.y:=(_in.y-viewport^.v[1])/viewport^.v[3];
 
   //* Map to range -1 to 1 */
   _in.x:=_in.x*2-1;
@@ -2665,8 +2695,8 @@ begin
   _in.z:=_in.z*0.5+0.5;
 
   //* Map x,y to viewport */
-  winx:=_in.x*viewport.v[2]+viewport.v[0];
-  winy:=_in.y*viewport.v[3]+viewport.v[1];
+  winx:=_in.x*viewport^.v[2]+viewport^.v[0];
+  winy:=_in.y*viewport^.v[3]+viewport^.v[1];
   winz:=_in.z;
   //return(GL_TRUE);
 end;
@@ -2678,11 +2708,11 @@ end;
 
 function SQRdist_Point_to_Segment(const p,s0,s1:TzePoint3d):double;
 var
-  v,w,pb:TzePoint3d;
+  v,w,pb:TzeVector3d;
   c1,c2,b:double;
 begin
-  v:=vertexsub(s1,s0);
-  w:=vertexsub(p,s0);
+  v:=vertexsub(s1,s0).asVector3d;
+  w:=vertexsub(p,s0).asVector3d;
 
   c1:=scalardot(w,v);
   if c1<=0 then begin
@@ -2697,17 +2727,17 @@ begin
   end;
 
   b:=c1/c2;
-  Pb:=vertexadd(s0,VertexMulOnSc(v,b));
-  Result:=SqrVertexlength(p,pb);
+  Pb:={vertexadd}(s0.asVector3d+{,VertexMulOnSc}(v*b));
+  Result:=SqrVertexlength(p,pb.asPoint3d);
 end;
 
 function NearestPointOnSegment(const p,s0,s1:TzePoint3d):TzePoint3d;
 var
-  v,w:TzePoint3d;
+  v,w:TzeVector3d;
   c1,c2:double;
 begin
-  v:=vertexsub(s1,s0);
-  w:=vertexsub(p,s0);
+  v:={vertexsub}(s1-s0).asVector3d;
+  w:={vertexsub}(p-s0).asVector3d;
 
   c1:=scalardot(w,v);
   if c1<=0 then
@@ -2717,30 +2747,30 @@ begin
   if c2<=c1 then
     exit(s1);
 
-  Result:=vertexadd(s0,VertexMulOnSc(v,(c1/c2)));
+  Result:=s0+VertexMulOnSc(v.asPoint3d,(c1/c2));
 end;
 
 function distance2ray(const q,p1,p2:TzePoint3d):DistAndt;
 var
-  w,v:TzePoint3d;
+  w,v:TzeVector3d;
   c1,c2:double;
 begin
-  v:=VertexSub(p2,p1);
-  w:=VertexSub(q,p1);
+  v:={VertexSub}(p2-p1).asVector3d;
+  w:={VertexSub}(q-p1).asVector3d;
   c1:=scalardot(w,v);
   c2:=scalardot(v,v);
   if abs(c2)>eps then begin
     Result.t:=c1/c2;
-    Result.d:=Vertexlength(q,VertexDmorph(p1,v,Result.t));
+    Result.d:=Vertexlength(q,VertexDmorph(p1,v.asPoint3d,Result.t));
   end else begin
     Result.t:=0;
     Result.d:=Vertexlength(q,p1);
   end;
 end;
 
-function CreateAffineRotationMatrix(const anAxis:TzePoint3d;angle:double):TzeTypedMatrix4d;
+function CreateAffineRotationMatrix(const anAxis:TzeVector3d;angle:double):TzeTypedMatrix4d;
 var
-  axis:TzePoint3d;
+  axis:TzeVector3d;
   cosine,sine,one_minus_cosine:double;
 begin
   SinCos(angle,SINE,cosine);
@@ -2773,7 +2803,7 @@ begin
   Result:=CreateAffineRotationMatrix(AAxis,Angle);
 end;
 
-function TwoVectorAngle(const Vector1,Vector2:TzePoint3d):double;inline;
+function TwoVectorAngle(const Vector1,Vector2:TzeVector3d):double;inline;
 begin
   Result:=ArcCos(scalardot(Vector1,Vector2));
 end;
