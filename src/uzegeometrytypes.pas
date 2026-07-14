@@ -40,7 +40,7 @@ type
     constructor CreateRec(AMtr:TMtr;At:TzeMatrixTypes);
     function IsIdentity:boolean;inline;
   end;
-  GVector4<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif},GDummy>=record
+  GVector4<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>=record
     const
       ArrS=4;
     type
@@ -55,7 +55,7 @@ type
         2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector3<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif},GDummy>=record
+  GVector3<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>=record
     const
       ArrS=3;
     type
@@ -70,7 +70,7 @@ type
         2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector2<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif},GDummy>=record
+  GVector2<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>=record
     const
       ArrS=2;
     type
@@ -87,7 +87,7 @@ type
         2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector4i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif},GDummy>=record
+  GVector4i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>=record
     const
       ArrS=4;
     type
@@ -104,7 +104,7 @@ type
         2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector3i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif},GDummy>=record
+  GVector3i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>=record
     const
       ArrS=3;
     type
@@ -121,7 +121,7 @@ type
         2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-  GVector2i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif},GDummy>=record
+  GVector2i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>=record
     const
       ArrS=2;
     type
