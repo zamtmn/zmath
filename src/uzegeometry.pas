@@ -1339,12 +1339,12 @@ begin
   if M.t=CMTIdentity then
     Result:=CreateVertex(v.x,v.y,0)
   else begin
-    PzePoint2d(@tv)^:=v;
+    {PzePoint2d(@tv)^:=v;}tv.Slice.Slice:=v.asVector2d;
     tv.z:=0;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
     normalize4d(tv);
-    Result:=PzePoint3d(@tv)^;
+    {Result:=PzePoint3d(@tv)^;}Result:=tv.Slice.asPoint3d;
   end;
 end;
 
@@ -1355,11 +1355,11 @@ begin
   if M.t=CMTIdentity then
     Result:=V
   else begin
-    PzePoint3d(@tv)^:=v;
+    {PzePoint3d(@tv)^:=v;}tv.Slice:=v.asVector3d;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
     normalize4d(tv);
-    Result:=PzePoint3d(@tv)^;
+    {Result:=PzePoint3d(@tv)^;}Result:=tv.Slice.asPoint3d;
   end;
 end;
 
@@ -1375,13 +1375,11 @@ begin
   if M.t=CMTIdentity then
     Result:=V
   else begin
-    PzePoint3d(@tv)^:=v;
+    {PzePoint3d(@tv)^:=v;}tv.Slice:=v.asVector3d;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
-
     normalize4d(tv);
-
-    Result:=PzePoint3d(@tv)^;
+    {Result:=PzePoint3d(@tv)^;}Result:=tv.Slice.asPoint3d;
   end;
 end;
 

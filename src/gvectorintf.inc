@@ -24,6 +24,7 @@
     class operator /(const l:TSelf;const r:Real):TSelf;inline;
     {$EndIf}
     class function Make(const AData:TCoordArray):TSelf;static;inline;
+    procedure setup(const AData:TCoordArray);inline;
     constructor CreateRec(const AData:TCoordArray);
     {$IfDef TwoDimension}
     function Turn90R:TSelf;inline;

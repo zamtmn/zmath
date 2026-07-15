@@ -103,6 +103,11 @@ begin
   result.v:=AData;
 end;
 
+procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.setup(const AData:TCoordArray);inline;
+begin
+  v:=AData;
+end;
+
 constructor VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.CreateRec(const AData:TCoordArray);
 begin
   self.v:=AData;
