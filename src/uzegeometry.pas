@@ -332,7 +332,7 @@ begin
   pc:=(p1+p2)/2;
   n.x:=-d.y;
   n.y:=d.x;
-  n:=n.NormalizeVertex;
+  n:=n.Normalize;
   pac:=pc-n*h;
   if divcount=1 then begin
     pts[low(pts)]:=p1;
@@ -368,8 +368,8 @@ begin
     result.Basis.oy:=BY;
     result.Basis.oz:=BZ;
 
-    BX:=GetXfFromZ(BZ).NormalizeVertex;
-    BY:=VectorDot(BZ,Bx).NormalizeVertex;
+    BX:=GetXfFromZ(BZ).Normalize;
+    BY:=VectorDot(BZ,Bx).Normalize;
 
     //вариант из https://ezdxf.readthedocs.io/en/stable/concepts/ocs.html#arbitrary-axis-algorithm
     result.P_insert.x:=PointInWCS.x*BX.x+PointInWCS.y*BX.y+PointInWCS.z*BX.z;
@@ -2043,7 +2043,7 @@ begin
   b1c:=bb1.LBN+b1;
   b2c:=bb2.LBN+b2;
   //расстояние между центрами
-  dist:=VertexSub(b1c,b2c);
+  dist:=b1c-b2c;
   dist.x:=abs(dist.x);
   dist.y:=abs(dist.y);
   dist.z:=abs(dist.z);
@@ -2367,7 +2367,7 @@ begin
     exit;
   end;
   Dec(cacount);
-  d:=VertexSub(lend,lbegin);
+  d:=lend-lbegin;
   j:=0;
   d1:=GetMinAndSwap(j,cacount,ca);
   while j<=cacount do begin
@@ -2441,7 +2441,7 @@ begin
     exit;
   end;
   Dec(cacount);
-  d:=VertexSub(lend,lbegin);
+  d:=lend-lbegin;
   j:=0;
   d1:=GetMinAndSwap(j,cacount,ca);
   while j<=cacount do begin
@@ -2711,8 +2711,8 @@ var
   v,w,pb:TzeVector3d;
   c1,c2,b:double;
 begin
-  v:=vertexsub(s1,s0).asVector3d;
-  w:=vertexsub(p,s0).asVector3d;
+  v:=(s1-s0).asVector3d;
+  w:=(p-s0).asVector3d;
 
   c1:=scalardot(w,v);
   if c1<=0 then begin
@@ -2736,8 +2736,8 @@ var
   v,w:TzeVector3d;
   c1,c2:double;
 begin
-  v:={vertexsub}(s1-s0).asVector3d;
-  w:={vertexsub}(p-s0).asVector3d;
+  v:=(s1-s0).asVector3d;
+  w:=(p-s0).asVector3d;
 
   c1:=scalardot(w,v);
   if c1<=0 then
@@ -2755,8 +2755,8 @@ var
   w,v:TzeVector3d;
   c1,c2:double;
 begin
-  v:={VertexSub}(p2-p1).asVector3d;
-  w:={VertexSub}(q-p1).asVector3d;
+  v:=(p2-p1).asVector3d;
+  w:=(q-p1).asVector3d;
   c1:=scalardot(w,v);
   c2:=scalardot(v,v);
   if abs(c2)>eps then begin

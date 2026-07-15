@@ -14,7 +14,7 @@ begin
   result:=Sqrt(SqrLength);
 end;
 {$IfNDef IntParam}
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.NormalizeVertex:TSelf;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Normalize:TSelf;
 var
   len:Double;
   i:integer;

@@ -10,7 +10,7 @@
     function SqrLength:Double;inline;
     function Length:Double;inline;
     {$IfNDef IntParam}
-    function NormalizeVertex:TSelf;inline;
+    function Normalize:TSelf;inline;
     {$EndIf}
     function Add(const Vector2:TSelf):TSelf;inline;
     function Sub(const Vector2:TSelf):TSelf;inline;
