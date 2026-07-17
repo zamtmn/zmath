@@ -322,7 +322,8 @@ end;
 
 procedure CalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;var pts:array of TzePoint2d;divcount:integer);
 var
-  d,pc,pac,n:TzePoint2d;
+  d,n:TzeVector2d;
+  pc,pac:TzePoint2d;
   l,h,nextbulge:double;
   mid:integer;
 begin
@@ -330,9 +331,10 @@ begin
   l:=d.Length;
   h:=l*bulge/2;
   pc:=(p1+p2)/2;
-  n.x:=-d.y;
-  n.y:=d.x;
-  n:=n.Normalized;
+  n:=d.Turned90L;
+  {n.x:=-d.y;
+  n.y:=d.x;}
+  n.Normalize;
   pac:=pc-n*h;
   if divcount=1 then begin
     pts[low(pts)]:=p1;
@@ -417,7 +419,7 @@ end;
 
 function VertexSub(const Vector1, Vector2: TzePoint3d): TzePoint3d;
 begin
-  result:=Vector1-Vector2;
+  result:=(Vector1-Vector2).asPoint3d;
   {with TzePoint3d((@Result)^) do
   begin
     X := Vector1.x - Vector2.x;
@@ -428,7 +430,7 @@ end;
 
 function VertexSub(const Vector1, Vector2: TzePoint2d): TzePoint2d;
 begin
-  result:=Vector1-Vector2;
+  result:=(Vector1-Vector2).asPoint2d;
   {with TzePoint2d((@Result)^) do
   begin
     X := Vector1.x - Vector2.x;
@@ -438,7 +440,7 @@ end;
 
 function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;
 begin
-  result:=Vector1-Vector2;
+  result:=(Vector1-Vector2).asPoint3s;
   {with TzePoint3s((@Result)^) do
   begin
     X := Vector1.x - Vector2.x;
@@ -2017,7 +2019,8 @@ end;
 
 function ScaleBB(const bb:TBoundingBox;const k:double):TBoundingBox;
 var
-  p,v:TzePoint3d;
+  p:TzePoint3d;
+  v:TzeVector3d;
 begin
   p:=(bb.RTF+bb.LBN)/2;
   v:=(bb.RTF-p)*k;
@@ -2027,7 +2030,8 @@ end;
 
 function boundingintersect(const bb1,bb2:TBoundingBox):boolean;
 var
-  b1,b2,b1c,b2c,dist:TzePoint3d;
+  b1,b2,b1c,b2c:TzePoint3d;
+  dist:TzeVector3d;
 begin
   //половина диагонали первого бокса
   b1.x:=(bb1.RTF.x-bb1.LBN.x)/2;
@@ -2319,7 +2323,8 @@ var
   bytebegin,byteend,bit:integer;
   ca:TLineClipArray;
   cacount:integer;
-  d,p:TzePoint3d;
+  d:TzeVector3d;
+  p:TzePoint3d;
 begin
   fillchar((@ca)^,sizeof(ca),0);
   Result:=IREmpty;
@@ -2372,7 +2377,7 @@ begin
     d2:=GetMinAndSwap(j,cacount,ca);
     d1:=(d1+d2)/2;
     bit:=0;
-    p:=VertexDmorph(lbegin,d,d1);
+    p:=VertexDmorph(lbegin,d.asPoint3d,d1);
     for i:=0 to 5 do begin
       with frustum.v[i] do
         if (v[0]*p.x+v[1]*p.y+v[2]*p.z+v[3])>=0 then
@@ -2393,7 +2398,8 @@ var
   bytebegin,byteend,bit:integer;
   ca:TLineClipArray;
   cacount:integer;
-  d,p:TzePoint3s;
+  d:TzeVector3s;
+  p:TzePoint3s;
 begin
   fillchar((@ca)^,sizeof(ca),0);
   Result:=IREmpty;
@@ -2446,7 +2452,7 @@ begin
     d2:=GetMinAndSwap(j,cacount,ca);
     d1:=(d1+d2)/2;
     bit:=0;
-    p:=VertexDmorph(lbegin,d,d1);
+    p:=VertexDmorph(lbegin,d.asPoint3s,d1);
     for i:=0 to 5 do begin
       with frustum.v[i] do
         if (v[0]*p.x+v[1]*p.y+v[2]*p.z+v[3])>=0 then
@@ -2709,8 +2715,8 @@ var
   v,w,pb:TzeVector3d;
   c1,c2,b:double;
 begin
-  v:=(s1-s0).asVector3d;
-  w:=(p-s0).asVector3d;
+  v:=s1-s0;
+  w:=p-s0;
 
   c1:=scalardot(w,v);
   if c1<=0 then begin
@@ -2734,8 +2740,8 @@ var
   v,w:TzeVector3d;
   c1,c2:double;
 begin
-  v:=(s1-s0).asVector3d;
-  w:=(p-s0).asVector3d;
+  v:=s1-s0;
+  w:=p-s0;
 
   c1:=scalardot(w,v);
   if c1<=0 then
@@ -2753,8 +2759,8 @@ var
   w,v:TzeVector3d;
   c1,c2:double;
 begin
-  v:=(p2-p1).asVector3d;
-  w:=(q-p1).asVector3d;
+  v:=p2-p1;
+  w:=q-p1;
   c1:=scalardot(w,v);
   c2:=scalardot(v,v);
   if abs(c2)>eps then begin

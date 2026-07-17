@@ -1,7 +1,7 @@
     type
       TCoordType={$if FPC_FULLVERSION<30205}TT{$else}T{$endif};
       TCoordArray=array [0..ArrS-1] of T;
-      TSelf=VectorTypeName<T{$if FPC_FULLVERSION<30205},GSlice,TT{$else},GSlice{$endif}>;
+      TSelf=PointTypeName<T{$if FPC_FULLVERSION<30205},GSlice,TT{$else},GSlice{$endif},GVectorTypeName>;
       TSlice=GSlice;
     const
       ArrH=High(TCoordArray);
@@ -17,7 +17,9 @@
     function Sub(const Vector2:TSelf):TSelf;inline;
 
     class operator +(const l,r:TSelf):TSelf;inline;
-    class operator -(const l,r:TSelf):TSelf;inline;overload;
+    class operator +(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
+    class operator -(const l,r:TSelf):GVectorTypeName;inline;overload;
+    class operator -(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
     class operator -(const r:TSelf):TSelf;inline;overload;
     class operator *(const l:TSelf;const r:T):TSelf;inline;
     class operator *(const l,r:TSelf):Real;inline;
