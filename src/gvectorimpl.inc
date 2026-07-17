@@ -14,7 +14,7 @@ begin
   result:=Sqrt(SqrLength);
 end;
 {$IfNDef IntParam}
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Normalize:TSelf;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Normalized:TSelf;
 var
   len:Double;
   i:integer;
@@ -23,6 +23,21 @@ begin
   if abs(len)>eps then begin
     for i:=0 to ArrH do begin
       result.v[i]:=v[i]/len;
+    end;
+  end else begin
+    //DebugLn('{EH}'+rsDivByZero);
+    //len:=len+2;
+  end;
+end;
+procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Normalize;inline;
+var
+  len:Double;
+  i:integer;
+begin
+  len:=Length;
+  if abs(len)>eps then begin
+    for i:=0 to ArrH do begin
+      v[i]:=v[i]/len;
     end;
   end else begin
     //DebugLn('{EH}'+rsDivByZero);

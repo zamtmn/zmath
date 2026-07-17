@@ -332,7 +332,7 @@ begin
   pc:=(p1+p2)/2;
   n.x:=-d.y;
   n.y:=d.x;
-  n:=n.Normalize;
+  n:=n.Normalized;
   pac:=pc-n*h;
   if divcount=1 then begin
     pts[low(pts)]:=p1;
@@ -368,8 +368,8 @@ begin
     result.Basis.oy:=BY;
     result.Basis.oz:=BZ;
 
-    BX:=GetXfFromZ(BZ).Normalize;
-    BY:=VectorDot(BZ,Bx).Normalize;
+    BX:=GetXfFromZ(BZ).Normalized;
+    BY:=VectorDot(BZ,Bx).Normalized;
 
     //вариант из https://ezdxf.readthedocs.io/en/stable/concepts/ocs.html#arbitrary-axis-algorithm
     result.P_insert.x:=PointInWCS.x*BX.x+PointInWCS.y*BX.y+PointInWCS.z*BX.z;
