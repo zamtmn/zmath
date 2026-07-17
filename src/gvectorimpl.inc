@@ -129,16 +129,36 @@ begin
 end;
 
 {$IfDef TwoDimension}
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Turn90R:TSelf;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Turned90R:TSelf;
 begin
  result.x:=y;
  result.y:=-x;
 end;
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Turn90L:TSelf;
+
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Turned90L:TSelf;
 begin
  result.x:=-y;
  result.y:=x;
 end;
+
+procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Turn90R;
+var
+  tmp:T;
+begin
+  tmp:=y;
+  y:=-x;
+  x:=tmp;
+end;
+
+procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.Turn90L;
+var
+  tmp:T;
+begin
+  tmp:=y;
+  y:=x;
+  x:=-tmp;
+end;
+
 {$EndIf}
 
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GDummy>.IsNul:boolean;

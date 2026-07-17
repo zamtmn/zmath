@@ -28,7 +28,9 @@
     procedure setup(const AData:TCoordArray);inline;
     constructor CreateRec(const AData:TCoordArray);
     {$IfDef TwoDimension}
-    function Turn90R:TSelf;inline;
-    function Turn90L:TSelf;inline;
+    function Turned90R:TSelf;inline;
+    function Turned90L:TSelf;inline;
+    procedure Turn90R;inline;
+    procedure Turn90L;inline;
     {$EndIf}
     function IsNul:boolean;inline;
