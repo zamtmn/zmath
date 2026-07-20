@@ -15,6 +15,10 @@ begin
 end;
 {$IfNDef IntParam}
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Normalized:TSelf;
+  procedure dbz;
+  begin
+    zDebugLn('{EH}'+rsDivByZero);
+  end;
 var
   len:Double;
   i:integer;
@@ -25,11 +29,14 @@ begin
       result.v[i]:=v[i]/len;
     end;
   end else begin
-    //DebugLn('{EH}'+rsDivByZero);
-    //len:=len+2;
+    dbz;
   end;
 end;
 procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Normalize;inline;
+  procedure dbz;
+  begin
+    zDebugLn('{EH}'+rsDivByZero);
+  end;
 var
   len:Double;
   i:integer;
@@ -40,8 +47,7 @@ begin
       v[i]:=v[i]/len;
     end;
   end else begin
-    //DebugLn('{EH}'+rsDivByZero);
-    //len:=len+2;
+    dbz;
   end;
 end;
 {$EndIf}

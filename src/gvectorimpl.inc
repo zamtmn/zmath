@@ -46,7 +46,7 @@ begin
 end;
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.DeHomogenized:TSlice;
 begin
-  if abs(CutOff)>eps then begin
+  if abs({$if FPC_FULLVERSION<30205}T(CutOff){$else}CutOff{$endif})>eps then begin
     result:=Slice/CutOff;
   end else
     result:=Slice;

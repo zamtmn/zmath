@@ -25,9 +25,6 @@ uses
   SysUtils,math,
   uzegeometrytypes,uzbLogIntf;
 
-resourcestring
-  rsDivByZero='Divide by zero';
-
 const
   EmptyMtr:TzeMatrix4d=(v:((v:(0,0,0,0)),
                            (v:(0,0,0,0)),
@@ -126,9 +123,9 @@ function TwoVectorAngle(const Vector1, Vector2: TzeVector3d): Double;//inline;
 function oneVertexlength(const Vector1: TzeVector3d): Double;inline;
 function oneVertexlength2D(const Vector1: TzeVector2d): Double;inline;
 function SqrOneVertexlength(const Vector1: TzeVector3d): Double;inline;
-function vertexlen2df(const x1, y1, x2, y2: Single): Single;inline;
-function NormalizeVertex(const Vector1: TzeVector3d): TzeVector3d;inline;
-function NormalizeVertex2D(const Vector1: TzeVector2d): TzeVector2d;inline;
+//function vertexlen2df(const x1, y1, x2, y2: Single): Single;inline;
+//function NormalizeVertex(const Vector1: TzeVector3d): TzeVector3d;inline;
+//function NormalizeVertex2D(const Vector1: TzeVector2d): TzeVector2d;inline;
 function VertexMulOnSc(const Vector1:TzePoint3d;sc:Double): TzePoint3d;inline;
 function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:Double): TzePoint2d;inline;
 
@@ -140,7 +137,6 @@ function VertexSub(const Vector1, Vector2: TzePoint3d): TzePoint3d;overload;inli
 function VertexSub(const Vector1, Vector2: TzePoint2d): TzePoint2d;overload;inline;
 function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;overload;inline;
 //function MinusVertex(const Vector1: TzePoint3d): TzePoint3d;inline;
-function vertexlen2id(const x1, y1, x2, y2: Integer): Double;inline;
 function Vertexdmorphabs(const Vector1, Vector2: TzeVector3d;a: Double): TzePoint3d;inline;
 function Vertexmorphabs(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
 function Vertexmorphabs2(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
@@ -278,6 +274,8 @@ function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;c
 function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer;var ActualDivCount:Integer):integer;overload;
 procedure CalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;var pts:array of TzePoint2d;divcount:integer);
 
+operator -(const l:TzePoint2d;r:TzePoint2i):TzePoint2d;inline;overload;
+
 type
   TLineClipArray=array[0..5]of Double;
 
@@ -285,6 +283,12 @@ type
 operator/(const l:TzeVector3d;const r:double):TzeVector3d;}
 
 implementation
+
+operator -(const l:TzePoint2d;r:TzePoint2i):TzePoint2d;
+begin
+  result.x:=l.x-r.x;
+  result.y:=l.y-r.y;
+end;
 
 {operator-(const l,r:TzePoint3s):TzePoint3s;
 begin
@@ -555,7 +559,7 @@ begin
     result:=VectorDot(YWCS,oz)
   else
     result:=VectorDot(ZWCS,oz);
-  result:=NormalizeVertex(result);
+  result.Normalize;//:=NormalizeVertex(result);
 end;
 
 function IsFloatNotEqual(const d1,d2:Single;const _floateps:Single=floateps):boolean;
@@ -1512,19 +1516,10 @@ begin
     Result:=(sqr(x)+sqr(y)+sqr(z));
 end;
 
-function vertexlen2df(const x1,y1,x2,y2:single):single;
+{function vertexlen2df(const x1,y1,x2,y2:single):single;
 begin
   Result:=sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-end;
-
-function vertexlen2id(const x1,y1,x2,y2:integer):double;
-var
-  a,b:double;
-begin
-  a:=x1-x2;
-  b:=y1-y2;
-  Result:=sqrt(a*a+b*b);
-end;
+end;}
 
 function Vertexangle(const Vector1,Vector2:TzePoint2d):double;
 var
@@ -1629,7 +1624,7 @@ begin
   end;
 end;
 
-function NormalizeVertex(const Vector1:TzeVector3d):TzeVector3d;
+{function NormalizeVertex(const Vector1:TzeVector3d):TzeVector3d;
 
   procedure dbz;
   begin
@@ -1666,7 +1661,7 @@ begin
     zDebugLn('{EH}'+rsDivByZero);
     len:=len+2;
   end;
-end;
+end;}
 
 function VertexMulOnSc(const Vector1:TzePoint3d;sc:double):TzePoint3d;
 begin
@@ -2784,7 +2779,7 @@ var
 begin
   SinCos(angle,SINE,cosine);
   one_minus_cosine:=1-cosine;
-  axis:=NormalizeVertex(anAxis);
+  axis:={NormalizeVertex}(anAxis).Normalized;
 
   Result.CreateRec(OneMtr,CMTRotate);
   //result:=onematrix;

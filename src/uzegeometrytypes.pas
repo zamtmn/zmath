@@ -21,6 +21,13 @@ unit uzegeometrytypes;
 {$Macro on}
 
 interface
+
+uses
+  uzbLogIntf;
+
+resourcestring
+  rsDivByZero='Divide by zero';
+
 const
   EPSILON:single=1e-40;
   EPSILON2:single=1e-30;
@@ -228,10 +235,10 @@ type
   TzeVector4d=GVector4<double,TzeVector3d{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzeVector4d=^TzeVector4d;
 
-  TzeVector2s=GVector2<single,single{$if FPC_FULLVERSION<30205},double{$endif}>;
+  TzeVector2s=GVector2<single,single{$if FPC_FULLVERSION<30205},single{$endif}>;
   PzeVector2s=^TzeVector2s;
 
-  TzeVector3s=GVector3<single,TzeVector2s{$if FPC_FULLVERSION<30205},double{$endif}>;
+  TzeVector3s=GVector3<single,TzeVector2s{$if FPC_FULLVERSION<30205},single{$endif}>;
   PzeVector3s=^TzeVector3s;
 
   TzeVector4s=GVector4<single,TzeVector3s{$if FPC_FULLVERSION<30205},single{$endif}>;
@@ -253,7 +260,7 @@ type
   TzePoint3d=GPoint3<double,TzePoint2d{$if FPC_FULLVERSION<30205},double{$endif},TzeVector3d>;
   PzePoint3d=^TzePoint3d;
 
-  TzePoint2s=GPoint2<single,single{$if FPC_FULLVERSION<30205},double{$endif},TzeVector2s>;
+  TzePoint2s=GPoint2<single,single{$if FPC_FULLVERSION<30205},single{$endif},TzeVector2s>;
   PzePoint2s=^TzePoint2s;
 
   TzePoint3s=GPoint3<single,TzePoint2s{$if FPC_FULLVERSION<30205},single{$endif},TzeVector3s>;
@@ -407,6 +414,7 @@ const
  CMTShear=[MTShear];
 
 implementation
+
 {$Define VectorTypeName := GVector4}
 {$Include gvectorimpl.inc}
 {$UnDef VectorTypeName}
