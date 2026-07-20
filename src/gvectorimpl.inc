@@ -44,6 +44,25 @@ begin
     //len:=len+2;
   end;
 end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.DeHomogenized:TSlice;
+begin
+  if abs(CutOff)>eps then begin
+    result:=Slice/CutOff;
+  end else
+    result:=Slice;
+end;
+
+procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.DeHomogenize;
+var
+  i:integer;
+begin
+  if abs(v[High(TCoordArray)])>eps then begin
+    for i:=Low(TCoordArray) to High(TCoordArray)-1 do begin
+      v[i]:=v[i]/v[High(TCoordArray)];
+    end;
+    v[High(TCoordArray)]:=1;
+  end;
+end;
 {$EndIf}
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Add(const Vector2:TSelf):TSelf;
 var

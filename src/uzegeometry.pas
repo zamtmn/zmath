@@ -150,8 +150,8 @@ function MatrixMultiplyF(const M1, M2: TzeTypedMatrix4d):TzeTypedMatrix4s;inline
 function VectorTransform(const V:TzeVector4d;const M:TzeTypedMatrix4d):TzeVector4d;overload;inline;
 function VectorTransform(const V:TzeVector4d;const M:TzeTypedMatrix4s):TzeVector4d;overload;inline;
 function VectorTransform(const V:TzeVector4s;const M:TzeTypedMatrix4s):TzeVector4s;overload;inline;
-procedure normalize4d(var tv:TzeVector4d);overload;inline;
-procedure normalize4F(var tv:TzeVector4s);overload;inline;
+//procedure normalize4d(var tv:TzeVector4d);overload;inline;
+//procedure normalize4F(var tv:TzeVector4s);overload;inline;
 function VectorTransform2D(const V:TzePoint2d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzeVector3d;const M:TzeTypedMatrix4d):TzeVector3d;overload;inline;
@@ -1310,7 +1310,7 @@ begin
     end;
 end;
 
-procedure normalize4F(var tv:TzeVector4s);inline;
+{procedure normalize4F(var tv:TzeVector4s);inline;
 begin
   if abs(tv.w)>eps then
     if abs(abs(tv.w)-1)>eps then begin
@@ -1332,7 +1332,7 @@ begin
         z:=z/w;
       end;
     end;
-end;
+end;}
 
 function VectorTransform2D(const V:TzePoint2d;const M:TzeTypedMatrix4d):TzePoint3d;
 var
@@ -1345,8 +1345,9 @@ begin
     tv.z:=0;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
-    normalize4d(tv);
-    {Result:=PzePoint3d(@tv)^;}Result:=tv.Slice.asPoint3d;
+    //normalize4d(tv);
+    //Result:=tv.Slice.asPoint3d;
+    Result:=tv.DeHomogenized.asPoint3d;
   end;
 end;
 
@@ -1360,8 +1361,9 @@ begin
     {PzePoint3d(@tv)^:=v;}tv.Slice:=v.asVector3d;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
-    normalize4d(tv);
-    {Result:=PzePoint3d(@tv)^;}Result:=tv.Slice.asPoint3d;
+    //normalize4d(tv);
+    //Result:=tv.Slice.asPoint3d;
+    Result:=tv.DeHomogenized.asPoint3d;
   end;
 end;
 
@@ -1380,8 +1382,9 @@ begin
     {PzePoint3d(@tv)^:=v;}tv.Slice:=v.asVector3d;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
-    normalize4d(tv);
-    {Result:=PzePoint3d(@tv)^;}Result:=tv.Slice.asPoint3d;
+    //normalize4d(tv);
+    //Result:=tv.Slice.asPoint3d;
+    Result:=tv.DeHomogenized.asPoint3d;
   end;
 end;
 
@@ -1397,7 +1400,8 @@ begin
     tv.z:=v.z;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
-    normalize4d(tv);
+    //normalize4d(tv);
+    tv.DeHomogenize;
     Result.x:=tv.x;
     Result.y:=tv.y;
     Result.z:=tv.z;
@@ -1413,7 +1417,8 @@ begin
   tv.z:=v.z;
   tv.w:=1;
   tv:=VectorTransform(tv,m);
-  normalize4f(tv);
+  //normalize4f(tv);
+  tv.DeHomogenize;
   Result.x:=tv.x;
   Result.y:=tv.y;
   Result.z:=tv.z;

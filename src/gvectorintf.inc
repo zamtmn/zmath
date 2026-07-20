@@ -12,6 +12,8 @@
     {$IfNDef IntParam}
     function Normalized:TSelf;inline;
     procedure Normalize;inline;
+    function DeHomogenized:TSlice;inline;
+    procedure DeHomogenize;inline;
     {$EndIf}
     function Add(const Vector2:TSelf):TSelf;inline;
     function Sub(const Vector2:TSelf):TSelf;inline;
