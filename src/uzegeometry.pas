@@ -222,7 +222,6 @@ function IsNotZero(const d:Double;const _eps:Double=eps):boolean;inline;
 
 //проверка вектора на близость к оси Z (координаты x и y меньше 1/64
 //используется для Arbitrary Axis Algorithm (DXF)
-//TODO: заменить в коде все проверки на функцию
 function IsNearToZ(const v:TzeVector3d):boolean;inline;
 function IsValidRange(const d1,d2:Double):boolean;inline;
 
@@ -519,25 +518,22 @@ begin
   else
     Result:=true;
 end;
+
 function IsZero(const d:Double;const _eps:Double=eps):boolean;inline;
 begin
   result:=abs(d)<_eps
 end;
+
 function IsNotZero(const d:Double;const _eps:Double=eps):boolean;inline;
 begin
   result:=abs(d)>=_eps
 end;
-
 
 function IsNearToZ(const v:TzeVector3d):boolean;
 const
   tol=1/64;
 begin
   result:=(abs(v.x)<tol)and(abs(v.y)<tol);
-  //if (abs(v.x)<tol)and(abs(v.y)<tol) then
-  //  result:=true
-  //else
-  //  result:=false;
 end;
 
 function IsValidRange(const d1,d2:Double):boolean;
