@@ -208,7 +208,6 @@ function ScaleBB(const bb:TBoundingBox;const k:Double):TBoundingBox;
 procedure MatrixInvert(var M: TzeTypedMatrix4d);inline;
 function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;inline;
 function scalardot(const v1,v2:TzeVector3d):Double;inline;
-function vertexeq(const v1,v2:TzePoint3d):Boolean;inline;
 function SQRdist_Point_to_Segment(const p:TzePoint3d;const s0,s1:TzePoint3d):Double;inline;
 function NearestPointOnSegment(const p:TzePoint3d;const s0,s1:TzePoint3d):TzePoint3d;inline;
 function IsPointEqual(const p1,p2:TzePoint3d;const _eps:Double=eps):boolean;inline;
@@ -740,15 +739,6 @@ begin
   end;
 end;
 
-function vertexeq(const v1,v2:TzePoint3d):Boolean;
-var
-  x,y,z:double;
-begin
-  x:=v2.x-v1.x;
-  y:=v2.y-v1.y;
-  z:=v2.z-v1.z;
-  Result:=x*x+y*y+z*z<bigeps;
-end;
 function distance2point_2(const p1,p2:TzePoint2i):Integer;
 var
   x,y:integer;
