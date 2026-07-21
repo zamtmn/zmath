@@ -91,6 +91,7 @@ function ToTzeVector4s(const m:TzeVector4d):TzeVector4s; inline;
 function ToDMatrix4f(const m:TzeTypedMatrix4d):TzeTypedMatrix4s; inline;
 function ToTzePoint2i(const _V:TzePoint3d):TzePoint2i; inline;
 function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;inline;
+
 function intercept2d(const x1, y1, x2, y2, x3, y3, x4, y4: Double): Boolean;inline;
 function intercept2d2(const x11, y11, x12, y12, x21, y21, x22, y22: Single): Boolean;inline;
 function intercept2dmy(const l1begin,l1end,l2begin,l2end:TzePoint2d):intercept2dprop;//inline;
@@ -126,7 +127,7 @@ function SqrOneVertexlength(const Vector1: TzeVector3d): Double;inline;
 //function vertexlen2df(const x1, y1, x2, y2: Single): Single;inline;
 //function NormalizeVertex(const Vector1: TzeVector3d): TzeVector3d;inline;
 //function NormalizeVertex2D(const Vector1: TzeVector2d): TzeVector2d;inline;
-function VertexMulOnSc(const Vector1:TzePoint3d;sc:Double): TzePoint3d;inline;
+//function VertexMulOnSc(const Vector1:TzePoint3d;sc:Double): TzePoint3d;inline;
 function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:Double): TzePoint2d;inline;
 
 //к первой вершине прибавить вторую по осям Vector1.х + Vector2.х
@@ -1649,14 +1650,14 @@ begin
   end;
 end;}
 
-function VertexMulOnSc(const Vector1:TzePoint3d;sc:double):TzePoint3d;
+{function VertexMulOnSc(const Vector1:TzePoint3d;sc:double):TzePoint3d;
 begin
   with TzePoint3d((@Result)^) do begin
     X:=Vector1.x*sc;
     Y:=Vector1.y*sc;
     Z:=Vector1.z*sc;
   end;
-end;
+end;}
 
 function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:double):TzePoint2d;
 begin
@@ -2737,7 +2738,7 @@ begin
   if c2<=c1 then
     exit(s1);
 
-  Result:=s0+VertexMulOnSc(v.asPoint3d,(c1/c2));
+  Result:=s0+{VertexMulOnSc}(v*(c1/c2));
 end;
 
 function distance2ray(const q,p1,p2:TzePoint3d):DistAndt;
