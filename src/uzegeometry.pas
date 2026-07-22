@@ -169,16 +169,16 @@ function CreateRotatedXVector(const angle: Double):TzeVector3d;inline;
 function CreateRotatedYVector(const angle: Double):TzeVector3d;inline;
 function CreateAffineRotationMatrix(const anAxis: TzeVector3d; angle: double):TzeTypedMatrix4d;overload;inline;
 function CreateAffineRotationMatrix(const AAxis,ARefV,AV:TzeVector3d):TzeTypedMatrix4d;overload;inline;
-function distance2piece(const q:TzePoint2i;const p1,p2:TzePoint2d): double;overload;inline;
+//function distance2piece(const q:TzePoint2i;const p1,p2:TzePoint2d): double;overload;inline;
 function distance2piece(const q,p1,p2:TzePoint3d): {DistAndPoint}double;overload;inline;
 
-function distance2piece_2(const q:TzePoint2i; const p1,p2:TzePoint2d): double;overload;inline;
-function distance2piece_2(const q:TzePoint2i; const p1,p2:TzePoint2i): double;overload;inline;
+//function distance2piece_2(const q:TzePoint2i; const p1,p2:TzePoint2d): double;overload;inline;
+//function distance2piece_2(const q:TzePoint2i; const p1,p2:TzePoint2i): double;overload;inline;
 function distance2piece_2Dmy(const q:TzePoint2d; const p1,p2:TzePoint2d): double;inline;
 
-function distance2piece_2_xy(const q:TzePoint2i;const p1,p2:TzePoint2d):TzePoint2i;inline;
+//function distance2piece_2_xy(const q:TzePoint2i;const p1,p2:TzePoint2d):TzePoint2i;inline;
 
-function distance2point_2(const p1,p2:TzePoint2i):Integer;inline;
+//function distance2point_2(const p1,p2:TzePoint2i):Integer;inline;
 function distance2ray(const q:TzePoint3d;const p1,p2:TzePoint3d):DistAndt;
 function CreateTranslationMatrix(const _V:TzePoint3d):TzeTypedMatrix4d;inline;overload;
 function CreateTranslationMatrix(const tx,ty,tz:Double):TzeTypedMatrix4d;inline;overload;
@@ -740,14 +740,14 @@ begin
   end;
 end;
 
-function distance2point_2(const p1,p2:TzePoint2i):Integer;
+{function distance2point_2(const p1,p2:TzePoint2i):Integer;
 var
   x,y:integer;
 begin
   x:=p2.x-p1.x;
   y:=p2.y-p1.y;
   Result:=x*x+y*y;
-end;
+end;}
 function MatrixDetInternal(const a1,a2,a3,b1,b2,b3,c1,c2,c3:double):double;inline;
 begin
   Result:=+a1*(b2*c3-b3*c2)
@@ -921,7 +921,7 @@ begin
   Result:=sqrt(t);
 end;
 
-function distance2piece(const q:TzePoint2i;const p1,p2:TzePoint2d): double;
+{function distance2piece(const q:TzePoint2i;const p1,p2:TzePoint2d): double;
 var
   t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x:double;
 begin
@@ -939,9 +939,9 @@ begin
   end else
     t:=sqr((qx_p1x)*(p2y_p1y)-(qy_p1y)*(p2x_p1x))/(sqr(p2x_p1x)+sqr(p2y_p1y));
   Result:=sqrt(t);
-end;
+end;}
 
-function distance2piece_2(const q:TzePoint2i; const p1,p2:TzePoint2d): double;
+{function distance2piece_2(const q:TzePoint2i; const p1,p2:TzePoint2d): double;
 var
   t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x:double;
 begin
@@ -959,9 +959,9 @@ begin
   end else
     t:=sqr((qx_p1x)*(p2y_p1y)-(qy_p1y)*(p2x_p1x))/(sqr(p2x_p1x)+sqr(p2y_p1y));
   Result:=t;
-end;
+end;}
 
-function distance2piece_2(const q,p1,p2:TzePoint2i):double;
+{function distance2piece_2(const q,p1,p2:TzePoint2i):double;
 var
   t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x:double;
 begin
@@ -979,7 +979,7 @@ begin
   end else
     t:=sqr((qx_p1x)*(p2y_p1y)-(qy_p1y)*(p2x_p1x))/(sqr(p2x_p1x)+sqr(p2y_p1y));
   Result:=t;
-end;
+end;}
 
 function distance2piece_2dmy(const q,p1,p2:TzePoint2d):double;
 var
@@ -1001,7 +1001,7 @@ begin
   Result:=t;
 end;
 
-function distance2piece_2_xy(const q:TzePoint2i;const p1,p2:TzePoint2d):TzePoint2i;
+(*function distance2piece_2_xy(const q:TzePoint2i;const p1,p2:TzePoint2d):TzePoint2i;
 var
   t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x,s1,s2:double;
 begin
@@ -1031,7 +1031,7 @@ begin
    {t:= sqr((qx_p1x)*(p2y_p1y)-(qy_p1y)*(p2x_p1x))/(sqr(p2x_p1x)+sqr(p2y_p1y));
     result:= t;}
   end;
-end;
+end;*)
 
 function CreateTranslationMatrix(const _V:TzePoint3d):TzeTypedMatrix4d;
 begin
