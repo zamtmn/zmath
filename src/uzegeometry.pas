@@ -48,7 +48,7 @@ const
   DefaultVP:TzeVector4i=(x:2;y:0;z:100;w:100);
   IdentityQuaternion:TzeQuaternion=(ImagPart:(x:0;y:0;z:0); RealPart: 1);
   xAxisIndex=0;yAxisIndex=1;zAxisIndex=2;wAxisIndex=3;
-  ScaleOne:TzePoint3d=(x:1;y:1;z:1);
+  ScaleOne:TzeVector3d=(x:1;y:1;z:1);
   OneVertex:TzePoint3d=(x:1;y:1;z:1);
   xy_Z_Vertex:TzePoint3d=(x:0;y:0;z:1);
   xy_MinusZ_Vertex:TzePoint3d=(x:0;y:0;z:-1);
@@ -267,8 +267,8 @@ function GetCSDirFrom0x0y2D(const ox,oy:TzeVector3d):TCSDir;
 function CalcDisplaySubFrustum(const x,y,w,h:Double;const mm,pm:TzeTypedMatrix4d;const vp:TzeVector4i):TzeFrustum;
 function myPickMatrix(const x,y,deltax,deltay:Double;const vp:TzeVector4i): TzeTypedMatrix4d;
 
-function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d; const PointInWCS:TzePoint3d; out scale:TzePoint3d):GDBObj2dprop;
-function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzePoint3d):GDBObj2dprop;
+function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d;const PointInWCS:TzePoint3d;out scale:TzeVector3d):GDBObj2dprop;
+function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzeVector3d):GDBObj2dprop;
 
 function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer):integer;overload;
 function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer;var ActualDivCount:Integer):integer;overload;
@@ -352,7 +352,7 @@ begin
   end;
 end;
 
-function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d; const PointInWCS:TzePoint3d; out scale:TzePoint3d):GDBObj2dprop;
+function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d; const PointInWCS:TzePoint3d; out scale:TzeVector3d):GDBObj2dprop;
 var
   //tznam,tr:Double;
   BX,BY,BZ:TzeVector3d;
@@ -409,7 +409,7 @@ begin
   end;
 end;
 
-function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzePoint3d):GDBObj2dprop;
+function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzeVector3d):GDBObj2dprop;
 var
   BX,BY,BZ:TzeVector3d;
   pt:TzePoint3d;
