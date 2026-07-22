@@ -372,6 +372,10 @@ type
     r,startangle,endangle:Double;
     p:TzePoint2d;
   end;
+
+  TzeVector4dHlpr=type helper for TzeVector4d
+    function asVector4s:TzeVector4s;inline;
+  end;
   TzeVector3dHlpr=type helper for TzeVector3d
     function asPoint3d:TzePoint3d;inline;
   end;
@@ -380,6 +384,7 @@ type
   end;
   TzePoint3dHlpr=type helper for TzePoint3d
     function asVector3d:TzeVector3d;inline;
+    function asPoint3s:TzePoint3s;inline;
   end;
   TzeVector2dHlpr=type helper for TzeVector2d
     function asPoint2d:TzePoint2d;inline;
@@ -468,6 +473,27 @@ implementation
 {$UnDef IntParam}
 {$UnDef PointTypeName}
 
+function TzeVector4dHlpr.asVector4s:TzeVector4s;
+begin
+  with TzeVector4s((@result)^) do// Этот хак убирает по одной лишней инструкции с каждого присвоения
+  begin                          // возможно в будущем, это можно будет убрать, когда компилятор
+                                 // сможет сам это оптимизировать
+    v[0]:=self.v[0];
+    v[1]:=self.v[1];
+    v[2]:=self.v[2];
+    v[3]:=self.v[3];
+  end;
+
+  //result.v[0]:=v[0];
+  //result.v[1]:=v[1];
+  //result.v[2]:=v[2];
+  //result.v[3]:=v[3];
+
+  //Result.x:=x;
+  //Result.y:=y;
+  //Result.z:=z;
+  //Result.w:=w;
+end;
 
 function TzeVector3dHlpr.asPoint3d:TzePoint3d;
 begin
@@ -482,6 +508,13 @@ end;
 function TzePoint3dHlpr.asVector3d:TzeVector3d;
 begin
   result:=TzeVector3d(self);
+end;
+
+function TzePoint3dHlpr.asPoint3s:TzePoint3s;
+begin
+  Result.x:=x;
+  Result.y:=y;
+  Result.z:=z;
 end;
 
 function TzeVector2dHlpr.asPoint2d:TzePoint2d;

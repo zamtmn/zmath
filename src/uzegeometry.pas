@@ -87,10 +87,10 @@ type
   end;
   TCSDir=(TCSDLeft,TCSDRight);
 
-function ToTzeVector4s(const m:TzeVector4d):TzeVector4s; inline;
+//function ToTzeVector4s(const m:TzeVector4d):TzeVector4s; inline;
 function ToDMatrix4f(const m:TzeTypedMatrix4d):TzeTypedMatrix4s; inline;
 function ToTzePoint2i(const _V:TzePoint3d):TzePoint2i; inline;
-function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;inline;
+//function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;inline;
 
 function intercept2d(const x1, y1, x2, y2, x3, y3, x4, y4: Double): Boolean;inline;
 function intercept2d2(const x11, y11, x12, y12, x21, y21, x22, y22: Single): Boolean;inline;
@@ -128,7 +128,7 @@ function SqrOneVertexlength(const Vector1: TzeVector3d): Double;inline;
 //function NormalizeVertex(const Vector1: TzeVector3d): TzeVector3d;inline;
 //function NormalizeVertex2D(const Vector1: TzeVector2d): TzeVector2d;inline;
 //function VertexMulOnSc(const Vector1:TzePoint3d;sc:Double): TzePoint3d;inline;
-function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:Double): TzePoint2d;inline;
+//function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:Double): TzePoint2d;inline;
 
 //к первой вершине прибавить вторую по осям Vector1.х + Vector2.х
 function VertexAdd(const Vector1, Vector2: TzePoint3d): TzePoint3d;inline;overload;
@@ -451,7 +451,7 @@ begin
     Z := Vector1.z - Vector2.z;
   end;}
 end;
-
+(*
 function ToTzeVector4s(const m:TzeVector4d):TzeVector4s; inline;
 begin
   with TzeVector4s((@result)^) do// Этот хак убирает по одной лишней инструкции с каждого присвоения
@@ -466,13 +466,13 @@ begin
   //result.v[1]:=m.v[1];
   //result.v[2]:=m.v[2];
   //result.v[3]:=m.v[3];
-end;
+end;*)
 function ToDMatrix4f(const m:TzeTypedMatrix4d):TzeTypedMatrix4s;
 begin
-  result.mtr.v[0]:=ToTzeVector4s(m.mtr.v[0]);
-  result.mtr.v[1]:=ToTzeVector4s(m.mtr.v[1]);
-  result.mtr.v[2]:=ToTzeVector4s(m.mtr.v[2]);
-  result.mtr.v[3]:=ToTzeVector4s(m.mtr.v[3]);
+  result.mtr.v[0]:={ToTzeVector4s}(m.mtr.v[0].asVector4s);
+  result.mtr.v[1]:={ToTzeVector4s}(m.mtr.v[1].asVector4s);
+  result.mtr.v[2]:={ToTzeVector4s}(m.mtr.v[2].asVector4s);
+  result.mtr.v[3]:={ToTzeVector4s}(m.mtr.v[3].asVector4s);
   result.t:=m.t;
 end;
 
@@ -482,12 +482,12 @@ begin
   result.y:=round(_V.y);
 end;
 
-function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;
+{function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;
 begin
   Result.x:=Vector1.x;
   Result.y:=Vector1.y;
   Result.z:=Vector1.z;
-end;
+end;}
 
 function isNotReadableAngle(Angle:Double):Boolean;
 begin
@@ -1659,13 +1659,13 @@ begin
   end;
 end;}
 
-function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:double):TzePoint2d;
+{function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:double):TzePoint2d;
 begin
   with TzePoint2d((@Result)^) do begin
     X:=Vector1.x*sc;
     Y:=Vector1.y*sc;
   end;
-end;
+end;}
 
 function VertexAdd(const Vector1,Vector2:TzePoint3d):TzePoint3d;
 begin
