@@ -181,9 +181,9 @@ function distance2piece_2Dmy(const q:TzePoint2d; const p1,p2:TzePoint2d): double
 
 //function distance2point_2(const p1,p2:TzePoint2i):Integer;inline;
 function distance2ray(const q:TzePoint3d;const p1,p2:TzePoint3d):DistAndt;
-function CreateTranslationMatrix(const _V:TzePoint3d):TzeTypedMatrix4d;inline;overload;
+function CreateTranslationMatrix(const _V:TzeVector3d):TzeTypedMatrix4d;inline;overload;
 function CreateTranslationMatrix(const tx,ty,tz:Double):TzeTypedMatrix4d;inline;overload;
-function CreateScaleMatrix(const V:TzePoint3d): TzeTypedMatrix4d;inline;overload;
+function CreateScaleMatrix(const V:TzeVector3d): TzeTypedMatrix4d;inline;overload;
 function CreateScaleMatrix(const s:Double): TzeTypedMatrix4d;inline;overload;
 function CreateScaleMatrix(const sx,sy,sz:Double): TzeTypedMatrix4d;inline;overload;
 function CreateReflectionMatrix(const plane:TzeVector4d): TzeTypedMatrix4d;
@@ -1034,7 +1034,7 @@ begin
   end;
 end;*)
 
-function CreateTranslationMatrix(const _V:TzePoint3d):TzeTypedMatrix4d;
+function CreateTranslationMatrix(const _V:TzeVector3d):TzeTypedMatrix4d;
 begin
   Result.CreateRec(onemtr,CMTTranslate);
   with TzeVector4d((@Result.mtr.v[3])^) do begin
@@ -1086,7 +1086,7 @@ begin
   Result.t:=CMTTransform;
 end;
 
-function CreateScaleMatrix(const V:TzePoint3d): TzeTypedMatrix4d;
+function CreateScaleMatrix(const V:TzeVector3d): TzeTypedMatrix4d;
 begin
   Result.mtr.v:=onemtr.v;
   Result.mtr.v[0].v[0]:=V.x;
@@ -2243,8 +2243,8 @@ function myPickMatrix(const x,y,deltax,deltay:double;const vp:TzeVector4i):TzeTy
 var
   tm,sm:TzeTypedMatrix4d;
 begin
-  tm:=CreateTranslationMatrix(createvertex((vp.v[2]-2*(x-vp.v[0]))/deltax,(vp.v[3]-2*(y-vp.v[1]))/deltay,0));
-  sm:=CreateScaleMatrix(createvertex(vp.v[2]/deltax,vp.v[3]/deltay,1.0));
+  tm:=CreateTranslationMatrix(CreateVector((vp.v[2]-2*(x-vp.v[0]))/deltax,(vp.v[3]-2*(y-vp.v[1]))/deltay,0));
+  sm:=CreateScaleMatrix(CreateVector(vp.v[2]/deltax,vp.v[3]/deltay,1.0));
   Result:=MatrixMultiply(sm,tm);
   Result.t:=CMTTransform;
 end;
@@ -2634,7 +2634,7 @@ var
 begin
   m:=CreateMatrixFromBasis(-ex,ey,-ez);
   MatrixTranspose(m);
-  m2:=CreateTranslationMatrix(point);
+  m2:=CreateTranslationMatrix(point.asVector);
   m:=MatrixMultiply(m2,m);
   Result:=MatrixMultiply(m,matrix^);
 end;
