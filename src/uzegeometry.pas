@@ -169,6 +169,7 @@ function CreateRotatedXVector(const angle: Double):TzeVector3d;inline;
 function CreateRotatedYVector(const angle: Double):TzeVector3d;inline;
 function CreateAffineRotationMatrix(const anAxis: TzeVector3d; angle: double):TzeTypedMatrix4d;overload;inline;
 function CreateAffineRotationMatrix(const AAxis,ARefV,AV:TzeVector3d):TzeTypedMatrix4d;overload;inline;
+
 //function distance2piece(const q:TzePoint2i;const p1,p2:TzePoint2d): double;overload;inline;
 function distance2piece(const q,p1,p2:TzePoint3d): {DistAndPoint}double;overload;inline;
 
@@ -1332,7 +1333,7 @@ begin
   if M.t=CMTIdentity then
     Result:=CreateVertex(v.x,v.y,0)
   else begin
-    {PzePoint2d(@tv)^:=v;}tv.Slice.Slice:=v.asVector2d;
+    tv.Slice.Slice:=v.asVector;
     tv.z:=0;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
@@ -1349,7 +1350,7 @@ begin
   if M.t=CMTIdentity then
     Result:=V
   else begin
-    {PzePoint3d(@tv)^:=v;}tv.Slice:=v.asVector3d;
+    tv.Slice:=v.asVector;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
     //normalize4d(tv);
@@ -1360,7 +1361,7 @@ end;
 
 function VectorTransform3D(const V:TzeVector3d;const M:TzeTypedMatrix4d):TzeVector3d;overload;
 begin
-  result:=VectorTransform3D(V.asPoint3d,M).asVector3d;
+  result:=VectorTransform3D(V.asPoint3d,M).asVector;
 end;
 
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4s):TzePoint3d;
@@ -1370,7 +1371,7 @@ begin
   if M.t=CMTIdentity then
     Result:=V
   else begin
-    {PzePoint3d(@tv)^:=v;}tv.Slice:=v.asVector3d;
+    tv.Slice:=v.asVector;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
     //normalize4d(tv);
@@ -2718,7 +2719,7 @@ begin
   end;
 
   b:=c1/c2;
-  Pb:={vertexadd}(s0.asVector3d+{,VertexMulOnSc}(v*b));
+  Pb:=s0.asVector+(v*b);
   Result:=p.SqrLengthTo(pb.asPoint3d);
 end;
 

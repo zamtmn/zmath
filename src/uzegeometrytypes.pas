@@ -166,8 +166,8 @@ type
       0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
       1:(v:TCoordArray);
       2:(r:TCoordRec);
-      3:(Slice:GSlice;
-        CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
+      3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
+      4:(asVector:GVectorTypeName);
   end;
   GPoint2<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>=record
     const
@@ -186,8 +186,8 @@ type
       0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
       1:(v:TCoordArray);
       2:(r:TCoordRec);
-      3:(Slice:GSlice;
-        CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
+      3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
+      4:(asVector:GVectorTypeName);
   end;
   GPoint2i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>=record
     const
@@ -208,8 +208,8 @@ type
       0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
       1:(v:TCoordArray);
       2:(r:TCoordRec);
-      3:(Slice:GSlice;
-        CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
+      3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
+      4:(asVector:GVectorTypeName);
   end;
 
   PTZeDimLess=^TZeDimLess;
@@ -383,14 +383,14 @@ type
     function asPoint3s:TzePoint3s;inline;
   end;
   TzePoint3dHlpr=type helper for TzePoint3d
-    function asVector3d:TzeVector3d;inline;
+    //function asVector3d:TzeVector3d;inline;
     function asPoint3s:TzePoint3s;inline;
   end;
   TzeVector2dHlpr=type helper for TzeVector2d
     function asPoint2d:TzePoint2d;inline;
   end;
   TzePoint2DHlpr=type helper for TzePoint2d
-    function asVector2d:TzeVector2d;inline;
+    //function asVector2d:TzeVector2d;inline;
     function asPoint3d:TzePoint3d;inline;
     function asPoint2i:TzePoint2i;inline;
   end;
@@ -506,10 +506,10 @@ begin
   result:=TzePoint3s(self);
 end;
 
-function TzePoint3dHlpr.asVector3d:TzeVector3d;
+{function TzePoint3dHlpr.asVector3d:TzeVector3d;
 begin
   result:=TzeVector3d(self);
-end;
+end;}
 
 function TzePoint3dHlpr.asPoint3s:TzePoint3s;
 begin
@@ -523,10 +523,11 @@ begin
   result:=TzePoint2d(self);
 end;
 
-function TzePoint2DHlpr.asVector2d:TzeVector2d;
+{function TzePoint2DHlpr.asVector2d:TzeVector2d;
 begin
   result:=TzeVector2d(self);
-end;
+end;}
+
 function TzePoint2DHlpr.asPoint3d:TzePoint3d;
 begin
   result.x:=x;
