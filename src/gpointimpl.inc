@@ -81,14 +81,14 @@ begin
     result.v[i]:=v[i]-Vector2.v[i];
   end;
 end;
-class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.+(const l,r:TSelf):TSelf;
+(*class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.+(const l,r:TSelf):TSelf;
 var
   i:integer;
 begin
   for i:=0 to ArrH do begin
     result.v[i]:=l.v[i]+r.v[i];
   end;
-end;
+end;*)
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.+(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
  var
   i:integer;

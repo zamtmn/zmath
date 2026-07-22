@@ -334,7 +334,7 @@ begin
   d:=p2-p1;
   l:=d.Length;
   h:=l*bulge/2;
-  pc:=(p1+p2)/2;
+  pc:=(p1+p2.asVector)/2;
   n:=d.Turned90L;
   {n.x:=-d.y;
   n.y:=d.x;}
@@ -2010,7 +2010,7 @@ var
   p:TzePoint3d;
   v:TzeVector3d;
 begin
-  p:=(bb.RTF+bb.LBN)/2;
+  p:=(bb.RTF+bb.LBN.asVector)/2;
   v:=(bb.RTF-p)*k;
   Result.LBN:=p-v;
   Result.RTF:=p+v;
@@ -2030,8 +2030,8 @@ begin
   b2.y:=(bb2.RTF.y-bb2.LBN.y)/2;
   b2.z:=(bb2.RTF.z-bb2.LBN.z)/2;
   //центры боксов
-  b1c:=bb1.LBN+b1;
-  b2c:=bb2.LBN+b2;
+  b1c:=bb1.LBN+b1.asVector;
+  b2c:=bb2.LBN+b2.asVector;
   //расстояние между центрами
   dist:=b1c-b2c;
   dist.x:=abs(dist.x);

@@ -18,7 +18,7 @@
     function Add(const Vector2:TSelf):TSelf;inline;
     function Sub(const Vector2:TSelf):TSelf;inline;
 
-    class operator +(const l,r:TSelf):TSelf;inline;
+    //class operator +(const l,r:TSelf):TSelf;inline;
     class operator +(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
     class operator -(const l,r:TSelf):GVectorTypeName;inline;overload;
     class operator -(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
