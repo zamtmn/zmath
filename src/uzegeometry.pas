@@ -92,8 +92,8 @@ function ToDMatrix4f(const m:TzeTypedMatrix4d):TzeTypedMatrix4s; inline;
 //function ToTzePoint2i(const _V:TzePoint3d):TzePoint2i; inline;
 //function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;inline;
 
-function intercept2d(const x1, y1, x2, y2, x3, y3, x4, y4: Double): Boolean;inline;
-function intercept2d2(const x11, y11, x12, y12, x21, y21, x22, y22: Single): Boolean;inline;
+//function intercept2d(const x1, y1, x2, y2, x3, y3, x4, y4: Double): Boolean;inline;
+//function intercept2d2(const x11, y11, x12, y12, x21, y21, x22, y22: Single): Boolean;inline;
 function intercept2dmy(const l1begin,l1end,l2begin,l2end:TzePoint2d):intercept2dprop;//inline;
 function intercept3dmy(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;inline;
 function intercept3dmy2(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;//inline;
@@ -1700,7 +1700,7 @@ begin
   Result.Z := -Vector1.z;
 end;}
 
-function intercept2d(const x1,y1,x2,y2,x3,y3,x4,y4:double):boolean;
+{function intercept2d(const x1,y1,x2,y2,x3,y3,x4,y4:double):boolean;
 var
   z1,z2:double;
 begin
@@ -1710,7 +1710,7 @@ begin
     Result:=false
   else
     Result:=true;
-end;
+end;}
 
 function pointinquad2d(const x1,y1,x2,y2,xp,yp:single):boolean;
 begin
@@ -1837,7 +1837,7 @@ begin
   end;
 end;
 
-function intercept2d2(const x11,y11,x12,y12,x21,y21,x22,y22:single):boolean;
+{function intercept2d2(const x11,y11,x12,y12,x21,y21,x22,y22:single):boolean;
 var
   t1,t2,d,d1,d2:double;
 begin
@@ -1854,7 +1854,7 @@ begin
       //y := y11 + (y12 - y11) * t2;
     end;
   end;
-end;
+end;}
 
 function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;
 begin
