@@ -392,6 +392,7 @@ type
   TzePoint2DHlpr=type helper for TzePoint2d
     function asVector2d:TzeVector2d;inline;
     function asPoint3d:TzePoint3d;inline;
+    function asPoint2i:TzePoint2i;inline;
   end;
 
   InterceptProp<T>=record
@@ -531,6 +532,12 @@ begin
   result.x:=x;
   result.y:=y;
   result.z:=0;
+end;
+
+function TzePoint2DHlpr.asPoint2i:TzePoint2i;
+begin
+  result.x:=round(x);
+  result.y:=round(y);
 end;
 
 constructor GMatrix4<TMtr>.CreateRec(AMtr:TMtr;At:TzeMatrixTypes);

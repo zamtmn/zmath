@@ -89,7 +89,7 @@ type
 
 //function ToTzeVector4s(const m:TzeVector4d):TzeVector4s; inline;
 function ToDMatrix4f(const m:TzeTypedMatrix4d):TzeTypedMatrix4s; inline;
-function ToTzePoint2i(const _V:TzePoint3d):TzePoint2i; inline;
+//function ToTzePoint2i(const _V:TzePoint3d):TzePoint2i; inline;
 //function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;inline;
 
 function intercept2d(const x1, y1, x2, y2, x3, y3, x4, y4: Double): Boolean;inline;
@@ -476,11 +476,11 @@ begin
   result.t:=m.t;
 end;
 
-function ToTzePoint2i(const _V:TzePoint3d):TzePoint2i;
+{function ToTzePoint2i(const _V:TzePoint3d):TzePoint2i;
 begin
   result.x:=round(_V.x);
   result.y:=round(_V.y);
-end;
+end;}
 
 {function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;
 begin
