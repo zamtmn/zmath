@@ -9,6 +9,8 @@
 
     function SqrLength:Double;inline;
     function Length:Double;inline;
+    function SqrLengthTo(const Vector2:TSelf):Double;inline;
+    function LengthTo(const Vector2:TSelf):Double;inline;
     {$IfNDef IntParam}
     function Normalized:TSelf;inline;
     procedure Normalize;inline;

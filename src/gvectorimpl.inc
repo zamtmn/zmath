@@ -13,6 +13,19 @@ begin
   //result:=norm(v);
   result:=Sqrt(SqrLength);
 end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.SqrLengthTo(const Vector2:TSelf):Double;inline;
+var
+  i:integer;
+begin
+  result:=sqr(Vector2.v[0]-v[0]);
+  for i:=1 to ArrH do begin
+    result:=result+sqr(Vector2.v[0]-v[i]);
+  end;
+end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.LengthTo(const Vector2:TSelf):Double;inline;
+begin
+  result:=Sqrt(SqrLengthTo(Vector2));
+end;
 {$IfNDef IntParam}
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Normalized:TSelf;
 var

@@ -103,10 +103,10 @@ function intercept3d(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dpr
 function pointinquad2d(const x1, y1, x2, y2, xp, yp: Single): Boolean;inline;
 
 //**Функция определения длины по двум точкам с учетом 3-х мерного пространства
-function Vertexlength(const Vector1, Vector2: TzePoint3d): Double;inline;
-function Vertexlength2d(const Vector1, Vector2: TzePoint2d): Double;inline;
-function SqrVertexlength(const Vector1, Vector2: TzePoint3d): Double;inline;overload;
-function SqrVertexlength(const Vector1, Vector2: TzePoint2d): Double;inline; overload;
+//function Vertexlength(const pt2, pt1: TzePoint3d): Double;inline;
+//function Vertexlength2d(const pt2, pt1: TzePoint2d): Double;inline;
+//function SqrVertexlength(const pt2, pt1: TzePoint3d): Double;inline;overload;
+//function SqrVertexlength(const pt2, pt1: TzePoint2d): Double;inline; overload;
 
 //**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
 function Vertexmorph(const Vector1, Vector2: TzePoint3d; a: Double): TzePoint3d;inline;overload;
@@ -1461,29 +1461,29 @@ begin
   end;
 end;
 
-function Vertexlength(const Vector1,Vector2:TzePoint3d):double;
+{function Vertexlength(const pt2,pt1:TzePoint3d):double;
 begin
-  with TzePoint3d((@vector1)^) do
-    Result:=sqrt(sqr(x-vector2.x)+sqr(y-vector2.y)+sqr(z-vector2.z));
-end;
+  with TzePoint3d((@pt2)^) do
+    Result:=sqrt(sqr(x-pt1.x)+sqr(y-pt1.y)+sqr(z-pt1.z));
+end;}
 
-function Vertexlength2d(const Vector1,Vector2:TzePoint2d):double;
+{function Vertexlength2d(const pt2,pt1:TzePoint2d):double;
 begin
-  with TzePoint2d((@vector1)^) do
-    Result:=sqrt(sqr(x-vector2.x)+sqr(y-vector2.y));
-end;
+  with TzePoint2d((@pt2)^) do
+    Result:=sqrt(sqr(x-pt1.x)+sqr(y-pt1.y));
+end;}
 
-function SqrVertexlength(const Vector1,Vector2:TzePoint3d):double;
+{function SqrVertexlength(const pt2,pt1:TzePoint3d):double;
 begin
-  with TzePoint3d((@vector1)^) do
-    Result:=(sqr(x-vector2.x)+sqr(y-vector2.y)+sqr(z-vector2.z));
-end;
+  with TzePoint3d((@pt2)^) do
+    Result:=(sqr(x-pt1.x)+sqr(y-pt1.y)+sqr(z-pt1.z));
+end;}
 
-function SqrVertexlength(const Vector1,Vector2:TzePoint2d):double;
+{function SqrVertexlength(const pt2,pt1:TzePoint2d):double;
 begin
-  with TzePoint2d((@vector1)^) do
-    Result:=(sqr(x-vector2.x)+sqr(y-vector2.y));
-end;
+  with TzePoint2d((@pt2)^) do
+    Result:=(sqr(x-pt1.x)+sqr(y-pt1.y));
+end;}
 
 function oneVertexlength(const Vector1:TzeVector3d):double;
 begin
@@ -1583,7 +1583,7 @@ function Vertexmorphabs(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
 var
   l:double;
 begin
-  l:=Vertexlength(Vector1,Vector2);
+  l:={Vertexlength}Vector1.LengthTo(Vector2);
   if a>0 then
     a:=1+a/l
   else
@@ -1599,7 +1599,7 @@ function Vertexmorphabs2(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
 var
   l:double;
 begin
-  l:=Vertexlength(Vector1,Vector2);
+  l:={Vertexlength}Vector1.LengthTo(Vector2);
   if a>0 then
     a:=a/l
   else
@@ -2273,7 +2273,7 @@ end;
 
 function IsPointEqual(const p1,p2:TzePoint3d;const _eps:double):boolean;
 begin
-  if SqrVertexlength(p1,p2)>_eps then
+  if p1.SqrLengthTo(p2)>_eps then
     Result:=false
   else
     Result:=true;
@@ -2281,7 +2281,7 @@ end;
 
 function IsPoint2DEqual(const p1,p2:TzePoint2d):boolean;
 begin
-  if SqrVertexlength(p1,p2)>sqreps then
+  if p1.SqrLengthTo(p2)>sqreps then
     Result:=false
   else
     Result:=true;
@@ -2707,19 +2707,19 @@ begin
 
   c1:=scalardot(w,v);
   if c1<=0 then begin
-    Result:=SqrVertexlength(p,s0);
+    Result:=p.SqrLengthTo(s0);
     exit;
   end;
 
   c2:=scalardot(v,v);
   if c2<=c1 then begin
-    Result:=SqrVertexlength(p,s1);
+    Result:=p.SqrLengthTo(s1);
     exit;
   end;
 
   b:=c1/c2;
   Pb:={vertexadd}(s0.asVector3d+{,VertexMulOnSc}(v*b));
-  Result:=SqrVertexlength(p,pb.asPoint3d);
+  Result:=p.SqrLengthTo(pb.asPoint3d);
 end;
 
 function NearestPointOnSegment(const p,s0,s1:TzePoint3d):TzePoint3d;
@@ -2752,10 +2752,10 @@ begin
   c2:=scalardot(v,v);
   if abs(c2)>eps then begin
     Result.t:=c1/c2;
-    Result.d:=Vertexlength(q,VertexDmorph(p1,v.asPoint3d,Result.t));
+    Result.d:={Vertexlength}q.LengthTo(VertexDmorph(p1,v.asPoint3d,Result.t));
   end else begin
     Result.t:=0;
-    Result.d:=Vertexlength(q,p1);
+    Result.d:={Vertexlength}q.LengthTo(p1);
   end;
 end;
 
