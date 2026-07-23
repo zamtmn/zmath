@@ -26,55 +26,61 @@ uses
   uzegeometrytypes,uzbLogIntf;
 
 const
-  EmptyMtr:TzeMatrix4d=(v:((v:(0,0,0,0)),
-                           (v:(0,0,0,0)),
-                           (v:(0,0,0,0)),
-                           (v:(0,0,0,0))));
-  OneMtr:TzeMatrix4d=(v:((v:(1,0,0,0)),
-                         (v:(0,1,0,0)),
-                         (v:(0,0,1,0)),
-                         (v:(0,0,0,1))));
-  EmptyMatrix:TzeTypedMatrix4d=(mtr:(v:((v:(0,0,0,0)),
-                                        (v:(0,0,0,0)),
-                                        (v:(0,0,0,0)),
-                                       (v:(0,0,0,0))));
-                                t:[]);
-  OneMatrix:TzeTypedMatrix4d=(mtr:(v:((v:(1,0,0,0)),
-                                      (v:(0,1,0,0)),
-                                      (v:(0,0,1,0)),
-                                      (v:(0,0,0,1))));
-                              t:CMTIdentity);
-  RightAngle=pi/2;
-  DefaultVP:TzeVector4i=(x:2;y:0;z:100;w:100);
-  IdentityQuaternion:TzeQuaternion=(ImagPart:(x:0;y:0;z:0); RealPart: 1);
-  xAxisIndex=0;yAxisIndex=1;zAxisIndex=2;wAxisIndex=3;
-  ScaleOne:TzeVector3d=(x:1;y:1;z:1);
-  OneVertex:TzePoint3d=(x:1;y:1;z:1);
-  xy_Z_Vertex:TzePoint3d=(x:0;y:0;z:1);
-  xy_MinusZ_Vertex:TzePoint3d=(x:0;y:0;z:-1);
-  _XY_zVertex:TzePoint3d=(x:1;y:1;z:0);
-  _MinusXY_zVertex:TzePoint3d=(x:-1;y:1;z:0);
-  x_Y_zVertex:TzePoint3d=(x:0;y:1;z:0);
-  _X_yzVertex:TzePoint3d=(x:1;y:0;z:0);
-  MinusOneVertex:TzePoint3d=(x:-1;y:-1;z:-1);
-  MinusInfinityVertex:TzePoint3d=(x:NegInfinity;y:NegInfinity;z:NegInfinity);
-  InfinityVertex:TzePoint3d=(x:Infinity;y:Infinity;z:Infinity);
-  NulVertex4D:TzeVector4d=(x:0;y:0;z:0;w:1);
-  NulVector4D:TzeVector4d=(v:(0,0,0,0));
-  NulVector4D2:TzeVector4d=(v:(0,0,0,1));
-  NulVertex:TzeVector3d=(x:0;y:0;z:0);
-  NulPoint:TzePoint3d=(x:0;y:0;z:0);
-  NulVertex3S:TzeVector3s=(x:0;y:0;z:0);
-  NulPoint3S:TzePoint3s=(x:0;y:0;z:0);
-  XWCS:TzeVector3d=(x:1;y:0;z:0);
-  YWCS:TzeVector3d=(x:0;y:1;z:0);
-  ZWCS:TzeVector3d=(x:0;y:0;z:1);
-  XWCS4D:TzeVector4d=(v:(1,0,0,1));
-  YWCS4D:TzeVector4d=(v:(0,1,0,1));
-  ZWCS4D:TzeVector4d=(v:(0,0,1,1));
-  NulVertex2D:TzePoint2d=(x:0;y:0);
-  XWCS2D:TzePoint2d=(x:1;y:0);
-  YWCS2D:TzePoint2d=(x:0;y:1);
+  cEmptyMtr:TzeMatrix4d=(v:((v:(0,0,0,0)),
+                            (v:(0,0,0,0)),
+                            (v:(0,0,0,0)),
+                            (v:(0,0,0,0))));
+  cOneMtr:TzeMatrix4d=(v:((v:(1,0,0,0)),
+                          (v:(0,1,0,0)),
+                          (v:(0,0,1,0)),
+                          (v:(0,0,0,1))));
+  cEmptyMatrix:TzeTypedMatrix4d=(mtr:(v:((v:(0,0,0,0)),
+                                         (v:(0,0,0,0)),
+                                         (v:(0,0,0,0)),
+                                         (v:(0,0,0,0))));
+                                 t:[]);
+  cOneMatrix:TzeTypedMatrix4d=(mtr:(v:((v:(1,0,0,0)),
+                                       (v:(0,1,0,0)),
+                                       (v:(0,0,1,0)),
+                                       (v:(0,0,0,1))));
+                               t:CMTIdentity);
+  cRightAngle=pi/2;
+  cIdentityQuaternion:TzeQuaternion=(ImagPart:(x:0;y:0;z:0);RealPart:1);
+  cxAxisIndex=0;cyAxisIndex=1;czAxisIndex=2;cwAxisIndex=3;
+
+  cV3d__0__0__0:TzeVector3d=(x:0;y:0;z:0);
+  cV3d__1__0__0:TzeVector3d=(x:1;y:0;z:0);
+  cV3d__0__1__0:TzeVector3d=(x:0;y:1;z:0);
+  cV3d__0__0__1:TzeVector3d=(x:0;y:0;z:1);
+  cV3d__1__1__1:TzeVector3d=(x:1;y:1;z:1);
+  cV3d__1__1__0:TzeVector3d=(x:1;y:1;z:0);
+  cV3d_m1__1__0:TzeVector3d=(x:-1;y:1;z:0);
+  cV3d_m1_m1_m1:TzeVector3d=(x:-1;y:-1;z:-1);
+
+  cP3d__0__0__0:TzePoint3d=(x:0;y:0;z:0);
+  cP3d__1__1__1:TzePoint3d=(x:1;y:1;z:1);
+  cP3d__0__0_m1:TzePoint3d=(x:0;y:0;z:-1);
+  cP3d__0__0__1:TzePoint3d=(x:0;y:0;z:1);
+  cP3d__0__1__0:TzePoint3d=(x:0;y:1;z:0);
+  cP3d_m1_m1_m1:TzePoint3d=(x:-1;y:-1;z:-1);
+  cP3d_mInf_mnf_mInf:TzePoint3d=(x:NegInfinity;y:NegInfinity;z:NegInfinity);
+  cP3d_Inf_nf_Inf:TzePoint3d=(x:Infinity;y:Infinity;z:Infinity);
+
+  cV4d__0__0__0__1:TzeVector4d=(x:0;y:0;z:0;w:1);
+  cV4d__0__0__0__0:TzeVector4d=(v:(0,0,0,0));
+  cV4d__1__0__0__1:TzeVector4d=(v:(1,0,0,1));
+  cV4d__0__1__0__1:TzeVector4d=(v:(0,1,0,1));
+  cV4d__0__0__1__1:TzeVector4d=(v:(0,0,1,1));
+
+  cV3s__0__0__0:TzeVector3s=(x:0;y:0;z:0);
+  cP3s__0__0__0:TzePoint3s=(x:0;y:0;z:0);
+
+  cV2d__0__0:TzeVector2d=(x:0;y:0);
+  cV2d__0__1:TzeVector2d=(x:0;y:1);
+  cV2d__1__0:TzeVector2d=(x:1;y:0);
+
+  cP2d__0__0:TzePoint2d=(x:0;y:0);
+
   BBNul:TBoundingBox=(LBN:(x:0;y:0;z:0);RTF:(x:0;y:0;z:0));
 
 type
@@ -553,9 +559,9 @@ function GetXfFromZ(const oz:TzeVector3d):TzeVector3d;
 begin
   //if (abs (oz.x) < 1/64) and (abs (oz.y) < 1/64) then
   if IsNearToZ(oz)then
-    result:=VectorDot(YWCS,oz)
+    result:=VectorDot(cV3d__0__1__0,oz)
   else
-    result:=VectorDot(ZWCS,oz);
+    result:=VectorDot(cV3d__0__0__1,oz);
   result.Normalize;//:=NormalizeVertex(result);
 end;
 
@@ -796,25 +802,25 @@ begin
     //c4:=M[3].v[2];d4:=M[3].v[3];
 
     // row column labeling reversed since we transpose rows & columns
-    M.mtr.v[XAxisIndex].v[XAxisIndex]:= MatrixDetInternal(b2,b3,b4,c2,c3,c4,d2,d3,d4);
-    M.mtr.v[XAxisIndex].v[YAxisIndex]:=-MatrixDetInternal(b1,b3,b4,c1,c3,c4,d1,d3,d4);
-    M.mtr.v[XAxisIndex].v[ZAxisIndex]:= MatrixDetInternal(b1,b2,b4,c1,c2,c4,d1,d2,d4);
-    M.mtr.v[XAxisIndex].v[WAxisIndex]:=-MatrixDetInternal(b1,b2,b3,c1,c2,c3,d1,d2,d3);
+    M.mtr.v[cxAxisIndex].v[cxAxisIndex]:= MatrixDetInternal(b2,b3,b4,c2,c3,c4,d2,d3,d4);
+    M.mtr.v[cxAxisIndex].v[cyAxisIndex]:=-MatrixDetInternal(b1,b3,b4,c1,c3,c4,d1,d3,d4);
+    M.mtr.v[cxAxisIndex].v[czAxisIndex]:= MatrixDetInternal(b1,b2,b4,c1,c2,c4,d1,d2,d4);
+    M.mtr.v[cxAxisIndex].v[cwAxisIndex]:=-MatrixDetInternal(b1,b2,b3,c1,c2,c3,d1,d2,d3);
 
-    M.mtr.v[YAxisIndex].v[XAxisIndex]:=-MatrixDetInternal(a2,a3,a4,c2,c3,c4,d2,d3,d4);
-    M.mtr.v[YAxisIndex].v[YAxisIndex]:= MatrixDetInternal(a1,a3,a4,c1,c3,c4,d1,d3,d4);
-    M.mtr.v[YAxisIndex].v[ZAxisIndex]:=-MatrixDetInternal(a1,a2,a4,c1,c2,c4,d1,d2,d4);
-    M.mtr.v[YAxisIndex].v[WAxisIndex]:= MatrixDetInternal(a1,a2,a3,c1,c2,c3,d1,d2,d3);
+    M.mtr.v[cyAxisIndex].v[cxAxisIndex]:=-MatrixDetInternal(a2,a3,a4,c2,c3,c4,d2,d3,d4);
+    M.mtr.v[cyAxisIndex].v[cyAxisIndex]:= MatrixDetInternal(a1,a3,a4,c1,c3,c4,d1,d3,d4);
+    M.mtr.v[cyAxisIndex].v[czAxisIndex]:=-MatrixDetInternal(a1,a2,a4,c1,c2,c4,d1,d2,d4);
+    M.mtr.v[cyAxisIndex].v[cwAxisIndex]:= MatrixDetInternal(a1,a2,a3,c1,c2,c3,d1,d2,d3);
 
-    M.mtr.v[ZAxisIndex].v[XAxisIndex]:= MatrixDetInternal(a2,a3,a4,b2,b3,b4,d2,d3,d4);
-    M.mtr.v[ZAxisIndex].v[YAxisIndex]:=-MatrixDetInternal(a1,a3,a4,b1,b3,b4,d1,d3,d4);
-    M.mtr.v[ZAxisIndex].v[ZAxisIndex]:= MatrixDetInternal(a1,a2,a4,b1,b2,b4,d1,d2,d4);
-    M.mtr.v[ZAxisIndex].v[WAxisIndex]:=-MatrixDetInternal(a1,a2,a3,b1,b2,b3,d1,d2,d3);
+    M.mtr.v[czAxisIndex].v[cxAxisIndex]:= MatrixDetInternal(a2,a3,a4,b2,b3,b4,d2,d3,d4);
+    M.mtr.v[czAxisIndex].v[cyAxisIndex]:=-MatrixDetInternal(a1,a3,a4,b1,b3,b4,d1,d3,d4);
+    M.mtr.v[czAxisIndex].v[czAxisIndex]:= MatrixDetInternal(a1,a2,a4,b1,b2,b4,d1,d2,d4);
+    M.mtr.v[czAxisIndex].v[cwAxisIndex]:=-MatrixDetInternal(a1,a2,a3,b1,b2,b3,d1,d2,d3);
 
-    M.mtr.v[WAxisIndex].v[XAxisIndex]:=-MatrixDetInternal(a2,a3,a4,b2,b3,b4,c2,c3,c4);
-    M.mtr.v[WAxisIndex].v[YAxisIndex]:= MatrixDetInternal(a1,a3,a4,b1,b3,b4,c1,c3,c4);
-    M.mtr.v[WAxisIndex].v[ZAxisIndex]:=-MatrixDetInternal(a1,a2,a4,b1,b2,b4,c1,c2,c4);
-    M.mtr.v[WAxisIndex].v[WAxisIndex]:= MatrixDetInternal(a1,a2,a3,b1,b2,b3,c1,c2,c3);
+    M.mtr.v[cwAxisIndex].v[cxAxisIndex]:=-MatrixDetInternal(a2,a3,a4,b2,b3,b4,c2,c3,c4);
+    M.mtr.v[cwAxisIndex].v[cyAxisIndex]:= MatrixDetInternal(a1,a3,a4,b1,b3,b4,c1,c3,c4);
+    M.mtr.v[cwAxisIndex].v[czAxisIndex]:=-MatrixDetInternal(a1,a2,a4,b1,b2,b4,c1,c2,c4);
+    M.mtr.v[cwAxisIndex].v[cwAxisIndex]:= MatrixDetInternal(a1,a2,a3,b1,b2,b3,c1,c2,c3);
 end;
 function MatrixDeterminant(const M: TzeTypedMatrix4d): Double;
 var
@@ -894,7 +900,7 @@ var
 begin
   Det:=MatrixDeterminant(M);
   if Abs(Det)<eps then
-    M:=onematrix
+    M:=cOneMatrix
   else begin
     MatrixAdjoint(M);
     MatrixScale(M,1/Det);
@@ -1036,7 +1042,7 @@ end;*)
 
 function CreateTranslationMatrix(const _V:TzeVector3d):TzeTypedMatrix4d;
 begin
-  Result.CreateRec(onemtr,CMTTranslate);
+  Result.CreateRec(cOneMtr,CMTTranslate);
   with TzeVector4d((@Result.mtr.v[3])^) do begin
     v[0]:=_V.x;
     v[1]:=_V.y;
@@ -1047,7 +1053,7 @@ end;
 
 function CreateTranslationMatrix(const tx,ty,tz:double):TzeTypedMatrix4d;
 begin
-  Result.CreateRec(onemtr,CMTTranslate);
+  Result.CreateRec(cOneMtr,CMTTranslate);
   with TzeVector4d((@Result.mtr.v[3])^) do begin
     v[0]:=tx;
     v[1]:=ty;
@@ -1088,7 +1094,7 @@ end;
 
 function CreateScaleMatrix(const V:TzeVector3d): TzeTypedMatrix4d;
 begin
-  Result.mtr.v:=onemtr.v;
+  Result.mtr.v:=cOneMtr.v;
   Result.mtr.v[0].v[0]:=V.x;
   Result.mtr.v[1].v[1]:=V.y;
   Result.mtr.v[2].v[2]:=V.z;
@@ -1098,7 +1104,7 @@ end;
 
 function CreateScaleMatrix(const s:Double): TzeTypedMatrix4d;
 begin
-  Result.mtr.v:=onemtr.v;
+  Result.mtr.v:=cOneMtr.v;
   Result.mtr.v[0].v[0]:=S;
   Result.mtr.v[1].v[1]:=S;
   Result.mtr.v[2].v[2]:=S;
@@ -1108,7 +1114,7 @@ end;
 
 function CreateScaleMatrix(const sx,sy,sz:Double): TzeTypedMatrix4d;inline;overload;
 begin
-  Result.mtr.v:=onemtr.v;
+  Result.mtr.v:=cOneMtr.v;
   Result.mtr.v[0].v[0]:=sx;
   Result.mtr.v[1].v[1]:=sy;
   Result.mtr.v[2].v[2]:=sz;
@@ -1121,7 +1127,7 @@ var
   Sine,Cosine:double;
 begin
   SinCos(angle,Sine,Cosine);
-  Result:=EmptyMatrix;
+  Result:=cEmptyMatrix;
   Result.mtr.v[0].v[0]:=1;
   Result.mtr.v[1].v[1]:=Cosine;
   Result.mtr.v[1].v[2]:=Sine;
@@ -1136,7 +1142,7 @@ var
   Sine,Cosine:double;
 begin
   SinCos(angle,Sine,Cosine);
-  Result:=EmptyMatrix;
+  Result:=cEmptyMatrix;
   Result.mtr.v[0].v[0]:=Cosine;
   Result.mtr.v[0].v[2]:=-Sine;
   Result.mtr.v[1].v[1]:=1;
@@ -1162,7 +1168,7 @@ var
   Sine,Cosine:double;
 begin
   SinCos(angle,Sine,Cosine);
-  Result:=Onematrix;
+  Result:=cOneMatrix;
   Result.mtr.v[0].v[0]:=Cosine;
   Result.mtr.v[0].v[1]:=Sine;
   Result.mtr.v[1].v[1]:=Cosine;
@@ -1631,7 +1637,7 @@ begin
     end;
   end else begin
     dbz;
-    Result:=NulVertex;
+    Result:=cV3d__0__0__0;
   end;
 end;
 
@@ -2045,8 +2051,8 @@ end;
 
 function CreateMatrixFromBasis(const ox,oy,oz:TzeVector3d):TzeTypedMatrix4d;
 begin
-  Result.CreateRec(OneMtr,CMTRotate);
-  //result:=onematrix;
+  Result.CreateRec(cOneMtr,CMTRotate);
+  //result:=cOneMatrix;
   Result.mtr.v[0].Slice:=ox;
   Result.mtr.v[1].Slice:=oy;
   Result.mtr.v[2].Slice:=oz;
@@ -2075,7 +2081,7 @@ begin
     q.ImagPart:=q.ImagPart*f;
     q.RealPart:=q.RealPart*f;
   end else
-    q:=IdentityQuaternion;
+    q:=cIdentityQuaternion;
 end;
 
 function QuaternionFromMatrix(const mat:TzeTypedMatrix4d):TzeQuaternion;
@@ -2162,7 +2168,7 @@ function QuaternionToMatrix(quat:TzeQuaternion):TzeTypedMatrix4d;
 var
   w,x,y,z,xx,xy,xz,xw,yy,yz,yw,zz,zw:double;
 begin
-  Result.CreateRec(OneMtr,CMTRotate);
+  Result.CreateRec(cOneMtr,CMTRotate);
   NormalizeQuaternion(quat);
   w:=quat.RealPart;
   x:=quat.ImagPart.x;
@@ -2523,7 +2529,7 @@ var
   N1,N2,N3,N12,N23,N31,a1,a2,a3:TzeVector3d;
   a4:double;
 begin
-  Result:=NulPoint;
+  Result:=cP3d__0__0__0;
   n1:=p1.Slice;//createvertex(p1.v[0],p1.v[1],p1.v[2]);
   n2:=p2.Slice;//createvertex(p2.v[0],p2.v[1],p2.v[2]);
   n3:=p3.Slice;//createvertex(p3.v[0],p3.v[1],p3.v[2]);
@@ -2594,7 +2600,7 @@ begin
   if (abs(xmaxminusxmin)<eps) or  (abs(ymaxminusymin)<eps) or  (abs(zmaxminuszmin)<eps) then
     exit(matrix^);
 
-  m.CreateRec(OneMtr,CMTTransform);
+  m.CreateRec(cOneMtr,CMTTransform);
   {Все коэффициенты домножены на xmaxminusxmin, воччтановить оригинал - соответственно всё разделить}
   m.mtr.v[0].v[0]:=2{/xmaxminusxmin};
   m.mtr.v[1].v[1]:=(2/ymaxminusymin)*xmaxminusxmin;
@@ -2617,7 +2623,7 @@ begin
   deltaZ:=zmax-zmin;
   SinCos(radians,sine,cosine);
   cotangent:=cosine/sine;
-  m.CreateRec(OneMtr,CMTTransform);
+  m.CreateRec(cOneMtr,CMTTransform);
   m.mtr.v[0].v[0]:=cotangent/w_h;
   m.mtr.v[1].v[1]:=cotangent;
   m.mtr.v[2].v[2]:=-(zmax+zmin)/deltaZ;
@@ -2769,19 +2775,19 @@ begin
   one_minus_cosine:=1-cosine;
   axis:={NormalizeVertex}(anAxis).Normalized;
 
-  Result.CreateRec(OneMtr,CMTRotate);
-  //result:=onematrix;
-  Result.mtr.v[XAxisIndex].v[XAxisIndex]:=(one_minus_cosine*Sqr(Axis.x))+Cosine;
-  Result.mtr.v[XAxisIndex].v[YAxisIndex]:=(one_minus_cosine*Axis.x*Axis.y)-(Axis.z*Sine);
-  Result.mtr.v[XAxisIndex].v[ZAxisIndex]:=(one_minus_cosine*Axis.z*Axis.x)+(Axis.y*Sine);
+  Result.CreateRec(cOneMtr,CMTRotate);
+  //result:=cOneMatrix;
+  Result.mtr.v[cxAxisIndex].v[cxAxisIndex]:=(one_minus_cosine*Sqr(Axis.x))+Cosine;
+  Result.mtr.v[cxAxisIndex].v[cyAxisIndex]:=(one_minus_cosine*Axis.x*Axis.y)-(Axis.z*Sine);
+  Result.mtr.v[cxAxisIndex].v[czAxisIndex]:=(one_minus_cosine*Axis.z*Axis.x)+(Axis.y*Sine);
 
-  Result.mtr.v[YAxisIndex].v[XAxisIndex]:=(one_minus_cosine*Axis.x*Axis.y)+(Axis.z*Sine);
-  Result.mtr.v[YAxisIndex].v[YAxisIndex]:=(one_minus_cosine*Sqr(Axis.y))+Cosine;
-  Result.mtr.v[YAxisIndex].v[ZAxisIndex]:=(one_minus_cosine*Axis.y*Axis.z)-(Axis.x*Sine);
+  Result.mtr.v[cyAxisIndex].v[cxAxisIndex]:=(one_minus_cosine*Axis.x*Axis.y)+(Axis.z*Sine);
+  Result.mtr.v[cyAxisIndex].v[cyAxisIndex]:=(one_minus_cosine*Sqr(Axis.y))+Cosine;
+  Result.mtr.v[cyAxisIndex].v[czAxisIndex]:=(one_minus_cosine*Axis.y*Axis.z)-(Axis.x*Sine);
 
-  Result.mtr.v[ZAxisIndex].v[XAxisIndex]:=(one_minus_cosine*Axis.z*Axis.x)-(Axis.y*Sine);
-  Result.mtr.v[ZAxisIndex].v[YAxisIndex]:=(one_minus_cosine*Axis.y*Axis.z)+(Axis.x*Sine);
-  Result.mtr.v[ZAxisIndex].v[ZAxisIndex]:=(one_minus_cosine*Sqr(Axis.z))+Cosine;
+  Result.mtr.v[czAxisIndex].v[cxAxisIndex]:=(one_minus_cosine*Axis.z*Axis.x)-(Axis.y*Sine);
+  Result.mtr.v[czAxisIndex].v[cyAxisIndex]:=(one_minus_cosine*Axis.y*Axis.z)+(Axis.x*Sine);
+  Result.mtr.v[czAxisIndex].v[czAxisIndex]:=(one_minus_cosine*Sqr(Axis.z))+Cosine;
   //Result.t:=CMTRotate;
 end;
 
