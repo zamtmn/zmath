@@ -19,7 +19,7 @@ var
 begin
   result:=sqr(Vector2.v[0]-v[0]);
   for i:=1 to ArrH do begin
-    result:=result+sqr(Vector2.v[0]-v[i]);
+    result:=result+sqr(Vector2.v[i]-v[i]);
   end;
 end;
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.LengthTo(const Vector2:TSelf):Double;inline;
