@@ -1,4 +1,4 @@
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.SqrLength:Double;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.SqrLength:Double;
 var
   i:integer;
 begin
@@ -8,12 +8,12 @@ begin
     result:=result+sqr(v[i]);
   end;
 end;
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Length:Double;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Length:Double;
 begin
   //result:=norm(v);
   result:=Sqrt(SqrLength);
 end;
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.SqrLengthTo(const Vector2:TSelf):Double;inline;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.SqrLengthTo(const Vector2:TSelf):Double;inline;
 var
   i:integer;
 begin
@@ -22,13 +22,13 @@ begin
     result:=result+sqr(Vector2.v[0]-v[i]);
   end;
 end;
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.LengthTo(const Vector2:TSelf):Double;inline;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.LengthTo(const Vector2:TSelf):Double;inline;
 begin
   result:=Sqrt(SqrLengthTo(Vector2));
 end;
 
 {$IfNDef IntParam}
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Normalized:TSelf;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Normalized:TSelf;
   procedure dbz;
   begin
     zDebugLn('{EH}'+rsDivByZero);
@@ -46,7 +46,7 @@ begin
     dbz;
   end;
 end;
-procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Normalize;inline;
+procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Normalize;inline;
   procedure dbz;
   begin
     zDebugLn('{EH}'+rsDivByZero);
@@ -65,7 +65,7 @@ begin
   end;
 end;
 {$EndIf}
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Add(const Vector2:TSelf):TSelf;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Add(const Vector2:TSelf):TSelf;
 var
   i:integer;
 begin
@@ -73,7 +73,7 @@ begin
     result.v[i]:=v[i]+Vector2.v[i];
   end;
 end;
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Sub(const Vector2:TSelf):TSelf;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Sub(const Vector2:TSelf):TSelf;
 var
   i:integer;
 begin
@@ -89,7 +89,7 @@ begin
     result.v[i]:=l.v[i]+r.v[i];
   end;
 end;*)
-class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.+(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
+class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.+(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
  var
   i:integer;
 begin
@@ -97,7 +97,7 @@ begin
     result.v[i]:=l.v[i]+r.v[i];
   end;
 end;
-class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.-(const l,r:TSelf):GVectorTypeName;
+class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const l,r:TSelf):GVectorTypeName;
 var
   i:integer;
 begin
@@ -105,7 +105,7 @@ begin
     result.v[i]:=l.v[i]-r.v[i];
   end;
 end;
-class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.-(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
+class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
 var
   i:integer;
 begin
@@ -113,7 +113,7 @@ begin
     result.v[i]:=l.v[i]-r.v[i];
   end;
 end;
-class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.-(const r:TSelf):TSelf;
+class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const r:TSelf):TSelf;
 var
   i:integer;
 begin
@@ -121,7 +121,7 @@ begin
     result.v[i]:=-r.v[i];
   end;
 end;
-class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.*(const l:TSelf;const r:T):TSelf;
+class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.*(const l:TSelf;const r:T):TSelf;
 var
   i:integer;
 begin
@@ -129,7 +129,7 @@ begin
     result.v[i]:=l.v[i]*r;
   end;
 end;
-class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.*(const l,r:TSelf):Real;
+class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.*(const l,r:TSelf):Real;
 var
   i:integer;
 begin
@@ -139,7 +139,7 @@ begin
   end;
 end;
 {$IfNDef IntParam}
-class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>./(const l:TSelf;const r:Real):TSelf;
+class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>./(const l:TSelf;const r:Real):TSelf;
 var
   i:integer;
 begin
@@ -149,35 +149,35 @@ begin
 end;
 {$EndIf}
 
-class function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Make(const AData:TCoordArray):TSelf;
+class function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Make(const AData:TCoordArray):TSelf;
 begin
   result.v:=AData;
 end;
 
-procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.setup(const AData:TCoordArray);inline;
+procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.setup(const AData:TCoordArray);inline;
 begin
   v:=AData;
 end;
 
-constructor PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.CreateRec(const AData:TCoordArray);
+constructor PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.CreateRec(const AData:TCoordArray);
 begin
   self.v:=AData;
 end;
 
 {$IfDef TwoDimension}
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Turned90R:TSelf;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Turned90R:TSelf;
 begin
  result.x:=y;
  result.y:=-x;
 end;
 
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Turned90L:TSelf;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Turned90L:TSelf;
 begin
  result.x:=-y;
  result.y:=x;
 end;
 
-procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Turn90R;
+procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Turn90R;
 var
   tmp:T;
 begin
@@ -186,7 +186,7 @@ begin
   x:=tmp;
 end;
 
-procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.Turn90L;
+procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Turn90L;
 var
   tmp:T;
 begin
@@ -197,7 +197,7 @@ end;
 
 {$EndIf}
 
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.IsNul:boolean;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsNul:boolean;
 begin
   Result:=Sqrlength<=sqreps;
   {if SqrOneVertexlength>sqreps then
