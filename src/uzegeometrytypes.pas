@@ -59,7 +59,7 @@ type
       case Integer of
         0:(x,y,z,w:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
-        2:(r:TCoordRec);
+        //2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
   GVector3<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
@@ -74,7 +74,7 @@ type
       case Integer of
         0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
-        2:(r:TCoordRec);
+        //2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
   GVector2<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
@@ -91,7 +91,7 @@ type
       case Integer of
         0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
-        2:(r:TCoordRec);
+        //2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
   GVector4i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
@@ -108,7 +108,7 @@ type
       case Integer of
         0:(x,y,z,w:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
-        2:(r:TCoordRec);
+        //2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
   GVector3i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
@@ -125,7 +125,7 @@ type
       case Integer of
         0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
-        2:(r:TCoordRec);
+        //2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
 
@@ -146,7 +146,7 @@ type
       case Integer of
         0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
         1:(v:TCoordArray);
-        2:(r:TCoordRec);
+        //2:(r:TCoordRec);
         3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
 
@@ -165,7 +165,7 @@ type
     case integer of
       0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
       1:(v:TCoordArray);
-      2:(r:TCoordRec);
+      //2:(r:TCoordRec);
       3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
       4:(asVector:GVectorTypeName);
   end;
@@ -185,7 +185,7 @@ type
     case integer of
       0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
       1:(v:TCoordArray);
-      2:(r:TCoordRec);
+      //2:(r:TCoordRec);
       3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
       4:(asVector:GVectorTypeName);
   end;
@@ -207,7 +207,7 @@ type
     case integer of
       0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
       1:(v:TCoordArray);
-      2:(r:TCoordRec);
+      //2:(r:TCoordRec);
       3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
       4:(asVector:GVectorTypeName);
   end;

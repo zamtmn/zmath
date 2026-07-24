@@ -94,7 +94,7 @@ class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:recor
   i:integer;
 begin
   for i:=0 to ArrH do begin
-    result.v[i]:=l.v[i]+r.v[i];
+    result.v[i]:=l.v[i]+{$if FPC_FULLVERSION<30205}TSelf{$endif}(r).v[i];
   end;
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const l,r:TSelf):GVectorTypeName;
@@ -102,7 +102,7 @@ var
   i:integer;
 begin
   for i:=0 to ArrH do begin
-    result.v[i]:=l.v[i]-r.v[i];
+    {$if FPC_FULLVERSION<30205}TSelf{$endif}(result).v[i]:=l.v[i]-{$if FPC_FULLVERSION<30205}TSelf{$endif}(r).v[i];
   end;
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
@@ -110,7 +110,7 @@ var
   i:integer;
 begin
   for i:=0 to ArrH do begin
-    result.v[i]:=l.v[i]-r.v[i];
+    result.v[i]:=l.v[i]-{$if FPC_FULLVERSION<30205}TSelf{$endif}(r).v[i];
   end;
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const r:TSelf):TSelf;
