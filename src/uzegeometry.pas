@@ -115,21 +115,22 @@ function pointinquad2d(const x1, y1, x2, y2, xp, yp: Single): Boolean;inline;
 //function SqrVertexlength(const pt2, pt1: TzePoint2d): Double;inline; overload;
 
 //**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
-function Vertexmorph(const Vector1, Vector2: TzePoint3d; a: Double): TzePoint3d;inline;overload;
+//function Vertexmorph(const Vector1, Vector2: TzePoint3d; a: Double): TzePoint3d;inline;overload;
 
 //**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
-function Vertexmorph(const Vector1, Vector2: TzePoint2d; a: Double): TzePoint2d;inline;overload;
+//function Vertexmorph(const Vector1, Vector2: TzePoint2d; a: Double): TzePoint2d;inline;overload;
 
 //**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
-function VertexDmorph(const Vector1, Vector2: TzePoint3d; a: Double): TzePoint3d;overload;inline;
+//function VertexDmorph(const APt: TzePoint3d;const Vector2: TzeVector3d; a: Double): TzePoint3d;overload;inline;
 
 //**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
-function VertexDmorph(const Vector1, Vector2: TzePoint3s; a: Double): TzePoint3s;overload;inline;
+//function VertexDmorph(const APt: TzePoint3s;const Vector2: TzeVector3s; a: Double): TzePoint3s;overload;inline;
+
 function Vertexangle(const Vector1, Vector2: TzePoint2d): Double;inline;
 function TwoVectorAngle(const Vector1, Vector2: TzeVector3d): Double;//inline;
-function oneVertexlength(const Vector1: TzeVector3d): Double;inline;
-function oneVertexlength2D(const Vector1: TzeVector2d): Double;inline;
-function SqrOneVertexlength(const Vector1: TzeVector3d): Double;inline;
+//function oneVertexlength(const Vector1: TzeVector3d): Double;inline;
+//function oneVertexlength2D(const Vector1: TzeVector2d): Double;inline;
+//function SqrOneVertexlength(const Vector1: TzeVector3d): Double;inline;
 //function vertexlen2df(const x1, y1, x2, y2: Single): Single;inline;
 //function NormalizeVertex(const Vector1: TzeVector3d): TzeVector3d;inline;
 //function NormalizeVertex2D(const Vector1: TzeVector2d): TzeVector2d;inline;
@@ -218,14 +219,14 @@ function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;inline;
 function scalardot(const v1,v2:TzeVector3d):Double;inline;
 function SQRdist_Point_to_Segment(const p:TzePoint3d;const s0,s1:TzePoint3d):Double;inline;
 function NearestPointOnSegment(const p:TzePoint3d;const s0,s1:TzePoint3d):TzePoint3d;inline;
-function IsPointEqual(const p1,p2:TzePoint3d;const _eps:Double=eps):boolean;inline;
-function IsPoint2DEqual(const p1,p2:TzePoint2d):boolean;inline;
-function IsVectorNul(const p2:TzeVector3d):boolean;inline;
-function IsDoubleNotEqual(const d1,d2:Double;const _eps:Double=eps):boolean;inline;
-function IsDoubleEqual(const d1,d2:Double;const _eps:Double=eps):boolean;inline;
-function IsFloatNotEqual(const d1,d2:Single;const _floateps:Single=floateps):boolean;inline;
-function IsZero(const d:Double;const _eps:Double=eps):boolean;inline;
-function IsNotZero(const d:Double;const _eps:Double=eps):boolean;inline;
+//function IsPointEqual(const p1,p2:TzePoint3d;const _eps:Double=sqreps):boolean;overload;inline;
+//function IsPointEqual(const p1,p2:TzePoint2d;const _eps:double=sqreps):boolean;overload;inline;
+//function IsVectorNul(const p2:TzeVector3d):boolean;inline;
+//function IsDoubleNotEqual(const d1,d2:Double;const _eps:Double=eps):boolean;inline;
+//function IsDoubleEqual(const d1,d2:Double;const _eps:Double=eps):boolean;inline;
+//function IsFloatNotEqual(const d1,d2:Single;const _floateps:Single=floateps):boolean;inline;
+//function IsZero(const d:Double;const _eps:Double=eps):boolean;inline;
+//function IsNotZero(const d:Double;const _eps:Double=eps):boolean;inline;
 
 //проверка вектора на близость к оси Z (координаты x и y меньше 1/64
 //используется для Arbitrary Axis Algorithm (DXF)
@@ -242,8 +243,8 @@ function LookAt(point:TzePoint3d;ex,ey,ez:TzeVector3d;const matrix:PzeTypedMatri
 
 function calcfrustum(const clip:PzeTypedMatrix4d):TzeFrustum;inline;
 function PointOf3PlaneIntersect(const P1,P2,P3:TzeVector4d):TzePoint3d;inline;
-function PointOfRayPlaneIntersect(const p1,d:TzePoint3d;const plane:TzeVector4d;out point :TzePoint3d):Boolean;overload;inline;
-function PointOfRayPlaneIntersect(const p1,d:TzePoint3d;const plane:TzeVector4d;out t :double):Boolean;overload;inline;
+function PointOfRayPlaneIntersect(const p1:TzePoint3d;const d:TzeVector3d;const plane:TzeVector4d;out point :TzePoint3d):Boolean;overload;inline;
+function PointOfRayPlaneIntersect(const p1:TzePoint3d;const d:TzeVector3d;const plane:TzeVector4d;out t :double):Boolean;overload;inline;
 function PlaneFrom3Pont(const P1,P2,P3:TzePoint3d):TzeVector4d;inline;
 procedure NormalizePlane(var plane:TzeVector4d);inline;
 
@@ -511,30 +512,30 @@ begin
     Result:=angle;
 end;
 
-function IsDoubleNotEqual(const d1,d2:Double;const _eps:Double=eps):boolean;
+{function IsDoubleNotEqual(const d1,d2:Double;const _eps:Double=eps):boolean;
 begin
   if abs(d1-d2)>_eps then
     Result:=true
   else
     Result:=false;
-end;
-function IsDoubleEqual(const d1,d2:Double;const _eps:Double=eps):boolean;
+end;}
+{function IsDoubleEqual(const d1,d2:Double;const _eps:Double=eps):boolean;
 begin
   if abs(d1-d2)>=_eps then
     Result:=false
   else
     Result:=true;
-end;
+end;}
 
-function IsZero(const d:Double;const _eps:Double=eps):boolean;inline;
+{function IsZero(const d:Double;const _eps:Double=eps):boolean;inline;
 begin
   result:=abs(d)<_eps
-end;
+end;}
 
-function IsNotZero(const d:Double;const _eps:Double=eps):boolean;inline;
+{function IsNotZero(const d:Double;const _eps:Double=eps):boolean;inline;
 begin
   result:=abs(d)>=_eps
-end;
+end;}
 
 function IsNearToZ(const v:TzeVector3d):boolean;
 const
@@ -565,13 +566,13 @@ begin
   result.Normalize;//:=NormalizeVertex(result);
 end;
 
-function IsFloatNotEqual(const d1,d2:Single;const _floateps:Single=floateps):boolean;
+{function IsFloatNotEqual(const d1,d2:Single;const _floateps:Single=floateps):boolean;
 begin
   if abs(d1-d2)>_floateps then
     Result:=true
   else
     Result:=false;
-end;
+end;}
 
 function GetMinAndSwap(var position:integer;size:integer;var ca:TLineClipArray):Double;
 var
@@ -1492,23 +1493,23 @@ begin
     Result:=(sqr(x-pt1.x)+sqr(y-pt1.y));
 end;}
 
-function oneVertexlength(const Vector1:TzeVector3d):double;
+{function oneVertexlength(const Vector1:TzeVector3d):double;
 begin
   with TzePoint3d((@vector1)^) do
     Result:=sqrt(sqr(x)+sqr(y)+sqr(z));
-end;
+end;}
 
-function oneVertexlength2D(const Vector1:TzeVector2d):double;
+{function oneVertexlength2D(const Vector1:TzeVector2d):double;
 begin
   with TzePoint2d((@vector1)^) do
     Result:=sqrt(sqr(x)+sqr(y));
-end;
+end;}
 
-function SqrOneVertexlength(const Vector1:TzeVector3d):double;
+{function SqrOneVertexlength(const Vector1:TzeVector3d):double;
 begin
   with TzePoint3d((@vector1)^) do
     Result:=(sqr(x)+sqr(y)+sqr(z));
-end;
+end;}
 
 {function vertexlen2df(const x1,y1,x2,y2:single):single;
 begin
@@ -1535,46 +1536,46 @@ begin
     Result:=2*pi-temp;
 end;
 
-function Vertexmorph(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
+{function Vertexmorph(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
 begin
   with TzePoint3d((@vector1)^) do begin
     Result.x:=x+(vector2.x-x)*a;
     Result.y:=y+(vector2.y-y)*a;
     Result.z:=z+(vector2.z-z)*a;
   end;
-end;
+end;}
 
-function Vertexmorph(const Vector1,Vector2:TzePoint2d;a:double):TzePoint2d;
+{function Vertexmorph(const Vector1,Vector2:TzePoint2d;a:double):TzePoint2d;
 begin
   with TzePoint2d((@vector1)^) do begin
     Result.x:=x+(vector2.x-x)*a;
     Result.y:=y+(vector2.y-y)*a;
   end;
-end;
+end;}
 
-function VertexDmorph(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
+{function VertexDmorph(const APt: TzePoint3d;const Vector2: TzeVector3d; a: Double):TzePoint3d;
 begin
-  with TzePoint3d((@vector1)^) do begin
+  with TzePoint3d((@APt)^) do begin
     Result.x:=x+(vector2.x)*a;
     Result.y:=y+(vector2.y)*a;
     Result.z:=z+(vector2.z)*a;
   end;
-end;
+end;}
 
-function VertexDmorph(const Vector1,Vector2:TzePoint3s;a:double):TzePoint3s;
+{function VertexDmorph(const APt: TzePoint3s;const Vector2: TzeVector3s; a: Double):TzePoint3s;
 begin
-  with TzePoint3s((@vector1)^) do begin
+  with TzePoint3s((@APt)^) do begin
     Result.x:=x+(vector2.x)*a;
     Result.y:=y+(vector2.y)*a;
     Result.z:=z+(vector2.z)*a;
   end;
-end;
+end;}
 
 function Vertexdmorphabs(const Vector1,Vector2:TzeVector3d;a:double):TzePoint3d;
 var
   l:double;
 begin
-  l:=oneVertexlength(Vector2);
+  l:=Vector2.Length;//oneVertexlength(Vector2);
   if a>0 then
     a:=a/l
   else
@@ -2068,7 +2069,7 @@ end;
 
 function QuaternionMagnitude(const q:TzeQuaternion):double;
 begin
-  Result:=Sqrt(SqrOneVertexlength(q.ImagPart)+Sqr(q.RealPart));
+  Result:=Sqrt({SqrOneVertexlength}(q.ImagPart.SqrLength)+Sqr(q.RealPart));
 end;
 
 procedure NormalizeQuaternion(var q:TzeQuaternion);
@@ -2278,29 +2279,29 @@ begin
   Result:=calcfrustum(@tm);
 end;
 
-function IsPointEqual(const p1,p2:TzePoint3d;const _eps:double):boolean;
+{function IsPointEqual(const p1,p2:TzePoint3d;const _eps:double=sqreps):boolean;
 begin
   if p1.SqrLengthTo(p2)>_eps then
     Result:=false
   else
     Result:=true;
-end;
+end;}
 
-function IsPoint2DEqual(const p1,p2:TzePoint2d):boolean;
+{function IsPointEqual(const p1,p2:TzePoint2d;const _eps:double=sqreps):boolean;
 begin
-  if p1.SqrLengthTo(p2)>sqreps then
+  if p1.SqrLengthTo(p2)>_eps then
     Result:=false
   else
     Result:=true;
-end;
+end}
 
-function IsVectorNul(const p2:TzeVector3d):boolean;
+{function IsVectorNul(const p2:TzeVector3d):boolean;
 begin
-  if SqrOneVertexlength(p2)>sqreps then
+  if p2.SqrLength>sqreps then
     Result:=false
   else
     Result:=true;
-end;
+end;}
 
 function GetCSDirFrom0x0y2D(const ox,oy:TzeVector3d):TCSDir;
 begin
@@ -2371,7 +2372,7 @@ begin
     d2:=GetMinAndSwap(j,cacount,ca);
     d1:=(d1+d2)/2;
     bit:=0;
-    p:=VertexDmorph(lbegin,d.asPoint3d,d1);
+    p:={VertexDmorph}(lbegin+d*d1);
     for i:=0 to 5 do begin
       with frustum.v[i] do
         if (v[0]*p.x+v[1]*p.y+v[2]*p.z+v[3])>=0 then
@@ -2446,7 +2447,7 @@ begin
     d2:=GetMinAndSwap(j,cacount,ca);
     d1:=(d1+d2)/2;
     bit:=0;
-    p:=VertexDmorph(lbegin,d.asPoint3s,d1);
+    p:={VertexDmorph}(lbegin+d*d1);
     for i:=0 to 5 do begin
       with frustum.v[i] do
         if (v[0]*p.x+v[1]*p.y+v[2]*p.z+v[3])>=0 then
@@ -2551,7 +2552,7 @@ begin
   Result:=(a1*-a4).asPoint3d;//VertexMulOnSc(a1,-a4);
 end;
 
-function PointOfRayPlaneIntersect(const p1,d:TzePoint3d;const plane:TzeVector4d;out point:TzePoint3d):boolean;
+function PointOfRayPlaneIntersect(const p1:TzePoint3d;const d:TzeVector3d;const plane:TzeVector4d;out point:TzePoint3d):boolean;
 var
   td:double;
 begin
@@ -2564,11 +2565,11 @@ begin
   with TzeVector4d((@plane)^) do
     td:=(v[0]*p1.x+v[1]*p1.y+v[2]*p1.z+v[3])/td;
 
-  point:=VertexDmorph(p1,d,td);
+  point:=p1+d*td;
   Result:=true;
 end;
 
-function PointOfRayPlaneIntersect(const p1,d:TzePoint3d;const plane:TzeVector4d;out t:double):boolean;
+function PointOfRayPlaneIntersect(const p1:TzePoint3d;const d:TzeVector3d;const plane:TzeVector4d;out t:double):boolean;
 var
   td:double;
 begin
@@ -2759,7 +2760,7 @@ begin
   c2:=scalardot(v,v);
   if abs(c2)>eps then begin
     Result.t:=c1/c2;
-    Result.d:={Vertexlength}q.LengthTo(VertexDmorph(p1,v.asPoint3d,Result.t));
+    Result.d:={Vertexlength}q.LengthTo({VertexDmorph}(p1+v*Result.t));
   end else begin
     Result.t:=0;
     Result.d:={Vertexlength}q.LengthTo(p1);
@@ -2836,25 +2837,25 @@ begin
   denom:=d2121*d4343-d4321*d4321;
   if (ABS(denom)< {EPS}sqreps) then begin
     //бывают случаи соприкосновения линий концами, их надо обработать
-    if IsPointEqual(l1begin,l2begin) then begin
+    if {IsPointEqual}l1begin.IsEqual(l2begin) then begin
       Result.isintercept:=true;
       Result.t1:=0;
       Result.t2:=0;
       Result.interceptcoord:=l1begin;
       exit;
-    end else if IsPointEqual(l1begin,l2end) then begin
+    end else if {IsPointEqual}l1begin.IsEqual(l2end) then begin
       Result.isintercept:=true;
       Result.t1:=0;
       Result.t2:=1;
       Result.interceptcoord:=l1begin;
       exit;
-    end else if IsPointEqual(l1end,l2begin) then begin
+    end else if {IsPointEqual}l1end.IsEqual(l2begin) then begin
       Result.isintercept:=true;
       Result.t1:=1;
       Result.t2:=0;
       Result.interceptcoord:=l1end;
       exit;
-    end else if IsPointEqual(l1end,l2end) then begin
+    end else if {IsPointEqual}l1end.IsEqual(l2end) then begin
       Result.isintercept:=true;
       Result.t1:=1;
       Result.t2:=1;

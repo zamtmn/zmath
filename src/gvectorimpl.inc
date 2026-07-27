@@ -13,18 +13,18 @@ begin
   //result:=norm(v);
   result:=Sqrt(SqrLength);
 end;
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.SqrLengthTo(const Vector2:TSelf):Double;inline;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.SqrLengthTo(const AVector2:TSelf):Double;inline;
 var
   i:integer;
 begin
-  result:=sqr(Vector2.v[0]-v[0]);
+  result:=sqr(AVector2.v[0]-v[0]);
   for i:=1 to ArrH do begin
-    result:=result+sqr(Vector2.v[i]-v[i]);
+    result:=result+sqr(AVector2.v[i]-v[i]);
   end;
 end;
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.LengthTo(const Vector2:TSelf):Double;inline;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.LengthTo(const AVector2:TSelf):Double;inline;
 begin
-  result:=Sqrt(SqrLengthTo(Vector2));
+  result:=Sqrt(SqrLengthTo(AVector2));
 end;
 {$IfNDef IntParam}
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Normalized:TSelf;
@@ -76,21 +76,43 @@ begin
     v[High(TCoordArray)]:=1;
   end;
 end;
-{$EndIf}
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Add(const Vector2:TSelf):TSelf;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.MulOnSc(const ASc:double):TSelf;
 var
   i:integer;
 begin
   for i:=0 to ArrH do begin
-    result.v[i]:=v[i]+Vector2.v[i];
+    result.v[i]:=v[i]*ASc;
   end;
 end;
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Sub(const Vector2:TSelf):TSelf;
+
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.LerpTo(const AVector2:TSelf;const a:double):TSelf;
+begin
+  result:=self.Add(AVector2.Sub(self).MulOnSC(a));
+end;
+
+{$EndIf}
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsEqual(const AVector2:TSelf;const AEps:Double=sqreps):boolean;
+begin
+  Result:=SqrLengthTo(AVector2)<AEps;
+end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsNul(const AEps:Double=sqreps):boolean;
+begin
+  Result:=SqrLength<AEps;
+end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Add(const AVector2:TSelf):TSelf;
 var
   i:integer;
 begin
   for i:=0 to ArrH do begin
-    result.v[i]:=v[i]-Vector2.v[i];
+    result.v[i]:=v[i]+AVector2.v[i];
+  end;
+end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Sub(const AVector2:TSelf):TSelf;
+var
+  i:integer;
+begin
+  for i:=0 to ArrH do begin
+    result.v[i]:=v[i]-AVector2.v[i];
   end;
 end;
 class operator VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.+(const l,r:TSelf):TSelf;
@@ -193,12 +215,4 @@ end;
 
 {$EndIf}
 
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsNul:boolean;
-begin
-  Result:=Sqrlength<=sqreps;
-  {if SqrOneVertexlength>sqreps then
-    Result:=false
-  else
-    Result:=true;}
-end;
 

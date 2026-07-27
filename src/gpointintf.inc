@@ -9,14 +9,18 @@
 
     function SqrLength:Double;inline;
     function Length:Double;inline;
-    function SqrLengthTo(const Vector2:TSelf):Double;inline;
-    function LengthTo(const Vector2:TSelf):Double;inline;
+    function SqrLengthTo(const APt2:TSelf):Double;inline;
+    function LengthTo(const APt2:TSelf):Double;inline;
     {$IfNDef IntParam}
     function Normalized:TSelf;inline;
     procedure Normalize;inline;
+    function MulOnSc(const ASc:double):TSelf;inline;
+    function LerpTo(const APt2:TSelf;const a:double):TSelf;inline;
     {$EndIf}
-    function Add(const Vector2:TSelf):TSelf;inline;
-    function Sub(const Vector2:TSelf):TSelf;inline;
+    function IsEqual(const APt2:TSelf;const AEps:Double=sqreps):boolean;inline;
+    function IsNul(const AEps:Double=sqreps):boolean;inline;
+    function Add(const APt2:TSelf):TSelf;inline;
+    function Sub(const APt2:TSelf):TSelf;inline;
 
     //class operator +(const l,r:TSelf):TSelf;inline;
     class operator +(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
@@ -37,4 +41,3 @@
     procedure Turn90R;inline;
     procedure Turn90L;inline;
     {$EndIf}
-    function IsNul:boolean;inline;

@@ -13,18 +13,18 @@ begin
   //result:=norm(v);
   result:=Sqrt(SqrLength);
 end;
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.SqrLengthTo(const Vector2:TSelf):Double;inline;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.SqrLengthTo(const APt2:TSelf):Double;inline;
 var
   i:integer;
 begin
-  result:=sqr(Vector2.v[0]-v[0]);
+  result:=sqr(APt2.v[0]-v[0]);
   for i:=1 to ArrH do begin
-    result:=result+sqr(Vector2.v[i]-v[i]);
+    result:=result+sqr(APt2.v[i]-v[i]);
   end;
 end;
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.LengthTo(const Vector2:TSelf):Double;inline;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.LengthTo(const APt2:TSelf):Double;inline;
 begin
-  result:=Sqrt(SqrLengthTo(Vector2));
+  result:=Sqrt(SqrLengthTo(APt2));
 end;
 
 {$IfNDef IntParam}
@@ -64,21 +64,42 @@ begin
     dbz;
   end;
 end;
-{$EndIf}
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Add(const Vector2:TSelf):TSelf;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.MulOnSc(const ASc:double):TSelf;
 var
   i:integer;
 begin
   for i:=0 to ArrH do begin
-    result.v[i]:=v[i]+Vector2.v[i];
+    result.v[i]:=v[i]*ASc;
   end;
 end;
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Sub(const Vector2:TSelf):TSelf;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.LerpTo(const APt2:TSelf;const a:double):TSelf;
+begin
+  result:=self.Add(APt2.Sub(self).MulOnSC(a));
+end;
+{$EndIf}
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsEqual(const APt2:TSelf;const AEps:Double=sqreps):boolean;
+begin
+  Result:=SqrLengthTo(APt2)<AEps;
+end;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsNul(const AEps:Double=sqreps):boolean;
+begin
+  Result:=SqrLength<AEps;
+end;
+
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Add(const APt2:TSelf):TSelf;
 var
   i:integer;
 begin
   for i:=0 to ArrH do begin
-    result.v[i]:=v[i]-Vector2.v[i];
+    result.v[i]:=v[i]+APt2.v[i];
+  end;
+end;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Sub(const APt2:TSelf):TSelf;
+var
+  i:integer;
+begin
+  for i:=0 to ArrH do begin
+    result.v[i]:=v[i]-APt2.v[i];
   end;
 end;
 (*class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.+(const l,r:TSelf):TSelf;
@@ -196,13 +217,4 @@ begin
 end;
 
 {$EndIf}
-
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsNul:boolean;
-begin
-  Result:=Sqrlength<=sqreps;
-  {if SqrOneVertexlength>sqreps then
-    Result:=false
-  else
-    Result:=true;}
-end;
 
