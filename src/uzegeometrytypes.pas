@@ -378,6 +378,7 @@ type
   end;
   TzeVector3dHlpr=type helper for TzeVector3d
     function asPoint3d:TzePoint3d;inline;
+    function asVector3s:TzeVector3s;inline;
   end;
   TzeVector3sHlpr=type helper for TzeVector3s
     function asPoint3s:TzePoint3s;inline;
@@ -499,6 +500,13 @@ end;
 function TzeVector3dHlpr.asPoint3d:TzePoint3d;
 begin
   result:=TzePoint3d(self);
+end;
+
+function TzeVector3dHlpr.asVector3s:TzeVector3s;inline;
+begin
+  Result.x:=x;
+  Result.y:=y;
+  Result.z:=z;
 end;
 
 function TzeVector3sHlpr.asPoint3s:TzePoint3s;

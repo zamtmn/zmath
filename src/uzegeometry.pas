@@ -138,12 +138,12 @@ function TwoVectorAngle(const Vector1, Vector2: TzeVector3d): Double;//inline;
 //function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:Double): TzePoint2d;inline;
 
 //к первой вершине прибавить вторую по осям Vector1.х + Vector2.х
-function VertexAdd(const Vector1, Vector2: TzePoint3d): TzePoint3d;inline;overload;
-function VertexAdd(const Vector1, Vector2: TzePoint3s): TzePoint3s;inline;overload;
-function VertexAdd(const Vector1, Vector2: TzePoint2d): TzePoint2d;inline;overload;
-function VertexSub(const Vector1, Vector2: TzePoint3d): TzePoint3d;overload;inline;
-function VertexSub(const Vector1, Vector2: TzePoint2d): TzePoint2d;overload;inline;
-function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;overload;inline;
+//function VertexAdd(const Vector1, Vector2: TzePoint3d): TzePoint3d;inline;overload;
+//function VertexAdd(const Vector1, Vector2: TzePoint3s): TzePoint3s;inline;overload;
+//function VertexAdd(const Vector1, Vector2: TzePoint2d): TzePoint2d;inline;overload;
+//function VertexSub(const Vector1, Vector2: TzePoint3d): TzePoint3d;overload;inline;
+//function VertexSub(const Vector1, Vector2: TzePoint2d): TzePoint2d;overload;inline;
+//function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;overload;inline;
 //function MinusVertex(const Vector1: TzePoint3d): TzePoint3d;inline;
 function Vertexdmorphabs(const Vector1, Vector2: TzeVector3d;a: Double): TzePoint3d;inline;
 function Vertexmorphabs(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
@@ -427,7 +427,7 @@ begin
   pt:=matrix.mtr.v[3].Slice.asPoint3d;
   result:=GetPointInOCSByBasis(BX,BY,BZ,pt,scale);
 end;
-
+(*
 function VertexSub(const Vector1, Vector2: TzePoint3d): TzePoint3d;
 begin
   result:=(Vector1-Vector2).asPoint3d;
@@ -459,6 +459,7 @@ begin
     Z := Vector1.z - Vector2.z;
   end;}
 end;
+*)
 (*
 function ToTzeVector4s(const m:TzeVector4d):TzeVector4s; inline;
 begin
@@ -900,7 +901,7 @@ var
   Det:double;
 begin
   Det:=MatrixDeterminant(M);
-  if Abs(Det)<eps then
+  if IsZero(Det) then
     M:=cOneMatrix
   else begin
     MatrixAdjoint(M);
@@ -1675,7 +1676,7 @@ begin
   end;
 end;}
 
-function VertexAdd(const Vector1,Vector2:TzePoint3d):TzePoint3d;
+{function VertexAdd(const Vector1,Vector2:TzePoint3d):TzePoint3d;
 begin
   with TzePoint3d((@Result)^) do begin
     X:=Vector1.x+Vector2.x;
@@ -1699,7 +1700,7 @@ begin
     X:=Vector1.x+Vector2.x;
     Y:=Vector1.y+Vector2.y;
   end;
-end;
+end;}
 
 {function MinusVertex(const Vector1: TzePoint3d): TzePoint3d;
 begin
