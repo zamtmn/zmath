@@ -145,7 +145,7 @@ function TwoVectorAngle(const Vector1, Vector2: TzeVector3d): Double;//inline;
 //function VertexSub(const Vector1, Vector2: TzePoint2d): TzePoint2d;overload;inline;
 //function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;overload;inline;
 //function MinusVertex(const Vector1: TzePoint3d): TzePoint3d;inline;
-function Vertexdmorphabs(const Vector1, Vector2: TzeVector3d;a: Double): TzePoint3d;inline;
+//function Vertexdmorphabs(const Vector1, Vector2: TzeVector3d;a: Double): TzePoint3d;inline;
 function Vertexmorphabs(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
 function Vertexmorphabs2(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
 function MatrixMultiply(const M1, M2: TzeTypedMatrix4d):TzeTypedMatrix4d;overload;inline;
@@ -1572,7 +1572,7 @@ begin
   end;
 end;}
 
-function Vertexdmorphabs(const Vector1,Vector2:TzeVector3d;a:double):TzePoint3d;
+{function Vertexdmorphabs(const Vector1,Vector2:TzeVector3d;a:double):TzePoint3d;
 var
   l:double;
 begin
@@ -1586,7 +1586,7 @@ begin
     Result.y:=y+(vector2.y)*a;
     Result.z:=z+(vector2.z)*a;
   end;
-end;
+end;}
 
 function Vertexmorphabs(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
 var

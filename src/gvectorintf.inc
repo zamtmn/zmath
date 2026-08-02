@@ -18,6 +18,7 @@
     procedure DeHomogenize;inline;
     function MulOnSc(const ASc:double):TSelf;inline;
     function LerpTo(const AVector2:TSelf;const a:double):TSelf;inline;
+    function WithLength(const ALength:Double):TSelf;inline;
     {$EndIf}
     function IsEqual(const AVector2:TSelf;const AEps:Double=sqreps):boolean;inline;
     function IsNul(const AEps:Double=sqreps):boolean;inline;

@@ -26,6 +26,7 @@ function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$el
 begin
   result:=Sqrt(SqrLengthTo(AVector2));
 end;
+
 {$IfNDef IntParam}
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Normalized:TSelf;
 var
@@ -89,6 +90,18 @@ function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$el
 begin
   result:=self.Add(AVector2.Sub(self).MulOnSC(a));
 end;
+
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.WithLength(const ALength:Double):TSelf;
+var
+  l:double;
+begin
+  l:=Length;
+  if l>eps then
+    result:=self*(ALength/Length)
+  else
+    result:=self;
+end;
+
 
 {$EndIf}
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsEqual(const AVector2:TSelf;const AEps:Double=sqreps):boolean;
