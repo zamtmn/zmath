@@ -146,8 +146,8 @@ function TwoVectorAngle(const Vector1, Vector2: TzeVector3d): Double;//inline;
 //function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;overload;inline;
 //function MinusVertex(const Vector1: TzePoint3d): TzePoint3d;inline;
 //function Vertexdmorphabs(const Vector1, Vector2: TzeVector3d;a: Double): TzePoint3d;inline;
-function Vertexmorphabs(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
-function Vertexmorphabs2(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
+//function Vertexmorphabs(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
+//function Vertexmorphabs2(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
 function MatrixMultiply(const M1, M2: TzeTypedMatrix4d):TzeTypedMatrix4d;overload;inline;
 function MatrixMultiply(const M1: TzeTypedMatrix4d; const M2: TzeTypedMatrix4s):TzeTypedMatrix4d;overload;inline;
 function MatrixMultiplyF(const M1, M2: TzeTypedMatrix4d):TzeTypedMatrix4s;inline;
@@ -1588,11 +1588,18 @@ begin
   end;
 end;}
 
-function Vertexmorphabs(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
+(*function Vertexmorphabs(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
 var
   l:double;
 begin
   l:={Vertexlength}Vector1.LengthTo(Vector2);
+
+  with TzePoint3d((@vector2)^) do begin
+    Result.x:=x+(x-vector1.x)*a/l;
+    Result.y:=y+(y-vector1.y)*a/l;
+    Result.z:=z+(z-vector1.z)*a/l;
+  end;
+  {
   if a>0 then
     a:=1+a/l
   else
@@ -1601,24 +1608,27 @@ begin
     Result.x:=x+(vector2.x-x)*a;
     Result.y:=y+(vector2.y-y)*a;
     Result.z:=z+(vector2.z-z)*a;
-  end;
-end;
+  end;}
+end;*)
 
-function Vertexmorphabs2(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
+(*function Vertexmorphabs2(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
 var
   l:double;
+  tv:TzeVector3d;
 begin
-  l:={Vertexlength}Vector1.LengthTo(Vector2);
+  tv:=vector2-vector1;
+  l:=tv.Length;
   if a>0 then
     a:=a/l
   else
     a:=1+a/l;
-  with TzePoint3d((@vector1)^) do begin
-    Result.x:=x+(vector2.x-x)*a;
-    Result.y:=y+(vector2.y-y)*a;
-    Result.z:=z+(vector2.z-z)*a;
-  end;
-end;
+  Result:=vector1+tv*a;
+  {with TzePoint3d((@vector1)^) do begin
+    Result.x:=x+tv.x*a;
+    Result.y:=y+tv.y*a;
+    Result.z:=z+tv.z*a;
+  end;}
+end;*)
 
 {function NormalizeVertex(const Vector1:TzeVector3d):TzeVector3d;
 
