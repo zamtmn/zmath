@@ -185,7 +185,7 @@ begin
   self.v:=AData;
 end;
 
-{$IfDef TwoDimension}
+{$If defined(HAS_Y) and (not defined(HAS_Z))}
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Turned90R:TSelf;
 begin
  result.x:=y;
@@ -215,6 +215,5 @@ begin
   y:=x;
   x:=-tmp;
 end;
-
 {$EndIf}
 

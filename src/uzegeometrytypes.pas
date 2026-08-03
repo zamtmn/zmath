@@ -16,7 +16,7 @@
 @author(Andrey Zubarev <zamtmn@yandex.ru>) 
 }
 
-unit uzegeometrytypes;
+unit uzeGeometryTypes;
 {$Mode delphi}{$ModeSwitch advancedrecords}{$ModeSwitch typehelpers}{$H+}
 {$Macro on}
 
@@ -29,8 +29,7 @@ resourcestring
   rsDivByZero='Divide by zero';
 
 const
-  EPSILON:single=1e-40;
-  EPSILON2:single=1e-30;
+  EPSILON2=1e-30;
   eps=1e-14;
   floateps=1e-6;
   sqreps=1e-7;
@@ -48,168 +47,77 @@ type
     function IsIdentity:boolean;inline;
   end;
   GVector4<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
-    const
-      ArrS=4;
-    type
-      TCoordRec=record x,y,z,w:T end;
     {$Define VectorTypeName := GVector4}
+    {$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}{$Define HAS_W}
     {$Include gvectorintf.inc}
+    {$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}{$UnDef HAS_W}
     {$UnDef VectorTypeName}
-    var
-      case Integer of
-        0:(x,y,z,w:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-        1:(v:TCoordArray);
-        //2:(r:TCoordRec);
-        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
   GVector3<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
-    const
-      ArrS=3;
-    type
-      TCoordRec=record x,y,z:T end;
     {$Define VectorTypeName := GVector3}
+    {$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}
     {$Include gvectorintf.inc}
+    {$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}
     {$UnDef VectorTypeName}
-    var
-      case Integer of
-        0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-        1:(v:TCoordArray);
-        //2:(r:TCoordRec);
-        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
   GVector2<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
-    const
-      ArrS=2;
-    type
-      TCoordRec=record x,y:T end;
     {$Define VectorTypeName := GVector2}
-    {$Define TwoDimension}
+    {$Define HAS_X}{$Define HAS_Y}
     {$Include gvectorintf.inc}
-    {$UnDef TwoDimension}
+    {$UnDef HAS_X}{$UnDef HAS_Y}
     {$UnDef VectorTypeName}
-    var
-      case Integer of
-        0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-        1:(v:TCoordArray);
-        //2:(r:TCoordRec);
-        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
   GVector4i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
-    const
-      ArrS=4;
-    type
-      TCoordRec=record x,y,z,w:T end;
     {$Define VectorTypeName := GVector4i}
     {$Define IntParam}
+    {$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}{$Define HAS_W}
     {$Include gvectorintf.inc}
+    {$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}{$UnDef HAS_W}
     {$UnDef IntParam}
     {$UnDef VectorTypeName}
-    var
-      case Integer of
-        0:(x,y,z,w:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-        1:(v:TCoordArray);
-        //2:(r:TCoordRec);
-        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
   GVector3i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
-    const
-      ArrS=3;
-    type
-      TCoordRec=record x,y,z:T end;
     {$Define VectorTypeName := GVector3i}
     {$Define IntParam}
+    {$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}
     {$Include gvectorintf.inc}
+    {$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}
     {$UnDef IntParam}
     {$UnDef VectorTypeName}
-    var
-      case Integer of
-        0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-        1:(v:TCoordArray);
-        //2:(r:TCoordRec);
-        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
-
-
   GVector2i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>=record
-    const
-      ArrS=2;
-    type
-      TCoordRec=record x,y:T end;
     {$Define VectorTypeName := GVector2i}
     {$Define IntParam}
-    {$Define TwoDimension}
+    {$Define HAS_X}{$Define HAS_Y}
     {$Include gvectorintf.inc}
-    {$UnDef TwoDimension}
+    {$UnDef HAS_X}{$UnDef HAS_Y}
     {$UnDef IntParam}
     {$UnDef VectorTypeName}
-    var
-      case Integer of
-        0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-        1:(v:TCoordArray);
-        //2:(r:TCoordRec);
-        3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
   end;
 
 
   GPoint3<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>=record
-    const
-      ArrS=3;
-  type
-    TCoordRec=record
-      x,y,z:T
-    end;
     {$Define PointTypeName := GPoint3}
+    {$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}
     {$Include gpointintf.inc}
+    {$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}
     {$UnDef PointTypeName}
-    var
-    case integer of
-      0:(x,y,z:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-      1:(v:TCoordArray);
-      //2:(r:TCoordRec);
-      3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-      4:(asVector:GVectorTypeName);
   end;
   GPoint2<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>=record
-    const
-      ArrS=2;
-  type
-    TCoordRec=record
-      x,y:T
-    end;
     {$Define PointTypeName := GPoint2}
-    {$Define TwoDimension}
+    {$Define HAS_X}{$Define HAS_Y}
     {$Include gpointintf.inc}
-    {$UnDef TwoDimension}
+    {$UnDef HAS_X}{$UnDef HAS_Y}
     {$UnDef PointTypeName}
-    var
-    case integer of
-      0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-      1:(v:TCoordArray);
-      //2:(r:TCoordRec);
-      3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-      4:(asVector:GVectorTypeName);
   end;
   GPoint2i<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>=record
-    const
-      ArrS=2;
-  type
-    TCoordRec=record
-      x,y:T
-    end;
     {$Define PointTypeName := GPoint2i}
     {$Define IntParam}
-    {$Define TwoDimension}
+    {$Define HAS_X}{$Define HAS_Y}
     {$Include gpointintf.inc}
-    {$UnDef TwoDimension}
+    {$UnDef HAS_X}{$UnDef HAS_Y}
     {$UnDef IntParam}
     {$UnDef PointTypeName}
-    var
-    case integer of
-      0:(x,y:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-      1:(v:TCoordArray);
-      //2:(r:TCoordRec);
-      3:(Slice:GSlice;CutOff:{$if FPC_FULLVERSION<30205}TT{$else}T{$endif});
-      4:(asVector:GVectorTypeName);
   end;
 
   PTZeDimLess=^TZeDimLess;
@@ -396,6 +304,10 @@ type
     function asPoint2i:TzePoint2i;inline;
   end;
 
+  TzeTypedMatrix4dHlpr=type helper for TzeTypedMatrix4d
+    function ToTypedMatrix4s:TzeTypedMatrix4s;inline;
+  end;
+
   InterceptProp<T>=record
     private
       FisIntercept:Boolean;//**< Есть это пересение или нет
@@ -423,54 +335,66 @@ const
 implementation
 
 {$Define VectorTypeName := GVector4}
+{$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}{$Define HAS_W}
 {$Include gvectorimpl.inc}
+{$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}{$UnDef HAS_W}
 {$UnDef VectorTypeName}
 
 {$Define VectorTypeName := GVector3}
+{$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}
 {$Include gvectorimpl.inc}
+{$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}
 {$UnDef VectorTypeName}
 
 {$DEFINE VectorTypeName := GVector2}
-{$Define TwoDimension}
+{$Define HAS_X}{$Define HAS_Y}
 {$Include gvectorimpl.inc}
-{$UnDef TwoDimension}
+{$UnDef HAS_X}{$UnDef HAS_Y}
 {$UnDef VectorTypeName}
 
 {$Define VectorTypeName := GVector4i}
 {$Define IntParam}
+{$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}{$Define HAS_W}
 {$Include gvectorimpl.inc}
+{$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}{$UnDef HAS_W}
 {$UnDef IntParam}
 {$UnDef VectorTypeName}
 
 {$Define VectorTypeName := GVector3i}
 {$Define IntParam}
+{$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}
 {$Include gvectorimpl.inc}
+{$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}
 {$UnDef IntParam}
 {$UnDef VectorTypeName}
 
 {$DEFINE VectorTypeName := GVector2i}
 {$Define IntParam}
-{$Define TwoDimension}
+{$Define HAS_X}{$Define HAS_Y}
 {$Include gvectorimpl.inc}
-{$UnDef TwoDimension}
+{$UnDef HAS_X}{$UnDef HAS_Y}
 {$UnDef IntParam}
 {$UnDef VectorTypeName}
 
 
 {$Define PointTypeName := GPoint3}
+{$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}
 {$Include gpointimpl.inc}
+{$UnDef HAS_X}{$UnDef HAS_Y}{$UnDef HAS_Z}
 {$UnDef PointTypeName}
 
 {$DEFINE PointTypeName := GPoint2}
-{$Define TwoDimension}
+{$Define HAS_X}{$Define HAS_Y}
 {$Include gpointimpl.inc}
-{$UnDef TwoDimension}
+{$UnDef HAS_X}{$UnDef HAS_Y}
 {$UnDef PointTypeName}
 
 {$DEFINE PointTypeName := GPoint2i}
 {$Define IntParam}
 {$Define TwoDimension}
+{$Define HAS_X}{$Define HAS_Y}
 {$Include gpointimpl.inc}
+{$UnDef HAS_X}{$UnDef HAS_Y}
 {$UnDef TwoDimension}
 {$UnDef IntParam}
 {$UnDef PointTypeName}
@@ -557,6 +481,15 @@ end;
 function GMatrix4<TMtr>.IsIdentity:Boolean;
 begin
   result:=(t=CMTIdentity);
+end;
+
+function TzeTypedMatrix4dHlpr.ToTypedMatrix4s:TzeTypedMatrix4s;
+begin
+  result.mtr.l0:=mtr.l0.asVector4s;
+  result.mtr.l1:=mtr.l1.asVector4s;
+  result.mtr.l2:=mtr.l2.asVector4s;
+  result.mtr.l3:=mtr.l3.asVector4s;
+  result.t:=t;
 end;
 
 end.

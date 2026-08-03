@@ -16,37 +16,41 @@
 @author(Andrey Zubarev <zamtmn@yandex.ru>) 
 }
 
-unit uzegeometry;
+unit uzeGeometry;
 {$Mode objfpc}{$ModeSwitch advancedrecords}{$ModeSwitch typehelpers}{$H+}
 {Inline off}
 
 interface
 uses
   SysUtils,math,
-  uzegeometrytypes,uzbLogIntf;
+  uzeGeometryTypes,uzbLogIntf;
 
 const
   cEmptyMtr:TzeMatrix4d=(v:((v:(0,0,0,0)),
-                            (v:(0,0,0,0)),
-                            (v:(0,0,0,0)),
-                            (v:(0,0,0,0))));
+    (v:(0,0,0,0)),
+    (v:(0,0,0,0)),
+    (v:(0,0,0,0))));
   cOneMtr:TzeMatrix4d=(v:((v:(1,0,0,0)),
-                          (v:(0,1,0,0)),
-                          (v:(0,0,1,0)),
-                          (v:(0,0,0,1))));
+    (v:(0,1,0,0)),
+    (v:(0,0,1,0)),
+    (v:(0,0,0,1))));
   cEmptyMatrix:TzeTypedMatrix4d=(mtr:(v:((v:(0,0,0,0)),
-                                         (v:(0,0,0,0)),
-                                         (v:(0,0,0,0)),
-                                         (v:(0,0,0,0))));
-                                 t:[]);
+    (v:(0,0,0,0)),
+    (v:(0,0,0,0)),
+    (v:(0,0,0,0))));
+    t:[]);
   cOneMatrix:TzeTypedMatrix4d=(mtr:(v:((v:(1,0,0,0)),
-                                       (v:(0,1,0,0)),
-                                       (v:(0,0,1,0)),
-                                       (v:(0,0,0,1))));
-                               t:CMTIdentity);
+    (v:(0,1,0,0)),
+    (v:(0,0,1,0)),
+    (v:(0,0,0,1))));
+    t:CMTIdentity);
+
   cRightAngle=pi/2;
   cIdentityQuaternion:TzeQuaternion=(ImagPart:(x:0;y:0;z:0);RealPart:1);
-  cxAxisIndex=0;cyAxisIndex=1;czAxisIndex=2;cwAxisIndex=3;
+  cxAxisIndex=0;
+  cyAxisIndex=1;
+  czAxisIndex=2;
+  cwAxisIndex=3;
 
   cV3d__0__0__0:TzeVector3d=(x:0;y:0;z:0);
   cV3d__1__0__0:TzeVector3d=(x:1;y:0;z:0);
@@ -81,81 +85,26 @@ const
 
   cP2d__0__0:TzePoint2d=(x:0;y:0);
 
-  BBNul:TBoundingBox=(LBN:(x:0;y:0;z:0);RTF:(x:0;y:0;z:0));
+  cBBNul:TBoundingBox=(LBN:(x:0;y:0;z:0);RTF:(x:0;y:0;z:0));
 
 type
-  DistAndPoint=record
-    point:TzePoint3d;
-    d:Double;
-  end;
-  DistAndt=record
-    t,d:Double;
+
+  TDistWitht=record
+    t,d:double;
   end;
   TCSDir=(TCSDLeft,TCSDRight);
 
-//function ToTzeVector4s(const m:TzeVector4d):TzeVector4s; inline;
-function ToDMatrix4f(const m:TzeTypedMatrix4d):TzeTypedMatrix4s; inline;
-//function ToTzePoint2i(const _V:TzePoint3d):TzePoint2i; inline;
-//function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;inline;
+function pointinquad2d(const x1,y1,x2,y2,xp,yp:single):boolean;inline;
 
-//function intercept2d(const x1, y1, x2, y2, x3, y3, x4, y4: Double): Boolean;inline;
-//function intercept2d2(const x11, y11, x12, y12, x21, y21, x22, y22: Single): Boolean;inline;
-function intercept2dmy(const l1begin,l1end,l2begin,l2end:TzePoint2d):intercept2dprop;//inline;
-function intercept3dmy(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;inline;
-function intercept3dmy2(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;//inline;
+function VectorAngle(const AVector:TzeVector2d):double;
+function TwoVectorAngle(const Vector1,Vector2:TzeVector3d):double;//inline;
 
-//** Функция позволяет найти пересечение по 2-м координатам одной линии и другой
-function intercept3d(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;//inline;
-function pointinquad2d(const x1, y1, x2, y2, xp, yp: Single): Boolean;inline;
-
-//**Функция определения длины по двум точкам с учетом 3-х мерного пространства
-//function Vertexlength(const pt2, pt1: TzePoint3d): Double;inline;
-//function Vertexlength2d(const pt2, pt1: TzePoint2d): Double;inline;
-//function SqrVertexlength(const pt2, pt1: TzePoint3d): Double;inline;overload;
-//function SqrVertexlength(const pt2, pt1: TzePoint2d): Double;inline; overload;
-
-//**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
-//function Vertexmorph(const Vector1, Vector2: TzePoint3d; a: Double): TzePoint3d;inline;overload;
-
-//**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
-//function Vertexmorph(const Vector1, Vector2: TzePoint2d; a: Double): TzePoint2d;inline;overload;
-
-//**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
-//function VertexDmorph(const APt: TzePoint3d;const Vector2: TzeVector3d; a: Double): TzePoint3d;overload;inline;
-
-//**нахождение точки смещения от одной точки к другой в зависимости от коэффициент а
-//function VertexDmorph(const APt: TzePoint3s;const Vector2: TzeVector3s; a: Double): TzePoint3s;overload;inline;
-
-function Vertexangle(const Vector1, Vector2: TzePoint2d): Double;inline;
-function TwoVectorAngle(const Vector1, Vector2: TzeVector3d): Double;//inline;
-//function oneVertexlength(const Vector1: TzeVector3d): Double;inline;
-//function oneVertexlength2D(const Vector1: TzeVector2d): Double;inline;
-//function SqrOneVertexlength(const Vector1: TzeVector3d): Double;inline;
-//function vertexlen2df(const x1, y1, x2, y2: Single): Single;inline;
-//function NormalizeVertex(const Vector1: TzeVector3d): TzeVector3d;inline;
-//function NormalizeVertex2D(const Vector1: TzeVector2d): TzeVector2d;inline;
-//function VertexMulOnSc(const Vector1:TzePoint3d;sc:Double): TzePoint3d;inline;
-//function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:Double): TzePoint2d;inline;
-
-//к первой вершине прибавить вторую по осям Vector1.х + Vector2.х
-//function VertexAdd(const Vector1, Vector2: TzePoint3d): TzePoint3d;inline;overload;
-//function VertexAdd(const Vector1, Vector2: TzePoint3s): TzePoint3s;inline;overload;
-//function VertexAdd(const Vector1, Vector2: TzePoint2d): TzePoint2d;inline;overload;
-//function VertexSub(const Vector1, Vector2: TzePoint3d): TzePoint3d;overload;inline;
-//function VertexSub(const Vector1, Vector2: TzePoint2d): TzePoint2d;overload;inline;
-//function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;overload;inline;
-//function MinusVertex(const Vector1: TzePoint3d): TzePoint3d;inline;
-//function Vertexdmorphabs(const Vector1, Vector2: TzeVector3d;a: Double): TzePoint3d;inline;
-//function Vertexmorphabs(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
-//function Vertexmorphabs2(const Vector1, Vector2: TzePoint3d;a: Double): TzePoint3d;inline;
-function MatrixMultiply(const M1, M2: TzeTypedMatrix4d):TzeTypedMatrix4d;overload;inline;
-function MatrixMultiply(const M1: TzeTypedMatrix4d; const M2: TzeTypedMatrix4s):TzeTypedMatrix4d;overload;inline;
-function MatrixMultiplyF(const M1, M2: TzeTypedMatrix4d):TzeTypedMatrix4s;inline;
+function MatrixMultiply(const M1,M2:TzeTypedMatrix4d):TzeTypedMatrix4d;overload;inline;
+function MatrixMultiply(const M1:TzeTypedMatrix4d;const M2:TzeTypedMatrix4s):TzeTypedMatrix4d;overload;inline;
+function MatrixMultiplyF(const M1,M2:TzeTypedMatrix4d):TzeTypedMatrix4s;inline;
 function VectorTransform(const V:TzeVector4d;const M:TzeTypedMatrix4d):TzeVector4d;overload;inline;
 function VectorTransform(const V:TzeVector4d;const M:TzeTypedMatrix4s):TzeVector4d;overload;inline;
 function VectorTransform(const V:TzeVector4s;const M:TzeTypedMatrix4s):TzeVector4s;overload;inline;
-//procedure normalize4d(var tv:TzeVector4d);overload;inline;
-//procedure normalize4F(var tv:TzeVector4s);overload;inline;
 function VectorTransform2D(const V:TzePoint2d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzeVector3d;const M:TzeTypedMatrix4d):TzeVector3d;overload;inline;
@@ -163,88 +112,82 @@ function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4s):TzePoint
 function VectorTransform3D(const V:TzePoint3s;const M:TzeTypedMatrix4d):TzePoint3s;overload;inline;
 function VectorTransform3D(const V:TzePoint3s;const M:TzeTypedMatrix4s):TzePoint3s;overload;inline;
 
-function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4d; MatrixAlreadyTransposed:Boolean=false):TzeFrustum;overload;inline;
-function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4s; MatrixAlreadyTransposed:Boolean=false):TzeFrustum;overload;inline;
+function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4d;
+  MatrixAlreadyTransposed:boolean=False):TzeFrustum;overload;inline;
+function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4s;
+  MatrixAlreadyTransposed:boolean=False):TzeFrustum;overload;inline;
 
-procedure MatrixTranspose(var M: TzeTypedMatrix4d);overload;inline;
-procedure MatrixTranspose(var M: TzeTypedMatrix4s);overload;inline;
-procedure MatrixNormalize(var M: TzeTypedMatrix4d);inline;
-function CreateRotationMatrixX(const angle: Double): TzeTypedMatrix4d;inline;
-function CreateRotationMatrixY(const angle: Double): TzeTypedMatrix4d;inline;
-function CreateRotationMatrixZ(const angle: Double): TzeTypedMatrix4d;inline;
-function CreateRotatedXVector(const angle: Double):TzeVector3d;inline;
-function CreateRotatedYVector(const angle: Double):TzeVector3d;inline;
-function CreateAffineRotationMatrix(const anAxis: TzeVector3d; angle: double):TzeTypedMatrix4d;overload;inline;
+procedure MatrixTranspose(var M:TzeTypedMatrix4d);overload;inline;
+procedure MatrixTranspose(var M:TzeTypedMatrix4s);overload;inline;
+procedure MatrixNormalize(var M:TzeTypedMatrix4d);inline;
+function CreateRotationMatrixX(const angle:double):TzeTypedMatrix4d;inline;
+function CreateRotationMatrixY(const angle:double):TzeTypedMatrix4d;inline;
+function CreateRotationMatrixZ(const angle:double):TzeTypedMatrix4d;inline;
+function CreateRotatedXVector(const angle:double):TzeVector3d;inline;
+function CreateRotatedYVector(const angle:double):TzeVector3d;inline;
+function CreateAffineRotationMatrix(const anAxis:TzeVector3d;angle:double):TzeTypedMatrix4d;overload;inline;
 function CreateAffineRotationMatrix(const AAxis,ARefV,AV:TzeVector3d):TzeTypedMatrix4d;overload;inline;
 
-//function distance2piece(const q:TzePoint2i;const p1,p2:TzePoint2d): double;overload;inline;
-function distance2piece(const q,p1,p2:TzePoint3d): {DistAndPoint}double;overload;inline;
+function distance2piece(const q,p1,p2:TzePoint3d):double;overload;inline;
 
-//function distance2piece_2(const q:TzePoint2i; const p1,p2:TzePoint2d): double;overload;inline;
-//function distance2piece_2(const q:TzePoint2i; const p1,p2:TzePoint2i): double;overload;inline;
-function distance2piece_2Dmy(const q:TzePoint2d; const p1,p2:TzePoint2d): double;inline;
+function distance2piece_2Dmy(const q:TzePoint2d;const p1,p2:TzePoint2d):double;inline;
 
-//function distance2piece_2_xy(const q:TzePoint2i;const p1,p2:TzePoint2d):TzePoint2i;inline;
-
-//function distance2point_2(const p1,p2:TzePoint2i):Integer;inline;
-function distance2ray(const q:TzePoint3d;const p1,p2:TzePoint3d):DistAndt;
+function distance2ray(const q:TzePoint3d;const p1,p2:TzePoint3d):TDistWitht;
 function CreateTranslationMatrix(const _V:TzeVector3d):TzeTypedMatrix4d;inline;overload;
-function CreateTranslationMatrix(const tx,ty,tz:Double):TzeTypedMatrix4d;inline;overload;
-function CreateScaleMatrix(const V:TzeVector3d): TzeTypedMatrix4d;inline;overload;
-function CreateScaleMatrix(const s:Double): TzeTypedMatrix4d;inline;overload;
-function CreateScaleMatrix(const sx,sy,sz:Double): TzeTypedMatrix4d;inline;overload;
-function CreateReflectionMatrix(const plane:TzeVector4d): TzeTypedMatrix4d;
+function CreateTranslationMatrix(const tx,ty,tz:double):TzeTypedMatrix4d;inline;overload;
+function CreateScaleMatrix(const V:TzeVector3d):TzeTypedMatrix4d;inline;overload;
+function CreateScaleMatrix(const s:double):TzeTypedMatrix4d;inline;overload;
+function CreateScaleMatrix(const sx,sy,sz:double):TzeTypedMatrix4d;inline;overload;
+function CreateReflectionMatrix(const plane:TzeVector4d):TzeTypedMatrix4d;
 //**Создать 3D вершину
-function CreateVertex(const _x,_y,_z:Double):TzePoint3d;inline;
-function CreateVector(const _x,_y,_z:Double):TzeVector3d;inline;
+function CreateVertex(const _x,_y,_z:double):TzePoint3d;inline;
+function CreateVector(const _x,_y,_z:double):TzeVector3d;inline;
 function CreateVertexFromArray(var counter:integer;const args:array of const):TzePoint3d;
 function CreateVertex2DFromArray(var counter:integer;const args:array of const):TzePoint2d;
-function CreateDoubleFromArray(var counter:integer;const args:array of const):Double; inline;
-function CreateStringFromArray(var counter:integer;const args:array of const):String; inline;
-function CreateBooleanFromArray(var counter:integer;const args:array of const):Boolean; inline;
+function CreateDoubleFromArray(var counter:integer;const args:array of const):double;
+function CreateStringFromArray(var counter:integer;const args:array of const):string;
+function CreateBooleanFromArray(var counter:integer;const args:array of const):boolean;
 //**Создать 2D вершину
-function CreateVertex2D(const _x,_y:Double):TzePoint2d;inline;
-function IsPointInBB(const point, LBN, RTF:TzePoint3d):Boolean; overload; inline;
-function IsPointInBB(const point:TzePoint3d; const fistbb:TBoundingBox):Boolean; overload; inline;
+function CreateVertex2D(const _x,_y:double):TzePoint2d;inline;
+function CreateVector2D(const _x,_y:double):TzeVector2d;inline;
+function IsPointInBB(const point,LBN,RTF:TzePoint3d):boolean;overload;inline;
+function IsPointInBB(const point:TzePoint3d;const fistbb:TBoundingBox):boolean;overload;inline;
 function CreateBBFrom2Point(const p1,p2:TzePoint3d):TBoundingBox;
 function CreateBBFromPoint(const p:TzePoint3d):TBoundingBox;inline;
-procedure ConcatBB(var fistbb:TBoundingBox;const secbb:TBoundingBox); inline;
+procedure ConcatBB(var fistbb:TBoundingBox;const secbb:TBoundingBox);inline;
 procedure concatBBandPoint(var fistbb:TBoundingBox;const point:TzePoint3d);inline;
-function IsBBNul(const v1, v2: TzePoint3d): Boolean; overload; inline;
-function IsBBNul(const bb:TBoundingBox):boolean; overload; inline;
-function boundingintersect(const bb1,bb2:TBoundingBox):Boolean;inline;
-function ScaleBB(const bb:TBoundingBox;const k:Double):TBoundingBox;
-procedure MatrixInvert(var M: TzeTypedMatrix4d);inline;
+function IsBBNul(const v1,v2:TzePoint3d):boolean;overload;inline;
+function IsBBNul(const bb:TBoundingBox):boolean;overload;inline;
+function boundingintersect(const bb1,bb2:TBoundingBox):boolean;inline;
+function ScaleBB(const bb:TBoundingBox;const k:double):TBoundingBox;
+procedure MatrixInvert(var M:TzeTypedMatrix4d);inline;
 function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;inline;
-function scalardot(const v1,v2:TzeVector3d):Double;inline;
-function SQRdist_Point_to_Segment(const p:TzePoint3d;const s0,s1:TzePoint3d):Double;inline;
+function scalardot(const v1,v2:TzeVector3d):double;inline;
+function SQRdist_Point_to_Segment(const p:TzePoint3d;const s0,s1:TzePoint3d):double;inline;
 function NearestPointOnSegment(const p:TzePoint3d;const s0,s1:TzePoint3d):TzePoint3d;inline;
-//function IsPointEqual(const p1,p2:TzePoint3d;const _eps:Double=sqreps):boolean;overload;inline;
-//function IsPointEqual(const p1,p2:TzePoint2d;const _eps:double=sqreps):boolean;overload;inline;
-//function IsVectorNul(const p2:TzeVector3d):boolean;inline;
-//function IsDoubleNotEqual(const d1,d2:Double;const _eps:Double=eps):boolean;inline;
-//function IsDoubleEqual(const d1,d2:Double;const _eps:Double=eps):boolean;inline;
-//function IsFloatNotEqual(const d1,d2:Single;const _floateps:Single=floateps):boolean;inline;
-//function IsZero(const d:Double;const _eps:Double=eps):boolean;inline;
-//function IsNotZero(const d:Double;const _eps:Double=eps):boolean;inline;
 
 //проверка вектора на близость к оси Z (координаты x и y меньше 1/64
 //используется для Arbitrary Axis Algorithm (DXF)
 function IsNearToZ(const v:TzeVector3d):boolean;inline;
 function IsValidRange(const d1,d2:Double):boolean;inline;
 
-procedure _myGluProject(const objx,objy,objz:Double;const modelMatrix,projMatrix:PzeTypedMatrix4d;const viewport:PzeVector4i; out winx,winy,winz:Double);inline;
-procedure _myGluProject2(const objcoord:TzePoint3d;const modelMatrix,projMatrix:PzeTypedMatrix4d;const viewport:PzeVector4i; out wincoord:TzePoint3d);inline;
-procedure _myGluUnProject(const winx,winy,winz:Double;const modelMatrix,projMatrix:PzeTypedMatrix4d;const viewport:PzeVector4i;out objx,objy,objz:Double);inline;
+procedure _myGluProject(const objx,objy,objz:Double;const modelMatrix,projMatrix:PzeTypedMatrix4d;
+  const viewport:PzeVector4i; out winx,winy,winz:Double);inline;
+procedure _myGluProject2(const objcoord:TzePoint3d;const modelMatrix,projMatrix:PzeTypedMatrix4d;
+  const viewport:PzeVector4i; out wincoord:TzePoint3d);inline;
+procedure _myGluUnProject(const winx,winy,winz:Double;const modelMatrix,projMatrix:PzeTypedMatrix4d;
+  const viewport:PzeVector4i;out objx,objy,objz:Double);inline;
 
-function ortho(const xmin,xmax,ymin,ymax,zmin,zmax:Double;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;{inline;}
+function Ortho(const xmin,xmax,ymin,ymax,zmin,zmax:Double;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;{inline;}
 function Perspective(const fovy,W_H,zmin,zmax:Double;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;inline;
 function LookAt(point:TzePoint3d;ex,ey,ez:TzeVector3d;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;inline;
 
 function calcfrustum(const clip:PzeTypedMatrix4d):TzeFrustum;inline;
 function PointOf3PlaneIntersect(const P1,P2,P3:TzeVector4d):TzePoint3d;inline;
-function PointOfRayPlaneIntersect(const p1:TzePoint3d;const d:TzeVector3d;const plane:TzeVector4d;out point :TzePoint3d):Boolean;overload;inline;
-function PointOfRayPlaneIntersect(const p1:TzePoint3d;const d:TzeVector3d;const plane:TzeVector4d;out t :double):Boolean;overload;inline;
+function PointOfRayPlaneIntersect(const p1:TzePoint3d;const d:TzeVector3d;const plane:TzeVector4d;
+  out point :TzePoint3d):Boolean;overload;inline;
+function PointOfRayPlaneIntersect(const p1:TzePoint3d;const d:TzeVector3d;const plane:TzeVector4d;
+  out t :double):Boolean;overload;inline;
 function PlaneFrom3Pont(const P1,P2,P3:TzePoint3d):TzeVector4d;inline;
 procedure NormalizePlane(var plane:TzeVector4d);inline;
 
@@ -274,45 +217,53 @@ function GetCSDirFrom0x0y2D(const ox,oy:TzeVector3d):TCSDir;
 function CalcDisplaySubFrustum(const x,y,w,h:Double;const mm,pm:TzeTypedMatrix4d;const vp:TzeVector4i):TzeFrustum;
 function myPickMatrix(const x,y,deltax,deltay:Double;const vp:TzeVector4i): TzeTypedMatrix4d;
 
-function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d;const PointInWCS:TzePoint3d;out scale:TzeVector3d):GDBObj2dprop;
+function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d;const PointInWCS:TzePoint3d;
+  out scale:TzeVector3d):GDBObj2dprop;
 function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzeVector3d):GDBObj2dprop;
 
 function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer):integer;overload;
-function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer;var ActualDivCount:Integer):integer;overload;
-procedure CalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;var pts:array of TzePoint2d;divcount:integer);
+function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer;
+  var ActualDivCount:Integer):integer;overload;
+procedure CalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;var pts:array of TzePoint2d;
+  divcount:integer);
+
+function intercept2dmy(const l1begin,l1end,l2begin,l2end:TzePoint2d):intercept2dprop;//inline;
+function intercept3dmy(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;//inline;
+function intercept3dmy2(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;//inline;
+//** Функция позволяет найти пересечение по 2-м координатам одной линии и другой
+function intercept3d(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;//inline;
+
 
 operator -(const l:TzePoint2d;r:TzePoint2i):TzePoint2d;inline;overload;
 
 type
   TLineClipArray=array[0..5]of Double;
 
-{operator-(const l,r:TzePoint3s):TzePoint3s;
-operator/(const l:TzeVector3d;const r:double):TzeVector3d;}
-
 implementation
+
+function CreateVertex(const _x,_y,_z:double):TzePoint3d;
+begin
+  with TzePoint3d((@Result)^) do begin
+    x:=_x;
+    y:=_y;
+    z:=_z;
+  end;
+end;
+
+function CreateVector(const _x,_y,_z:double):TzeVector3d;
+begin
+  with TzeVector3d((@Result)^) do begin
+    x:=_x;
+    y:=_y;
+    z:=_z;
+  end;
+end;
 
 operator -(const l:TzePoint2d;r:TzePoint2i):TzePoint2d;
 begin
   result.x:=l.x-r.x;
   result.y:=l.y-r.y;
 end;
-
-{operator-(const l,r:TzePoint3s):TzePoint3s;
-begin
-  with TzePoint3s((@Result)^) do
-  begin
-    x:=l.x-r.x;
-    y:=l.y-r.y;
-    z:=l.z-r.z;
-  end;
-end;
-
-operator/(const l:TzePoint3d;const r:double):TzePoint3d;
-begin
-  result.x:=l.x/r;
-  result.y:=l.y/r;
-  result.z:=l.z/r;
-end;}
 
 function PreCalcBulgeToArcSegment(constref p1,p2:TzePoint2d;const bulge:double;const divcount:integer):integer;overload;
 begin
@@ -343,8 +294,6 @@ begin
   h:=l*bulge/2;
   pc:=(p1+p2.asVector)/2;
   n:=d.Turned90L;
-  {n.x:=-d.y;
-  n.y:=d.x;}
   n.Normalize;
   pac:=pc-n*h;
   if divcount=1 then begin
@@ -359,63 +308,6 @@ begin
   end;
 end;
 
-function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d; const PointInWCS:TzePoint3d; out scale:TzeVector3d):GDBObj2dprop;
-var
-  //tznam,tr:Double;
-  BX,BY,BZ:TzeVector3d;
-begin
-  scale.x:=ScaledBX.Length;//oneVertexlength(ScaledBX);
-  scale.y:=ScaledBY.Length;//oneVertexlength(ScaledBY);
-  scale.z:=ScaledBZ.Length;//oneVertexlength(ScaledBZ);
-  if (abs(scale.x)>eps)and(abs(scale.y)>eps)and(abs(scale.z)>eps)then begin
-
-    BX:=ScaledBX/scale.x;
-    BY:=ScaledBY/scale.y;
-    BZ:=ScaledBZ/scale.z;
-
-
-    if scalardot(BX,VectorDot(BY,Bz))<0 then
-      scale.x:=-scale.x;
-
-    result.Basis.ox:=BX;
-    result.Basis.oy:=BY;
-    result.Basis.oz:=BZ;
-
-    BX:=GetXfFromZ(BZ).Normalized;
-    BY:=VectorDot(BZ,Bx).Normalized;
-
-    //вариант из https://ezdxf.readthedocs.io/en/stable/concepts/ocs.html#arbitrary-axis-algorithm
-    result.P_insert.x:=PointInWCS.x*BX.x+PointInWCS.y*BX.y+PointInWCS.z*BX.z;
-    result.P_insert.y:=PointInWCS.x*BY.x+PointInWCS.y*BY.y+PointInWCS.z*BY.z;
-    result.P_insert.z:=PointInWCS.x*BZ.x+PointInWCS.y*BZ.y+PointInWCS.z*BZ.z;
-
-    //вариант расчета без учета что базисные векторы ортогональны
-    (*
-    //  -((-BY.z*BZ.y*PointInWCS.x+BY.y*BZ.z*PointInWCS.x+BY.z*BZ.x*PointInWCS.y-BY.x*BZ.z*PointInWCS.y-BY.y*BZ.x*PointInWCS.z+BY.x*BZ.y*PointInWCS.z)
-    //X=--------------------------------------------------------------------------------------------
-    //  (BX.z*BY.y*BZ.x-BX.y*BY.z*BZ.x-BX.z*BY.x*BZ.y+BX.x*BY.z*BZ.y+BX.y*BY.x*BZ.z-BX.x*BY.y*BZ.z))
-
-    //  -((BX.z*BZ.y*PointInWCS.x-BX.y*BZ.z*PointInWCS.x-BX.z*BZ.x*PointInWCS.y+BX.x*BZ.z*PointInWCS.y+BX.y*BZ.x*PointInWCS.z-BX.x*BZ.y*PointInWCS.z)
-    //Y=--------------------------------------------------------------------------------------------
-    //  (BX.z*BY.y*BZ.x-BX.y*BY.z*BZ.x-BX.z*BY.x*BZ.y+BX.x*BY.z*BZ.y+BX.y*BY.x*BZ.z-BX.x*BY.y*BZ.z))
-
-    //  -((-BX.z*BY.y*PointInWCS.x+BX.y*BY.z*PointInWCS.x+BX.z*BY.x*PointInWCS.y-BX.x*BY.z*PointInWCS.y-BX.y*BY.x*PointInWCS.z+BX.x*BY.y*PointInWCS.z)
-    //Z=--------------------------------------------------------------------------------------------
-    //  (BX.z*BY.y*BZ.x-BX.y*BY.z*BZ.x-BX.z*BY.x*BZ.y+BX.x*BY.z*BZ.y+BX.y*BY.x*BZ.z-BX.x*BY.y*BZ.z))
-
-    tznam:=BX.z*BY.y*BZ.x-BX.y*BY.z*BZ.x-BX.z*BY.x*BZ.y+BX.x*BY.z*BZ.y+BX.y*BY.x*BZ.z-BX.x*BY.y*BZ.z;
-    if abs(tznam)>eps then begin
-      tr:=-BY.z*BZ.y*PointInWCS.x+BY.y*BZ.z*PointInWCS.x+BY.z*BZ.x*PointInWCS.y-BY.x*BZ.z*PointInWCS.y-BY.y*BZ.x*PointInWCS.z+BY.x*BZ.y*PointInWCS.z;
-      result.P_insert.x:=-tr/tznam;
-      tr:=BX.z*BZ.y*PointInWCS.x-BX.y*BZ.z*PointInWCS.x-BX.z*BZ.x*PointInWCS.y+BX.x*BZ.z*PointInWCS.y+BX.y*BZ.x*PointInWCS.z-BX.x*BZ.y*PointInWCS.z;
-      result.P_insert.y:=-tr/tznam;
-      tr:=-BX.z*BY.y*PointInWCS.x+BX.y*BY.z*PointInWCS.x+BX.z*BY.x*PointInWCS.y-BX.x*BY.z*PointInWCS.y-BX.y*BY.x*PointInWCS.z+BX.x*BY.y*PointInWCS.z;
-      result.P_insert.z:=-tr/tznam;
-    end;
-    *)
-  end;
-end;
-
 function GetPInsertInOCSBymatrix(constref matrix:TzeTypedMatrix4d;out scale:TzeVector3d):GDBObj2dprop;
 var
   BX,BY,BZ:TzeVector3d;
@@ -427,76 +319,6 @@ begin
   pt:=matrix.mtr.v[3].Slice.asPoint3d;
   result:=GetPointInOCSByBasis(BX,BY,BZ,pt,scale);
 end;
-(*
-function VertexSub(const Vector1, Vector2: TzePoint3d): TzePoint3d;
-begin
-  result:=(Vector1-Vector2).asPoint3d;
-  {with TzePoint3d((@Result)^) do
-  begin
-    X := Vector1.x - Vector2.x;
-    Y := Vector1.y - Vector2.y;
-    Z := Vector1.z - Vector2.z;
-  end;}
-end;
-
-function VertexSub(const Vector1, Vector2: TzePoint2d): TzePoint2d;
-begin
-  result:=(Vector1-Vector2).asPoint2d;
-  {with TzePoint2d((@Result)^) do
-  begin
-    X := Vector1.x - Vector2.x;
-    Y := Vector1.y - Vector2.y;
-  end;}
-end;
-
-function VertexSub(const Vector1, Vector2: TzePoint3s): TzePoint3s;
-begin
-  result:=(Vector1-Vector2).asPoint3s;
-  {with TzePoint3s((@Result)^) do
-  begin
-    X := Vector1.x - Vector2.x;
-    Y := Vector1.y - Vector2.y;
-    Z := Vector1.z - Vector2.z;
-  end;}
-end;
-*)
-(*
-function ToTzeVector4s(const m:TzeVector4d):TzeVector4s; inline;
-begin
-  with TzeVector4s((@result)^) do// Этот хак убирает по одной лишней инструкции с каждого присвоения
-  begin                          // возможно в будущем, это можно будет убрать, когда компилятор
-                                 // сможет сам это оптимизировать
-    v[0]:=m.v[0];
-    v[1]:=m.v[1];
-    v[2]:=m.v[2];
-    v[3]:=m.v[3];
-  end;
-  //result.v[0]:=m.v[0];
-  //result.v[1]:=m.v[1];
-  //result.v[2]:=m.v[2];
-  //result.v[3]:=m.v[3];
-end;*)
-function ToDMatrix4f(const m:TzeTypedMatrix4d):TzeTypedMatrix4s;
-begin
-  result.mtr.v[0]:={ToTzeVector4s}(m.mtr.v[0].asVector4s);
-  result.mtr.v[1]:={ToTzeVector4s}(m.mtr.v[1].asVector4s);
-  result.mtr.v[2]:={ToTzeVector4s}(m.mtr.v[2].asVector4s);
-  result.mtr.v[3]:={ToTzeVector4s}(m.mtr.v[3].asVector4s);
-  result.t:=m.t;
-end;
-
-{function ToTzePoint2i(const _V:TzePoint3d):TzePoint2i;
-begin
-  result.x:=round(_V.x);
-  result.y:=round(_V.y);
-end;}
-
-{function VertexD2S(const Vector1:TzePoint3d): TzePoint3s;
-begin
-  Result.x:=Vector1.x;
-  Result.y:=Vector1.y;
-  Result.z:=Vector1.z;
-end;}
 
 function isNotReadableAngle(Angle:Double):Boolean;
 begin
@@ -512,31 +334,6 @@ begin
   else
     Result:=angle;
 end;
-
-{function IsDoubleNotEqual(const d1,d2:Double;const _eps:Double=eps):boolean;
-begin
-  if abs(d1-d2)>_eps then
-    Result:=true
-  else
-    Result:=false;
-end;}
-{function IsDoubleEqual(const d1,d2:Double;const _eps:Double=eps):boolean;
-begin
-  if abs(d1-d2)>=_eps then
-    Result:=false
-  else
-    Result:=true;
-end;}
-
-{function IsZero(const d:Double;const _eps:Double=eps):boolean;inline;
-begin
-  result:=abs(d)<_eps
-end;}
-
-{function IsNotZero(const d:Double;const _eps:Double=eps):boolean;inline;
-begin
-  result:=abs(d)>=_eps
-end;}
 
 function IsNearToZ(const v:TzeVector3d):boolean;
 const
@@ -556,24 +353,6 @@ begin
       result:=abs(d2.Exponent-d1.Exponent)<45;
   end;
 end;
-
-function GetXfFromZ(const oz:TzeVector3d):TzeVector3d;
-begin
-  //if (abs (oz.x) < 1/64) and (abs (oz.y) < 1/64) then
-  if IsNearToZ(oz)then
-    result:=VectorDot(cV3d__0__1__0,oz)
-  else
-    result:=VectorDot(cV3d__0__0__1,oz);
-  result.Normalize;//:=NormalizeVertex(result);
-end;
-
-{function IsFloatNotEqual(const d1,d2:Single;const _floateps:Single=floateps):boolean;
-begin
-  if abs(d1-d2)>_floateps then
-    Result:=true
-  else
-    Result:=false;
-end;}
 
 function GetMinAndSwap(var position:integer;size:integer;var ca:TLineClipArray):Double;
 var
@@ -749,14 +528,6 @@ begin
   end;
 end;
 
-{function distance2point_2(const p1,p2:TzePoint2i):Integer;
-var
-  x,y:integer;
-begin
-  x:=p2.x-p1.x;
-  y:=p2.y-p1.y;
-  Result:=x*x+y*y;
-end;}
 function MatrixDetInternal(const a1,a2,a3,b1,b2,b3,c1,c2,c3:double):double;inline;
 begin
   Result:=+a1*(b2*c3-b3*c2)
@@ -909,7 +680,7 @@ begin
   end;
 end;
 
-function distance2piece(const q,p1,p2:TzePoint3d):{DistAndPoint}double;
+function distance2piece(const q,p1,p2:TzePoint3d):double;
 var
   t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x:double;
 begin
@@ -930,66 +701,6 @@ begin
   Result:=sqrt(t);
 end;
 
-{function distance2piece(const q:TzePoint2i;const p1,p2:TzePoint2d): double;
-var
-  t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x:double;
-begin
-  p2x_p1x:=p2.x-p1.x;
-  p2y_p1y:=p2.y-p1.y;
-  qx_p1x:=q.x-p1.x;
-  qx_p2x:=q.x-p2.x;
-  qy_p1y:=q.y-p1.y;
-  qy_p2y:=q.y-p2.y;
-  if ((qx_p1x)*(p2x_p1x)+(qy_p1y)*(p2y_p1y))*((qx_p2x)*(p2x_p1x)+(qy_p2y)*(p2y_p1y))>-eps then begin
-    t:=sqr(qx_p1x)+sqr(qy_p1y);
-    w:=sqr(qx_p2x)+sqr(qy_p2y);
-    if w<t then
-      t:=w;
-  end else
-    t:=sqr((qx_p1x)*(p2y_p1y)-(qy_p1y)*(p2x_p1x))/(sqr(p2x_p1x)+sqr(p2y_p1y));
-  Result:=sqrt(t);
-end;}
-
-{function distance2piece_2(const q:TzePoint2i; const p1,p2:TzePoint2d): double;
-var
-  t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x:double;
-begin
-  p2x_p1x:=p2.x-p1.x;
-  p2y_p1y:=p2.y-p1.y;
-  qx_p1x:=q.x-p1.x;
-  qx_p2x:=q.x-p2.x;
-  qy_p1y:=q.y-p1.y;
-  qy_p2y:=q.y-p2.y;
-  if ((qx_p1x)*(p2x_p1x)+(qy_p1y)*(p2y_p1y))*((qx_p2x)*(p2x_p1x)+(qy_p2y)*(p2y_p1y))>-eps then begin
-    t:=sqr(qx_p1x)+sqr(qy_p1y);
-    w:=sqr(qx_p2x)+sqr(qy_p2y);
-    if w<t then
-      t:=w;
-  end else
-    t:=sqr((qx_p1x)*(p2y_p1y)-(qy_p1y)*(p2x_p1x))/(sqr(p2x_p1x)+sqr(p2y_p1y));
-  Result:=t;
-end;}
-
-{function distance2piece_2(const q,p1,p2:TzePoint2i):double;
-var
-  t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x:double;
-begin
-  p2x_p1x:=p2.x-p1.x;
-  p2y_p1y:=p2.y-p1.y;
-  qx_p1x:=q.x-p1.x;
-  qx_p2x:=q.x-p2.x;
-  qy_p1y:=q.y-p1.y;
-  qy_p2y:=q.y-p2.y;
-  if ((qx_p1x)*(p2x_p1x)+(qy_p1y)*(p2y_p1y))*((qx_p2x)*(p2x_p1x)+(qy_p2y)*(p2y_p1y))>-eps then begin
-    t:=sqr(qx_p1x)+sqr(qy_p1y);
-    w:=sqr(qx_p2x)+sqr(qy_p2y);
-    if w<t then
-      t:=w;
-  end else
-    t:=sqr((qx_p1x)*(p2y_p1y)-(qy_p1y)*(p2x_p1x))/(sqr(p2x_p1x)+sqr(p2y_p1y));
-  Result:=t;
-end;}
-
 function distance2piece_2dmy(const q,p1,p2:TzePoint2d):double;
 var
   t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x:double;
@@ -1009,38 +720,6 @@ begin
     t:=sqr((qx_p1x)*(p2y_p1y)-(qy_p1y)*(p2x_p1x))/(sqr(p2x_p1x)+sqr(p2y_p1y));
   Result:=t;
 end;
-
-(*function distance2piece_2_xy(const q:TzePoint2i;const p1,p2:TzePoint2d):TzePoint2i;
-var
-  t,w,p2x_p1x,p2y_p1y,qx_p1x,qy_p1y,qy_p2y,qx_p2x,s1,s2:double;
-begin
-  p2x_p1x:=p2.x-p1.x;
-  p2y_p1y:=p2.y-p1.y;
-  qx_p1x:=q.x-p1.x;
-  qx_p2x:=q.x-p2.x;
-  qy_p1y:=q.y-p1.y;
-  qy_p2y:=q.y-p2.y;
-  s1:=(qx_p1x)*(p2x_p1x)+(qy_p1y)*(p2y_p1y);
-  s2:=(qx_p2x)*(p2x_p1x)+(qy_p2y)*(p2y_p1y);
-  if (s1)*(s2)>-eps then begin
-    t:=sqr(qx_p1x)+sqr(qy_p1y);
-    w:=sqr(qx_p2x)+sqr(qy_p2y);
-    if w<t then begin
-      //t:= w;
-      Result.x:=round(qx_p2x);
-      Result.y:=round(qy_p2y);
-    end else begin
-      Result.x:=round(qx_p1x);
-      Result.y:=round(qy_p1y);
-    end;
-  end else begin
-    s1:=abs(s1/(abs(s1)+abs(s2)));
-    Result.x:=round(qx_p1x-p2x_p1x*s1);
-    Result.y:=round(qy_p1y-p2y_p1y*s1);
-   {t:= sqr((qx_p1x)*(p2y_p1y)-(qy_p1y)*(p2x_p1x))/(sqr(p2x_p1x)+sqr(p2y_p1y));
-    result:= t;}
-  end;
-end;*)
 
 function CreateTranslationMatrix(const _V:TzeVector3d):TzeTypedMatrix4d;
 begin
@@ -1310,30 +989,6 @@ begin
     end;
 end;
 
-{procedure normalize4F(var tv:TzeVector4s);inline;
-begin
-  if abs(tv.w)>eps then
-    if abs(abs(tv.w)-1)>eps then begin
-      with TzeVector4s((@tv)^) do begin
-        x:=x/w;
-        y:=y/w;
-        z:=z/w;
-      end;
-    end;
-end;
-
-procedure normalize4d(var tv:TzeVector4d);inline;
-begin
-  if abs(tv.w)>eps then
-    if abs(abs(tv.w)-1)>eps then begin
-      with TzeVector4d((@tv)^) do begin
-        x:=x/w;
-        y:=y/w;
-        z:=z/w;
-      end;
-    end;
-end;}
-
 function VectorTransform2D(const V:TzePoint2d;const M:TzeTypedMatrix4d):TzePoint3d;
 var
   TV:TzeVector4d;
@@ -1345,8 +1000,6 @@ begin
     tv.z:=0;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
-    //normalize4d(tv);
-    //Result:=tv.Slice.asPoint3d;
     Result:=tv.DeHomogenized.asPoint3d;
   end;
 end;
@@ -1361,8 +1014,6 @@ begin
     tv.Slice:=v.asVector;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
-    //normalize4d(tv);
-    //Result:=tv.Slice.asPoint3d;
     Result:=tv.DeHomogenized.asPoint3d;
   end;
 end;
@@ -1382,8 +1033,6 @@ begin
     tv.Slice:=v.asVector;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
-    //normalize4d(tv);
-    //Result:=tv.Slice.asPoint3d;
     Result:=tv.DeHomogenized.asPoint3d;
   end;
 end;
@@ -1400,7 +1049,6 @@ begin
     tv.z:=v.z;
     tv.w:=1;
     tv:=VectorTransform(tv,m);
-    //normalize4d(tv);
     tv.DeHomogenize;
     Result.x:=tv.x;
     Result.y:=tv.y;
@@ -1417,7 +1065,6 @@ begin
   tv.z:=v.z;
   tv.w:=1;
   tv:=VectorTransform(tv,m);
-  //normalize4f(tv);
   tv.DeHomogenize;
   Result.x:=tv.x;
   Result.y:=tv.y;
@@ -1470,266 +1117,23 @@ begin
   end;
 end;
 
-{function Vertexlength(const pt2,pt1:TzePoint3d):double;
-begin
-  with TzePoint3d((@pt2)^) do
-    Result:=sqrt(sqr(x-pt1.x)+sqr(y-pt1.y)+sqr(z-pt1.z));
-end;}
-
-{function Vertexlength2d(const pt2,pt1:TzePoint2d):double;
-begin
-  with TzePoint2d((@pt2)^) do
-    Result:=sqrt(sqr(x-pt1.x)+sqr(y-pt1.y));
-end;}
-
-{function SqrVertexlength(const pt2,pt1:TzePoint3d):double;
-begin
-  with TzePoint3d((@pt2)^) do
-    Result:=(sqr(x-pt1.x)+sqr(y-pt1.y)+sqr(z-pt1.z));
-end;}
-
-{function SqrVertexlength(const pt2,pt1:TzePoint2d):double;
-begin
-  with TzePoint2d((@pt2)^) do
-    Result:=(sqr(x-pt1.x)+sqr(y-pt1.y));
-end;}
-
-{function oneVertexlength(const Vector1:TzeVector3d):double;
-begin
-  with TzePoint3d((@vector1)^) do
-    Result:=sqrt(sqr(x)+sqr(y)+sqr(z));
-end;}
-
-{function oneVertexlength2D(const Vector1:TzeVector2d):double;
-begin
-  with TzePoint2d((@vector1)^) do
-    Result:=sqrt(sqr(x)+sqr(y));
-end;}
-
-{function SqrOneVertexlength(const Vector1:TzeVector3d):double;
-begin
-  with TzePoint3d((@vector1)^) do
-    Result:=(sqr(x)+sqr(y)+sqr(z));
-end;}
-
-{function vertexlen2df(const x1,y1,x2,y2:single):single;
-begin
-  Result:=sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-end;}
-
-function Vertexangle(const Vector1,Vector2:TzePoint2d):double;
+function VectorAngle(const AVector:TzeVector2d):double;
 var
-  dx,dy,temp:double;
+  temp:double;
 begin
-  dx:=vector2.x-vector1.x;
-  dy:=vector2.y-vector1.y;
-  if dx<>0 then
-    temp:=arctan(abs(dy/dx))
+  if AVector.x<>0 then
+    temp:=arctan(abs(AVector.y/AVector.x))
   else
-    temp:= {arcotan(abs(dx / dy))}pi/2;
-  if (dx>=0) and (dy>=0) then
+    temp:=pi/2;
+  if (AVector.x>=0) and (AVector.y>=0) then
     Result:=temp
-  else if (dx<0) and (dy>=0) then
+  else if (AVector.x<0) and (AVector.y>=0) then
     Result:=pi-temp
-  else if (dx<=0) and (dy<=0) then
+  else if (AVector.x<=0) and (AVector.y<=0) then
     Result:=pi+temp
-  else if (dx>0) and (dy<0) then
+  else if (AVector.x>0) and (AVector.y<0) then
     Result:=2*pi-temp;
 end;
-
-{function Vertexmorph(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
-begin
-  with TzePoint3d((@vector1)^) do begin
-    Result.x:=x+(vector2.x-x)*a;
-    Result.y:=y+(vector2.y-y)*a;
-    Result.z:=z+(vector2.z-z)*a;
-  end;
-end;}
-
-{function Vertexmorph(const Vector1,Vector2:TzePoint2d;a:double):TzePoint2d;
-begin
-  with TzePoint2d((@vector1)^) do begin
-    Result.x:=x+(vector2.x-x)*a;
-    Result.y:=y+(vector2.y-y)*a;
-  end;
-end;}
-
-{function VertexDmorph(const APt: TzePoint3d;const Vector2: TzeVector3d; a: Double):TzePoint3d;
-begin
-  with TzePoint3d((@APt)^) do begin
-    Result.x:=x+(vector2.x)*a;
-    Result.y:=y+(vector2.y)*a;
-    Result.z:=z+(vector2.z)*a;
-  end;
-end;}
-
-{function VertexDmorph(const APt: TzePoint3s;const Vector2: TzeVector3s; a: Double):TzePoint3s;
-begin
-  with TzePoint3s((@APt)^) do begin
-    Result.x:=x+(vector2.x)*a;
-    Result.y:=y+(vector2.y)*a;
-    Result.z:=z+(vector2.z)*a;
-  end;
-end;}
-
-{function Vertexdmorphabs(const Vector1,Vector2:TzeVector3d;a:double):TzePoint3d;
-var
-  l:double;
-begin
-  l:=Vector2.Length;//oneVertexlength(Vector2);
-  if a>0 then
-    a:=a/l
-  else
-    a:=1+a/l;
-  with TzePoint3d((@vector1)^) do begin
-    Result.x:=x+(vector2.x)*a;
-    Result.y:=y+(vector2.y)*a;
-    Result.z:=z+(vector2.z)*a;
-  end;
-end;}
-
-(*function Vertexmorphabs(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
-var
-  l:double;
-begin
-  l:={Vertexlength}Vector1.LengthTo(Vector2);
-
-  with TzePoint3d((@vector2)^) do begin
-    Result.x:=x+(x-vector1.x)*a/l;
-    Result.y:=y+(y-vector1.y)*a/l;
-    Result.z:=z+(z-vector1.z)*a/l;
-  end;
-  {
-  if a>0 then
-    a:=1+a/l
-  else
-    a:=1+a/l;
-  with TzePoint3d((@vector1)^) do begin
-    Result.x:=x+(vector2.x-x)*a;
-    Result.y:=y+(vector2.y-y)*a;
-    Result.z:=z+(vector2.z-z)*a;
-  end;}
-end;*)
-
-(*function Vertexmorphabs2(const Vector1,Vector2:TzePoint3d;a:double):TzePoint3d;
-var
-  l:double;
-  tv:TzeVector3d;
-begin
-  tv:=vector2-vector1;
-  l:=tv.Length;
-  if a>0 then
-    a:=a/l
-  else
-    a:=1+a/l;
-  Result:=vector1+tv*a;
-  {with TzePoint3d((@vector1)^) do begin
-    Result.x:=x+tv.x*a;
-    Result.y:=y+tv.y*a;
-    Result.z:=z+tv.z*a;
-  end;}
-end;*)
-
-{function NormalizeVertex(const Vector1:TzeVector3d):TzeVector3d;
-
-  procedure dbz;
-  begin
-    zDebugLn('{EH}'+rsDivByZero);
-  end;
-
-var
-  len:double;
-begin
-  len:=oneVertexlength(Vector1);
-  if abs(len)>eps then begin
-    with TzePoint3d((@Result)^) do begin
-      X:=Vector1.x/len;
-      Y:=Vector1.y/len;
-      Z:=Vector1.z/len;
-    end;
-  end else begin
-    dbz;
-    Result:=cV3d__0__0__0;
-  end;
-end;
-
-function NormalizeVertex2D(const Vector1:TzeVector2d):TzeVector2d;
-var
-  len:double;
-begin
-  len:=oneVertexlength2D(Vector1);
-  if abs(len)>eps then begin
-    with TzePoint2d((@Result)^) do begin
-      X:=Vector1.x/len;
-      Y:=Vector1.y/len;
-    end;
-  end else begin
-    zDebugLn('{EH}'+rsDivByZero);
-    len:=len+2;
-  end;
-end;}
-
-{function VertexMulOnSc(const Vector1:TzePoint3d;sc:double):TzePoint3d;
-begin
-  with TzePoint3d((@Result)^) do begin
-    X:=Vector1.x*sc;
-    Y:=Vector1.y*sc;
-    Z:=Vector1.z*sc;
-  end;
-end;}
-
-{function Vertex2DMulOnSc(const Vector1:TzePoint2d;sc:double):TzePoint2d;
-begin
-  with TzePoint2d((@Result)^) do begin
-    X:=Vector1.x*sc;
-    Y:=Vector1.y*sc;
-  end;
-end;}
-
-{function VertexAdd(const Vector1,Vector2:TzePoint3d):TzePoint3d;
-begin
-  with TzePoint3d((@Result)^) do begin
-    X:=Vector1.x+Vector2.x;
-    Y:=Vector1.y+Vector2.y;
-    Z:=Vector1.z+Vector2.z;
-  end;
-end;
-
-function VertexAdd(const Vector1,Vector2:TzePoint3s):TzePoint3s;
-begin
-  with TzePoint3s((@Result)^) do begin
-    X:=Vector1.x+Vector2.x;
-    Y:=Vector1.y+Vector2.y;
-    Z:=Vector1.z+Vector2.z;
-  end;
-end;
-
-function VertexAdd(const Vector1,Vector2:TzePoint2d):TzePoint2d;
-begin
-  with TzePoint2d((@Result)^) do begin
-    X:=Vector1.x+Vector2.x;
-    Y:=Vector1.y+Vector2.y;
-  end;
-end;}
-
-{function MinusVertex(const Vector1: TzePoint3d): TzePoint3d;
-begin
-  Result.X := -Vector1.x;
-  Result.Y := -Vector1.y;
-  Result.Z := -Vector1.z;
-end;}
-
-{function intercept2d(const x1,y1,x2,y2,x3,y3,x4,y4:double):boolean;
-var
-  z1,z2:double;
-begin
-  z1:=(x3-x1)*(y2-y1)-(y3-y1)*(x2-x1);
-  z2:=(x4-x1)*(y2-y1)-(y4-y1)*(x2-x1);
-  if z1*z2>0 then
-    Result:=false
-  else
-    Result:=true;
-end;}
 
 function pointinquad2d(const x1,y1,x2,y2,xp,yp:single):boolean;
 begin
@@ -1738,142 +1142,6 @@ begin
   else
     Result:=false;
 end;
-
-function intercept2dmy(const l1begin,l1end,l2begin,l2end:TzePoint2d):intercept2dprop;
-var
-  _t1,_t2,d:double;
-begin
-  Result.isintercept:=false;
-  D:=(l1end.y-l1begin.y)*(l2begin.x-l2end.x)-(l2begin.y-l2end.y)*(l1end.x-l1begin.x);
-  if (D<>0) then begin
-    _t1:=((l1end.y-l1begin.y)*(l2begin.x-l1begin.x)-(l2begin.y-l1begin.y)*(l1end.x-l1begin.x))/D;
-    _t2:=((l2begin.y-l1begin.y)*(l2begin.x-l2end.x)-(l2begin.y-l2end.y)*(l2begin.x-l1begin.x))/D;
-    //if ((t1 <= 1) and (t1 >= 0) and (t2 >= 0) and (t2 <= 1)) then
-    begin
-      with TzePoint2d((@l1begin)^) do begin
-        Result.interceptcoord:=CreateVertex2D(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2);
-        {result.interceptcoord.x := x + (l1end.x - x) * _t2;
-        result.interceptcoord.y := y + (l1end.y - y) * _t2;}
-      end;
-      //if abs(result.interceptcoord.z-z)<eps then
-      begin
-        with intercept2dprop((@Result)^) do begin
-          t1:=_t2;
-          t2:=_t1;
-          isintercept:=true;
-        end;
-      end;
-    end;
-  end;
-end;
-
-function intercept3dmy(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;
-var
-  z,_t1,_t2,d:double;
-begin
-  Result.isintercept:=false;
-  D:=(l1end.y-l1begin.y)*(l2begin.x-l2end.x)-(l2begin.y-l2end.y)*(l1end.x-l1begin.x);
-  if (D<>0) then begin
-    _t1:=((l1end.y-l1begin.y)*(l2begin.x-l1begin.x)-(l2begin.y-l1begin.y)*(l1end.x-l1begin.x))/D;
-    _t2:=((l2begin.y-l1begin.y)*(l2begin.x-l2end.x)-(l2begin.y-l2end.y)*(l2begin.x-l1begin.x))/D;
-    if ((_t1<=1) and (_t1>=0) and (_t2>=0) and (_t2<=1)) then begin
-      with TzePoint3d((@l1begin)^) do begin
-        Result.interceptcoord:=CreateVertex(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2,z+(l1end.z-z)*_t2);
-        {result.interceptcoord.x := x + (l1end.x - x) * _t2;
-        result.interceptcoord.y := y + (l1end.y - y) * _t2;
-        result.interceptcoord.z := z + (l1end.z - z) * _t2;}
-      end;
-      z:=l2begin.z+(l2end.z-l2begin.z)*_t1;
-      if abs(Result.interceptcoord.z-z)<eps then begin
-        with intercept3dprop((@Result)^) do begin
-          t1:=_t2;
-          t2:=_t1;
-          isintercept:=true;
-        end;
-      end;
-    end;
-  end;
-end;
-
-function intercept3dmy2(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;
-var
-  t1:double;
-  p13,p43,p21:TzePoint3d;
-  d1343,d4321,d1321,d4343,d2121,numer,denom:double;
-begin
-  Result.isintercept:=false;
-  p13.x:=l1begin.x-l2begin.x;
-  p13.y:=l1begin.y-l2begin.y;
-  p13.z:=l1begin.z-l2begin.z;
-  p43.x:=l2end.x-l2begin.x;
-  p43.y:=l2end.y-l2begin.y;
-  p43.z:=l2end.z-l2begin.z;
-  if (ABS(p43.x)<EPS) and (ABS(p43.y)<EPS) and (ABS(p43.z)<EPS) then
-    exit;
-  p21.x:=l1end.x-l1begin.x;
-  p21.y:=l1end.y-l1begin.y;
-  p21.z:=l1end.z-l1begin.z;
-  if (ABS(p21.x)<EPS) and (ABS(p21.y)<EPS) and (ABS(p21.z)<EPS) then
-    exit;
-
-  d1343:=p13.x*p43.x+p13.y*p43.y+p13.z*p43.z;
-  d4321:=p43.x*p21.x+p43.y*p21.y+p43.z*p21.z;
-  d1321:=p13.x*p21.x+p13.y*p21.y+p13.z*p21.z;
-  d4343:=p43.x*p43.x+p43.y*p43.y+p43.z*p43.z;
-  d2121:=p21.x*p21.x+p21.y*p21.y+p21.z*p21.z;
-
-  denom:=d2121*d4343-d4321*d4321;
-  if (ABS(denom)<bigEPS) then
-    exit;
-  numer:=d1343*d4321-d1321*d4343;
-
-  Result.t1:=numer/denom;
-  Result.t2:=(d1343+d4321*Result.t1)/d4343;
-  t1:=Result.t1;
-  //t2:=result.t2;
-
-   {if abs(result.t1-1)<bigeps then result.t1:=1;
-   if abs(result.t1)<bigeps then result.t1:=0;
-   if abs(result.t2-1)<bigeps then result.t2:=1;
-   if abs(result.t2)<bigeps then result.t2:=0;}
-
-  //if ((result.t1 <= 1) and (result.t1 >= 0) and (result.t2 >= 0) and (result.t2 <= 1)) then
-  begin
-    Result.interceptcoord:=CreateVertex(l1begin.x+t1*p21.x,l1begin.y+t1*p21.y,l1begin.z+t1*p21.z);
-   {result.interceptcoord.x:= l1begin.x + t1 * p21.x;
-   result.interceptcoord.y:= l1begin.y + t1 * p21.y;
-   result.interceptcoord.z:= l1begin.z + t1 * p21.z;}
-    //pp.x:= l2begin.x + t2 * p43.x;
-    //pp.y:= l2begin.y + t2 * p43.y;
-    //pp.z:= l2begin.z + t2 * p43.z;
-
-   {if (ABS(pp.x-result.interceptcoord.x)>bigEPS) or
-      (ABS(pp.y-result.interceptcoord.y)>bigEPS) or
-      (ABS(pp.z-result.interceptcoord.z)>bigEPS)
-   then exit;}
-
-    Result.isintercept:=true;
-  end;
-end;
-
-{function intercept2d2(const x11,y11,x12,y12,x21,y21,x22,y22:single):boolean;
-var
-  t1,t2,d,d1,d2:double;
-begin
-  Result:=false;
-  D:=(y12-y11)*(x21-x22)-(y21-y22)*(x12-x11);
-  D1:=(y12-y11)*(x21-x11)-(y21-y11)*(x12-x11);
-  D2:=(y21-y11)*(x21-x22)-(y21-y22)*(x21-x11);
-  if (D<>0) then begin
-    t1:=D1/D;
-    t2:=D2/D;
-    if ((t1<=1) and (t1>=0) and (t2>=0) and (t2<=1)) then begin
-      Result:=true;
-      //x := x11 + (x12 - x11) * t2;
-      //y := y11 + (y12 - y11) * t2;
-    end;
-  end;
-end;}
 
 function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;
 begin
@@ -1890,24 +1158,6 @@ begin
     Result:=x*v2.x+y*v2.y+z*v2.z;
 end;
 
-function CreateVertex(const _x,_y,_z:double):TzePoint3d;
-begin
-  with TzePoint3d((@Result)^) do begin
-    x:=_x;
-    y:=_y;
-    z:=_z;
-  end;
-end;
-
-function CreateVector(const _x,_y,_z:double):TzeVector3d;
-begin
-  with TzeVector3d((@Result)^) do begin
-    x:=_x;
-    y:=_y;
-    z:=_z;
-  end;
-end;
-
 function CreateStringFromArray(var counter:integer;const args:array of const):string;
 begin
   case args[counter].VType of
@@ -1922,6 +1172,14 @@ end;
 function CreateVertex2D(const _x,_y:double):TzePoint2d;
 begin
   with TzePoint2d((@Result)^) do begin
+    x:=_x;
+    y:=_y;
+  end;
+end;
+
+function CreateVector2D(const _x,_y:Double):TzeVector2d;inline;
+begin
+  with TzeVector2d((@Result)^) do begin
     x:=_x;
     y:=_y;
   end;
@@ -2064,11 +1322,9 @@ end;
 function CreateMatrixFromBasis(const ox,oy,oz:TzeVector3d):TzeTypedMatrix4d;
 begin
   Result.CreateRec(cOneMtr,CMTRotate);
-  //result:=cOneMatrix;
   Result.mtr.v[0].Slice:=ox;
   Result.mtr.v[1].Slice:=oy;
   Result.mtr.v[2].Slice:=oz;
-  //result.t:=CMTRotate;
 end;
 
 procedure CreateBasisFromMatrix(const m:TzeTypedMatrix4d;out ox,oy,oz:TzeVector3d);
@@ -2080,7 +1336,7 @@ end;
 
 function QuaternionMagnitude(const q:TzeQuaternion):double;
 begin
-  Result:=Sqrt({SqrOneVertexlength}(q.ImagPart.SqrLength)+Sqr(q.RealPart));
+  Result:=Sqrt(q.ImagPart.SqrLength+Sqr(q.RealPart));
 end;
 
 procedure NormalizeQuaternion(var q:TzeQuaternion);
@@ -2110,21 +1366,21 @@ begin
     Result.ImagPart.z:=(mat.mtr.v[0].v[1]-mat.mtr.v[1].v[0])*invS;
     Result.RealPart:=0.25*s;
   end else if (mat.mtr.v[0].v[0]>mat.mtr.v[1].v[1]) and (mat.mtr.v[0].v[0]>mat.mtr.v[2].v[2]) then begin  // Row 0:
-    s:=Sqrt(Max{Float}(EPSILON2, {cOne}1+mat.mtr.v[0].v[0]-mat.mtr.v[1].v[1]-mat.mtr.v[2].v[2]))*2;
+    s:=Sqrt(Max(EPSILON2,1+mat.mtr.v[0].v[0]-mat.mtr.v[1].v[1]-mat.mtr.v[2].v[2]))*2;
     invS:=1/s;
     Result.ImagPart.x:=0.25*s;
     Result.ImagPart.y:=(mat.mtr.v[0].v[1]+mat.mtr.v[1].v[0])*invS;
     Result.ImagPart.z:=(mat.mtr.v[2].v[0]+mat.mtr.v[0].v[2])*invS;
     Result.RealPart:=(mat.mtr.v[1].v[2]-mat.mtr.v[2].v[1])*invS;
   end else if (mat.mtr.v[1].v[1]>mat.mtr.v[2].v[2]) then begin  // Row 1:
-    s:=Sqrt(Max{Float}(EPSILON2, {cOne}1+mat.mtr.v[1].v[1]-mat.mtr.v[0].v[0]-mat.mtr.v[2].v[2]))*2;
+    s:=Sqrt(Max(EPSILON2,1+mat.mtr.v[1].v[1]-mat.mtr.v[0].v[0]-mat.mtr.v[2].v[2]))*2;
     invS:=1/s;
     Result.ImagPart.x:=(mat.mtr.v[0].v[1]+mat.mtr.v[1].v[0])*invS;
     Result.ImagPart.y:=0.25*s;
     Result.ImagPart.z:=(mat.mtr.v[1].v[2]+mat.mtr.v[2].v[1])*invS;
     Result.RealPart:=(mat.mtr.v[2].v[0]-mat.mtr.v[0].v[2])*invS;
   end else begin  // Row 2:
-    s:=Sqrt(Max{Float}(EPSILON2, {cOne}1+mat.mtr.v[2].v[2]-mat.mtr.v[0].v[0]-mat.mtr.v[1].v[1]))*2;
+    s:=Sqrt(Max(EPSILON2,1+mat.mtr.v[2].v[2]-mat.mtr.v[0].v[0]-mat.mtr.v[1].v[1]))*2;
     invS:=1/s;
     Result.ImagPart.x:=(mat.mtr.v[2].v[0]+mat.mtr.v[0].v[2])*invS;
     Result.ImagPart.y:=(mat.mtr.v[1].v[2]+mat.mtr.v[2].v[1])*invS;
@@ -2211,7 +1467,6 @@ begin
   Result.mtr.v[1].v[3]:=0;
   Result.mtr.v[2].v[3]:=0;
   Result.mtr.v[3].v[3]:=1;
-  //Result.t:=CMTRotate;
 end;
 
 function GetArcParamFrom3Point2D(const PointData:tarcrtmodify;out ad:TArcData):boolean;
@@ -2232,23 +1487,18 @@ begin
     Result:=true;
     ad.p.x:=(D*E-B*F)/G;
     ad.p.y:=(A*F-C*E)/G;
-    {rr}ad.r:=sqrt(sqr(PointData.p1.x-ad.p.x)+sqr(PointData.p1.y-ad.p.y));
-    //ad.r:=rr;
-    {Local.p_insert.x:=p_x;
-    Local.p_insert.y:=p_y;
-    Local.p_insert.z:=0;}
+    ad.r:=sqrt(sqr(PointData.p1.x-ad.p.x)+sqr(PointData.p1.y-ad.p.y));
     tv.x:=ad.p.x;
     tv.y:=ad.p.y;
-    ad.startangle:=vertexangle(tv,PointData.p1);
-    ad.endangle:=vertexangle(tv,PointData.p3);
+    ad.startangle:=VectorAngle(PointData.p1-tv);
+    ad.endangle:=VectorAngle(PointData.p3-tv);
     if ad.startangle>ad.endangle then begin
       rr:=ad.startangle;
       ad.startangle:=ad.endangle;
       ad.endangle:=rr;
     end;
-    rr:=vertexangle(tv,PointData.p2);
-    if (rr>ad.startangle) and (rr<ad.endangle) then begin
-    end else begin
+    rr:=VectorAngle(PointData.p2-tv);
+    if not((rr>ad.startangle)and(rr<ad.endangle)) then begin
       rr:=ad.startangle;
       ad.startangle:=ad.endangle;
       ad.endangle:=rr;
@@ -2271,48 +1521,12 @@ function CalcDisplaySubFrustum(const x,y,w,h:double;const mm,pm:TzeTypedMatrix4d
 var
   tm:TzeTypedMatrix4d;
 begin
-  (*//use glu.gluPickMatrix
-  oglsm.myglMatrixMode(GL_Projection);
-  oglsm.myglpushmatrix;
-  glLoadIdentity;
-  gluPickMatrix(x,y,w,h,{$IFNDEF DELPHI}PTViewPortArray(@vp)^{$ELSE}TVector4i(vp){$ENDIF});
-  glGetDoublev(GL_PROJECTION_MATRIX, @tm);
-  tm := MatrixMultiply(pm, tm);
-  tm := MatrixMultiply(mm, tm);
-  result := calcfrustum(@tm);
-  oglsm.myglpopmatrix;
-  oglsm.myglMatrixMode(GL_MODELVIEW);
-  *)
   //use glu.gluPickMatrix
   tm:=myPickMatrix(x,y,w,h,vp);
   tm:=MatrixMultiply(pm,tm);
   tm:=MatrixMultiply(mm,tm);
   Result:=calcfrustum(@tm);
 end;
-
-{function IsPointEqual(const p1,p2:TzePoint3d;const _eps:double=sqreps):boolean;
-begin
-  if p1.SqrLengthTo(p2)>_eps then
-    Result:=false
-  else
-    Result:=true;
-end;}
-
-{function IsPointEqual(const p1,p2:TzePoint2d;const _eps:double=sqreps):boolean;
-begin
-  if p1.SqrLengthTo(p2)>_eps then
-    Result:=false
-  else
-    Result:=true;
-end}
-
-{function IsVectorNul(const p2:TzeVector3d):boolean;
-begin
-  if p2.SqrLength>sqreps then
-    Result:=false
-  else
-    Result:=true;
-end;}
 
 function GetCSDirFrom0x0y2D(const ox,oy:TzeVector3d):TCSDir;
 begin
@@ -2383,7 +1597,7 @@ begin
     d2:=GetMinAndSwap(j,cacount,ca);
     d1:=(d1+d2)/2;
     bit:=0;
-    p:={VertexDmorph}(lbegin+d*d1);
+    p:=lbegin+d*d1;
     for i:=0 to 5 do begin
       with frustum.v[i] do
         if (v[0]*p.x+v[1]*p.y+v[2]*p.z+v[3])>=0 then
@@ -2458,7 +1672,7 @@ begin
     d2:=GetMinAndSwap(j,cacount,ca);
     d1:=(d1+d2)/2;
     bit:=0;
-    p:={VertexDmorph}(lbegin+d*d1);
+    p:=lbegin+d*d1;
     for i:=0 to 5 do begin
       with frustum.v[i] do
         if (v[0]*p.x+v[1]*p.y+v[2]*p.z+v[3])>=0 then
@@ -2505,12 +1719,6 @@ begin
       system.exit;
     end;
 
-    {if (d1<0)or(d2<0)or(d3<0)or(d4<0)or(d5<0)or(d6<0)or
-      (d7<0)or(d8<0)  then begin
-      Result:=IRPartially;
-      system.exit;
-    end;}
-
     if d1>=0 then
       Inc(Count);
     if d2>=0 then
@@ -2528,12 +1736,10 @@ begin
     if d8>=0 then
       Inc(Count);
   end;
-  //Result:=irfully;
   Result:=IRPartially;
   if Count=48 then begin
     Result:=irfully;
   end;
-  //Result:=IRPartially;
 end;
 
 function PointOf3PlaneIntersect(const P1,P2,P3:TzeVector4d):TzePoint3d;
@@ -2542,25 +1748,24 @@ var
   a4:double;
 begin
   Result:=cP3d__0__0__0;
-  n1:=p1.Slice;//createvertex(p1.v[0],p1.v[1],p1.v[2]);
-  n2:=p2.Slice;//createvertex(p2.v[0],p2.v[1],p2.v[2]);
-  n3:=p3.Slice;//createvertex(p3.v[0],p3.v[1],p3.v[2]);
+  n1:=p1.Slice;
+  n2:=p2.Slice;;
+  n3:=p3.Slice;
   n12:=vectordot(n1,n2);
   n23:=vectordot(n2,n3);
   n31:=vectordot(n3,n1);
 
-  a1:=n23*p1.CutOff;//VertexMulOnSc(n23,p1.v[3]);
-  a2:=n31*p2.CutOff;//VertexMulOnSc(n31,p2.v[3]);
-  a3:=n12*p3.CutOff;//VertexMulOnSc(n12,p3.v[3]);
+  a1:=n23*p1.CutOff;
+  a2:=n31*p2.CutOff;
+  a3:=n12*p3.CutOff;
   a4:=scalardot(n1,n23);
   if abs(a4)<eps then
     exit;
   a4:=1/a4;
+  a1:=a1+a2;
+  a1:=a1+a3;
 
-  a1:=a1+a2;//VertexAdd(a1,a2);
-  a1:=a1+a3;//VertexAdd(a1,a3);
-
-  Result:=(a1*-a4).asPoint3d;//VertexMulOnSc(a1,-a4);
+  Result:=(a1*-a4).asPoint3d;
 end;
 
 function PointOfRayPlaneIntersect(const p1:TzePoint3d;const d:TzeVector3d;const plane:TzeVector4d;out point:TzePoint3d):boolean;
@@ -2598,7 +1803,7 @@ begin
     Result:=false;
 end;
 
-function ortho(const xmin,xmax,ymin,ymax,zmin,zmax:Double;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;
+function Ortho(const xmin,xmax,ymin,ymax,zmin,zmax:Double;const matrix:PzeTypedMatrix4d):TzeTypedMatrix4d;
 var
   xmaxminusxmin,ymaxminusymin,zmaxminuszmin,xmaxplusxmin,ymaxplusymin,zmaxpluszmin:double;
   m:TzeTypedMatrix4d;
@@ -2613,7 +1818,7 @@ begin
     exit(matrix^);
 
   m.CreateRec(cOneMtr,CMTTransform);
-  {Все коэффициенты домножены на xmaxminusxmin, воччтановить оригинал - соответственно всё разделить}
+  {Все коэффициенты домножены на xmaxminusxmin, восстановить оригинал - соответственно всё разделить}
   m.mtr.v[0].v[0]:=2{/xmaxminusxmin};
   m.mtr.v[1].v[1]:=(2/ymaxminusymin)*xmaxminusxmin;
   m.mtr.v[2].v[2]:=(2/zmaxminuszmin)*xmaxminusxmin;
@@ -2708,7 +1913,6 @@ begin
   winx:=_in.x*viewport^.v[2]+viewport^.v[0];
   winy:=_in.y*viewport^.v[3]+viewport^.v[1];
   winz:=_in.z;
-  //return(GL_TRUE);
 end;
 
 procedure _myGluProject2(const objcoord:TzePoint3d;const modelMatrix,projMatrix:PzeTypedMatrix4d;const viewport:PzeVector4i;out wincoord:TzePoint3d);
@@ -2757,10 +1961,10 @@ begin
   if c2<=c1 then
     exit(s1);
 
-  Result:=s0+{VertexMulOnSc}(v*(c1/c2));
+  Result:=s0+v*(c1/c2);
 end;
 
-function distance2ray(const q,p1,p2:TzePoint3d):DistAndt;
+function distance2ray(const q,p1,p2:TzePoint3d):TDistWitht;
 var
   w,v:TzeVector3d;
   c1,c2:double;
@@ -2771,10 +1975,10 @@ begin
   c2:=scalardot(v,v);
   if abs(c2)>eps then begin
     Result.t:=c1/c2;
-    Result.d:={Vertexlength}q.LengthTo({VertexDmorph}(p1+v*Result.t));
+    Result.d:=q.LengthTo(p1+v*Result.t);
   end else begin
     Result.t:=0;
-    Result.d:={Vertexlength}q.LengthTo(p1);
+    Result.d:=q.LengthTo(p1);
   end;
 end;
 
@@ -2785,10 +1989,9 @@ var
 begin
   SinCos(angle,SINE,cosine);
   one_minus_cosine:=1-cosine;
-  axis:={NormalizeVertex}(anAxis).Normalized;
+  axis:=anAxis.Normalized;
 
   Result.CreateRec(cOneMtr,CMTRotate);
-  //result:=cOneMatrix;
   Result.mtr.v[cxAxisIndex].v[cxAxisIndex]:=(one_minus_cosine*Sqr(Axis.x))+Cosine;
   Result.mtr.v[cxAxisIndex].v[cyAxisIndex]:=(one_minus_cosine*Axis.x*Axis.y)-(Axis.z*Sine);
   Result.mtr.v[cxAxisIndex].v[czAxisIndex]:=(one_minus_cosine*Axis.z*Axis.x)+(Axis.y*Sine);
@@ -2800,7 +2003,6 @@ begin
   Result.mtr.v[czAxisIndex].v[cxAxisIndex]:=(one_minus_cosine*Axis.z*Axis.x)-(Axis.y*Sine);
   Result.mtr.v[czAxisIndex].v[cyAxisIndex]:=(one_minus_cosine*Axis.y*Axis.z)+(Axis.x*Sine);
   Result.mtr.v[czAxisIndex].v[czAxisIndex]:=(one_minus_cosine*Sqr(Axis.z))+Cosine;
-  //Result.t:=CMTRotate;
 end;
 
 function CreateAffineRotationMatrix(const AAxis,ARefV,AV:TzeVector3d):TzeTypedMatrix4d;
@@ -2848,25 +2050,25 @@ begin
   denom:=d2121*d4343-d4321*d4321;
   if (ABS(denom)< {EPS}sqreps) then begin
     //бывают случаи соприкосновения линий концами, их надо обработать
-    if {IsPointEqual}l1begin.IsEqual(l2begin) then begin
+    if l1begin.IsEqual(l2begin) then begin
       Result.isintercept:=true;
       Result.t1:=0;
       Result.t2:=0;
       Result.interceptcoord:=l1begin;
       exit;
-    end else if {IsPointEqual}l1begin.IsEqual(l2end) then begin
+    end else if l1begin.IsEqual(l2end) then begin
       Result.isintercept:=true;
       Result.t1:=0;
       Result.t2:=1;
       Result.interceptcoord:=l1begin;
       exit;
-    end else if {IsPointEqual}l1end.IsEqual(l2begin) then begin
+    end else if l1end.IsEqual(l2begin) then begin
       Result.isintercept:=true;
       Result.t1:=1;
       Result.t2:=0;
       Result.interceptcoord:=l1end;
       exit;
-    end else if {IsPointEqual}l1end.IsEqual(l2end) then begin
+    end else if l1end.IsEqual(l2end) then begin
       Result.isintercept:=true;
       Result.t1:=1;
       Result.t2:=1;
@@ -2960,6 +2162,162 @@ begin
   end else begin
     zDebugLn('{E}CreateVertexFromArray: no enough params in args');
   end;
+end;
+
+function GetXfFromZ(const oz:TzeVector3d):TzeVector3d;
+begin
+  if IsNearToZ(oz)then
+    result:=VectorDot(cV3d__0__1__0,oz)
+  else
+    result:=VectorDot(cV3d__0__0__1,oz);
+  result.Normalize;
+end;
+
+function GetPointInOCSByBasis(const ScaledBX,ScaledBY,ScaledBZ:TzeVector3d; const PointInWCS:TzePoint3d; out scale:TzeVector3d):GDBObj2dprop;
+var
+  BX,BY,BZ:TzeVector3d;
+begin
+  scale.x:=ScaledBX.Length;
+  scale.y:=ScaledBY.Length;
+  scale.z:=ScaledBZ.Length;
+  if (abs(scale.x)>eps)and(abs(scale.y)>eps)and(abs(scale.z)>eps)then begin
+
+    BX:=ScaledBX/scale.x;
+    BY:=ScaledBY/scale.y;
+    BZ:=ScaledBZ/scale.z;
+
+
+    if scalardot(BX,VectorDot(BY,Bz))<0 then
+      scale.x:=-scale.x;
+
+    result.Basis.ox:=BX;
+    result.Basis.oy:=BY;
+    result.Basis.oz:=BZ;
+
+    BX:=GetXfFromZ(BZ).Normalized;
+    BY:=VectorDot(BZ,Bx).Normalized;
+
+    //вариант из https://ezdxf.readthedocs.io/en/stable/concepts/ocs.html#arbitrary-axis-algorithm
+    result.P_insert.x:=PointInWCS.x*BX.x+PointInWCS.y*BX.y+PointInWCS.z*BX.z;
+    result.P_insert.y:=PointInWCS.x*BY.x+PointInWCS.y*BY.y+PointInWCS.z*BY.z;
+    result.P_insert.z:=PointInWCS.x*BZ.x+PointInWCS.y*BZ.y+PointInWCS.z*BZ.z;
+
+    //вариант расчета без учета что базисные векторы ортогональны
+    (*
+    //  -((-BY.z*BZ.y*PointInWCS.x+BY.y*BZ.z*PointInWCS.x+BY.z*BZ.x*PointInWCS.y-BY.x*BZ.z*PointInWCS.y-BY.y*BZ.x*PointInWCS.z+BY.x*BZ.y*PointInWCS.z)
+    //X=--------------------------------------------------------------------------------------------
+    //  (BX.z*BY.y*BZ.x-BX.y*BY.z*BZ.x-BX.z*BY.x*BZ.y+BX.x*BY.z*BZ.y+BX.y*BY.x*BZ.z-BX.x*BY.y*BZ.z))
+
+    //  -((BX.z*BZ.y*PointInWCS.x-BX.y*BZ.z*PointInWCS.x-BX.z*BZ.x*PointInWCS.y+BX.x*BZ.z*PointInWCS.y+BX.y*BZ.x*PointInWCS.z-BX.x*BZ.y*PointInWCS.z)
+    //Y=--------------------------------------------------------------------------------------------
+    //  (BX.z*BY.y*BZ.x-BX.y*BY.z*BZ.x-BX.z*BY.x*BZ.y+BX.x*BY.z*BZ.y+BX.y*BY.x*BZ.z-BX.x*BY.y*BZ.z))
+
+    //  -((-BX.z*BY.y*PointInWCS.x+BX.y*BY.z*PointInWCS.x+BX.z*BY.x*PointInWCS.y-BX.x*BY.z*PointInWCS.y-BX.y*BY.x*PointInWCS.z+BX.x*BY.y*PointInWCS.z)
+    //Z=--------------------------------------------------------------------------------------------
+    //  (BX.z*BY.y*BZ.x-BX.y*BY.z*BZ.x-BX.z*BY.x*BZ.y+BX.x*BY.z*BZ.y+BX.y*BY.x*BZ.z-BX.x*BY.y*BZ.z))
+
+    tznam:=BX.z*BY.y*BZ.x-BX.y*BY.z*BZ.x-BX.z*BY.x*BZ.y+BX.x*BY.z*BZ.y+BX.y*BY.x*BZ.z-BX.x*BY.y*BZ.z;
+    if abs(tznam)>eps then begin
+      tr:=-BY.z*BZ.y*PointInWCS.x+BY.y*BZ.z*PointInWCS.x+BY.z*BZ.x*PointInWCS.y-BY.x*BZ.z*PointInWCS.y-BY.y*BZ.x*PointInWCS.z+BY.x*BZ.y*PointInWCS.z;
+      result.P_insert.x:=-tr/tznam;
+      tr:=BX.z*BZ.y*PointInWCS.x-BX.y*BZ.z*PointInWCS.x-BX.z*BZ.x*PointInWCS.y+BX.x*BZ.z*PointInWCS.y+BX.y*BZ.x*PointInWCS.z-BX.x*BZ.y*PointInWCS.z;
+      result.P_insert.y:=-tr/tznam;
+      tr:=-BX.z*BY.y*PointInWCS.x+BX.y*BY.z*PointInWCS.x+BX.z*BY.x*PointInWCS.y-BX.x*BY.z*PointInWCS.y-BX.y*BY.x*PointInWCS.z+BX.x*BY.y*PointInWCS.z;
+      result.P_insert.z:=-tr/tznam;
+    end;
+    *)
+  end;
+end;
+
+function intercept2dmy(const l1begin,l1end,l2begin,l2end:TzePoint2d):intercept2dprop;
+var
+  _t1,_t2,d:double;
+begin
+  Result.isintercept:=false;
+  D:=(l1end.y-l1begin.y)*(l2begin.x-l2end.x)-(l2begin.y-l2end.y)*(l1end.x-l1begin.x);
+  if (D<>0) then begin
+    _t1:=((l1end.y-l1begin.y)*(l2begin.x-l1begin.x)-(l2begin.y-l1begin.y)*(l1end.x-l1begin.x))/D;
+    _t2:=((l2begin.y-l1begin.y)*(l2begin.x-l2end.x)-(l2begin.y-l2end.y)*(l2begin.x-l1begin.x))/D;
+    //if ((t1 <= 1) and (t1 >= 0) and (t2 >= 0) and (t2 <= 1)) then
+    begin
+      with TzePoint2d((@l1begin)^) do begin
+        Result.interceptcoord:=CreateVertex2D(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2);
+        {result.interceptcoord.x := x + (l1end.x - x) * _t2;
+        result.interceptcoord.y := y + (l1end.y - y) * _t2;}
+      end;
+      //if abs(result.interceptcoord.z-z)<eps then
+      begin
+        with intercept2dprop((@Result)^) do begin
+          t1:=_t2;
+          t2:=_t1;
+          isintercept:=true;
+        end;
+      end;
+    end;
+  end;
+end;
+
+function intercept3dmy(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;
+var
+  z,_t1,_t2,d:double;
+begin
+  Result.isintercept:=false;
+  D:=(l1end.y-l1begin.y)*(l2begin.x-l2end.x)-(l2begin.y-l2end.y)*(l1end.x-l1begin.x);
+  if (D<>0) then begin
+    _t1:=((l1end.y-l1begin.y)*(l2begin.x-l1begin.x)-(l2begin.y-l1begin.y)*(l1end.x-l1begin.x))/D;
+    _t2:=((l2begin.y-l1begin.y)*(l2begin.x-l2end.x)-(l2begin.y-l2end.y)*(l2begin.x-l1begin.x))/D;
+    if ((_t1<=1) and (_t1>=0) and (_t2>=0) and (_t2<=1)) then begin
+      with TzePoint3d((@l1begin)^) do begin
+        Result.interceptcoord:=CreateVertex(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2,z+(l1end.z-z)*_t2);
+      end;
+      z:=l2begin.z+(l2end.z-l2begin.z)*_t1;
+      if abs(Result.interceptcoord.z-z)<eps then begin
+        with intercept3dprop((@Result)^) do begin
+          t1:=_t2;
+          t2:=_t1;
+          isintercept:=true;
+        end;
+      end;
+    end;
+  end;
+end;
+
+function intercept3dmy2(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;
+var
+  p13,p43,p21:TzePoint3d;
+  d1343,d4321,d1321,d4343,d2121,numer,denom:double;
+begin
+  Result.isintercept:=false;
+  p13.x:=l1begin.x-l2begin.x;
+  p13.y:=l1begin.y-l2begin.y;
+  p13.z:=l1begin.z-l2begin.z;
+  p43.x:=l2end.x-l2begin.x;
+  p43.y:=l2end.y-l2begin.y;
+  p43.z:=l2end.z-l2begin.z;
+  if (ABS(p43.x)<EPS) and (ABS(p43.y)<EPS) and (ABS(p43.z)<EPS) then
+    exit;
+
+  p21.x:=l1end.x-l1begin.x;
+  p21.y:=l1end.y-l1begin.y;
+  p21.z:=l1end.z-l1begin.z;
+  if (ABS(p21.x)<EPS) and (ABS(p21.y)<EPS) and (ABS(p21.z)<EPS) then
+    exit;
+
+  d1343:=p13.x*p43.x+p13.y*p43.y+p13.z*p43.z;
+  d4321:=p43.x*p21.x+p43.y*p21.y+p43.z*p21.z;
+  d1321:=p13.x*p21.x+p13.y*p21.y+p13.z*p21.z;
+  d4343:=p43.x*p43.x+p43.y*p43.y+p43.z*p43.z;
+  d2121:=p21.x*p21.x+p21.y*p21.y+p21.z*p21.z;
+
+  denom:=d2121*d4343-d4321*d4321;
+  if (ABS(denom)<bigEPS) then
+    exit;
+  numer:=d1343*d4321-d1321*d4343;
+
+  Result.t1:=numer/denom;
+  Result.t2:=(d1343+d4321*Result.t1)/d4343;
+  Result.interceptcoord:=CreateVertex(l1begin.x+Result.t1*p21.x,l1begin.y+Result.t1*p21.y,l1begin.z+Result.t1*p21.z);
+  Result.isintercept:=true;
 end;
 
 begin
