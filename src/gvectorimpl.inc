@@ -195,6 +195,30 @@ begin
   self.v:=AData;
 end;
 
+class function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Make(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}{$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType):TSelf;overload;
+begin
+  {$IfDef HAS_X}result.x:=AX;{$EndIf}
+  {$IfDef HAS_Y}result.y:=AY;{$EndIf}
+  {$IfDef HAS_Z}result.z:=AZ;{$EndIf}
+  {$IfDef HAS_W}result.w:=AW;{$EndIf}
+end;
+
+procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.setup(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}{$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
+begin
+  {$IfDef HAS_X}x:=AX;{$EndIf}
+  {$IfDef HAS_Y}y:=AY;{$EndIf}
+  {$IfDef HAS_Z}z:=AZ;{$EndIf}
+  {$IfDef HAS_W}w:=AW;{$EndIf}
+end;
+
+constructor VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.CreateRec(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}{$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
+begin
+  {$IfDef HAS_X}x:=AX;{$EndIf}
+  {$IfDef HAS_Y}y:=AY;{$EndIf}
+  {$IfDef HAS_Z}z:=AZ;{$EndIf}
+  {$IfDef HAS_W}w:=AW;{$EndIf}
+end;
+
 {$If defined(HAS_Y) and (not defined(HAS_Z))}
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Turned90R:TSelf;
 begin

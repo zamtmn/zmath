@@ -185,6 +185,35 @@ begin
   self.v:=AData;
 end;
 
+class function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Make(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}{$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType):TSelf;overload;
+begin
+  {$IfDef HAS_X}result.x:=AX;{$EndIf}
+  {$IfDef HAS_Y}result.y:=AY;{$EndIf}
+  {$IfDef HAS_Z}result.z:=AZ;{$EndIf}
+  {$IfDef HAS_W}result.w:=AW;{$EndIf}
+end;
+
+procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.setup(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}{$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
+begin
+  {$IfDef HAS_X}x:=AX;{$EndIf}
+  {$IfDef HAS_Y}y:=AY;{$EndIf}
+  {$IfDef HAS_Z}z:=AZ;{$EndIf}
+  {$IfDef HAS_W}w:=AW;{$EndIf}
+end;
+
+constructor PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.CreateRec(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}{$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
+begin
+  {$IfDef HAS_X}x:=AX;{$EndIf}
+  {$IfDef HAS_Y}y:=AY;{$EndIf}
+  {$IfDef HAS_Z}z:=AZ;{$EndIf}
+  {$IfDef HAS_W}w:=AW;{$EndIf}
+end;
+procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.setup(const ASlice:TSlice;const ACutOff:TCoordType);
+begin
+  Slice:=ASlice;
+  CutOff:=ACutOff;
+end;
+
 {$If defined(HAS_Y) and (not defined(HAS_Z))}
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Turned90R:TSelf;
 begin

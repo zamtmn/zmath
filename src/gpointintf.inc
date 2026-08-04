@@ -36,8 +36,15 @@
     class operator /(const l:TSelf;const r:Real):TSelf;inline;
     {$EndIf}
     class function Make(const AData:TCoordArray):TSelf;static;inline;
-    procedure setup(const AData:TCoordArray);inline;
+    procedure setup(const AData:TCoordArray);inline;overload;
     constructor CreateRec(const AData:TCoordArray);
+    class function Make(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}
+                             {$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType):TSelf;static;overload;
+    procedure setup(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}
+                         {$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
+    constructor CreateRec(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}
+                               {$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
+    procedure setup(const ASlice:TSlice;const ACutOff:TCoordType);overload;
     {$If defined(HAS_Y) and (not defined(HAS_Z))}
     function Turned90R:TSelf;inline;
     function Turned90L:TSelf;inline;

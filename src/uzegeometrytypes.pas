@@ -132,7 +132,9 @@ type
   TzeZUnits=Double;
 
   //TDummyVector=record end;
-  TDummyPoint=record end;
+  TDummy1d=record x:double end;
+  TDummy1s=record x:single end;
+  TDummy1i=record x:integer end;
 
   TzeVector2d=GVector2<double,double{$if FPC_FULLVERSION<30205},double{$endif}>;
   PzeVector2d=^TzeVector2d;
@@ -162,19 +164,19 @@ type
   PzeVector4i=^TzeVector4i;
 
 
-  TzePoint2d=GPoint2<double,double{$if FPC_FULLVERSION<30205},double{$endif},TzeVector2d>;
+  TzePoint2d=GPoint2<double,TDummy1d{$if FPC_FULLVERSION<30205},double{$endif},TzeVector2d>;
   PzePoint2d=^TzePoint2d;
 
   TzePoint3d=GPoint3<double,TzePoint2d{$if FPC_FULLVERSION<30205},double{$endif},TzeVector3d>;
   PzePoint3d=^TzePoint3d;
 
-  TzePoint2s=GPoint2<single,single{$if FPC_FULLVERSION<30205},single{$endif},TzeVector2s>;
+  TzePoint2s=GPoint2<single,TDummy1s{$if FPC_FULLVERSION<30205},single{$endif},TzeVector2s>;
   PzePoint2s=^TzePoint2s;
 
   TzePoint3s=GPoint3<single,TzePoint2s{$if FPC_FULLVERSION<30205},single{$endif},TzeVector3s>;
   PzePoint3s=^TzePoint3s;
 
-  TzePoint2i=GPoint2i<integer,integer{$if FPC_FULLVERSION<30205},integer{$endif},TzeVector2i>;
+  TzePoint2i=GPoint2i<integer,TDummy1i{$if FPC_FULLVERSION<30205},integer{$endif},TzeVector2i>;
   PzePoint2i=^TzePoint2i;
 
 

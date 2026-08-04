@@ -22,7 +22,7 @@ unit uzeGeometry;
 
 interface
 uses
-  SysUtils,math,
+  SysUtils,Math,
   uzeGeometryTypes,uzbLogIntf;
 
 const
@@ -140,16 +140,16 @@ function CreateScaleMatrix(const s:double):TzeTypedMatrix4d;inline;overload;
 function CreateScaleMatrix(const sx,sy,sz:double):TzeTypedMatrix4d;inline;overload;
 function CreateReflectionMatrix(const plane:TzeVector4d):TzeTypedMatrix4d;
 //**Создать 3D вершину
-function CreateVertex(const _x,_y,_z:double):TzePoint3d;inline;
-function CreateVector(const _x,_y,_z:double):TzeVector3d;inline;
+//function CreateVertex(const _x,_y,_z:double):TzePoint3d;inline;
+//function CreateVector(const _x,_y,_z:double):TzeVector3d;inline;
 function CreateVertexFromArray(var counter:integer;const args:array of const):TzePoint3d;
 function CreateVertex2DFromArray(var counter:integer;const args:array of const):TzePoint2d;
 function CreateDoubleFromArray(var counter:integer;const args:array of const):double;
 function CreateStringFromArray(var counter:integer;const args:array of const):string;
 function CreateBooleanFromArray(var counter:integer;const args:array of const):boolean;
 //**Создать 2D вершину
-function CreateVertex2D(const _x,_y:double):TzePoint2d;inline;
-function CreateVector2D(const _x,_y:double):TzeVector2d;inline;
+//function CreateVertex2D(const _x,_y:double):TzePoint2d;inline;
+//function CreateVector2D(const _x,_y:double):TzeVector2d;inline;
 function IsPointInBB(const point,LBN,RTF:TzePoint3d):boolean;overload;inline;
 function IsPointInBB(const point:TzePoint3d;const fistbb:TBoundingBox):boolean;overload;inline;
 function CreateBBFrom2Point(const p1,p2:TzePoint3d):TBoundingBox;
@@ -250,14 +250,14 @@ begin
   end;
 end;
 
-function CreateVector(const _x,_y,_z:double):TzeVector3d;
+{function CreateVector(const _x,_y,_z:double):TzeVector3d;
 begin
   with TzeVector3d((@Result)^) do begin
     x:=_x;
     y:=_y;
     z:=_z;
   end;
-end;
+end;}
 
 operator -(const l:TzePoint2d;r:TzePoint2i):TzePoint2d;
 begin
@@ -993,8 +993,10 @@ function VectorTransform2D(const V:TzePoint2d;const M:TzeTypedMatrix4d):TzePoint
 var
   TV:TzeVector4d;
 begin
-  if M.t=CMTIdentity then
-    Result:=CreateVertex(v.x,v.y,0)
+  if M.t=CMTIdentity then begin
+    //Result:=CreateVertex(v.x,v.y,0)
+    Result.setup(v,0);
+  end
   else begin
     tv.Slice.Slice:=v.asVector;
     tv.z:=0;
@@ -1169,21 +1171,21 @@ begin
   Inc(counter);
 end;
 
-function CreateVertex2D(const _x,_y:double):TzePoint2d;
+{function CreateVertex2D(const _x,_y:double):TzePoint2d;
 begin
   with TzePoint2d((@Result)^) do begin
     x:=_x;
     y:=_y;
   end;
-end;
+end;}
 
-function CreateVector2D(const _x,_y:Double):TzeVector2d;inline;
+{function CreateVector2D(const _x,_y:Double):TzeVector2d;inline;
 begin
   with TzeVector2d((@Result)^) do begin
     x:=_x;
     y:=_y;
   end;
-end;
+end;}
 
 procedure concatBBandPoint(var fistbb:TBoundingBox;const point:TzePoint3d);
 begin
@@ -1511,8 +1513,8 @@ function myPickMatrix(const x,y,deltax,deltay:double;const vp:TzeVector4i):TzeTy
 var
   tm,sm:TzeTypedMatrix4d;
 begin
-  tm:=CreateTranslationMatrix(CreateVector((vp.v[2]-2*(x-vp.v[0]))/deltax,(vp.v[3]-2*(y-vp.v[1]))/deltay,0));
-  sm:=CreateScaleMatrix(CreateVector(vp.v[2]/deltax,vp.v[3]/deltay,1.0));
+  tm:=CreateTranslationMatrix(TzeVector3d.CreateRec((vp.v[2]-2*(x-vp.v[0]))/deltax,(vp.v[3]-2*(y-vp.v[1]))/deltay,0));
+  sm:=CreateScaleMatrix(TzeVector3d.CreateRec(vp.v[2]/deltax,vp.v[3]/deltay,1.0));
   Result:=MatrixMultiply(sm,tm);
   Result.t:=CMTTransform;
 end;
@@ -2241,7 +2243,7 @@ begin
     //if ((t1 <= 1) and (t1 >= 0) and (t2 >= 0) and (t2 <= 1)) then
     begin
       with TzePoint2d((@l1begin)^) do begin
-        Result.interceptcoord:=CreateVertex2D(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2);
+        Result.interceptcoord:=TzePoint2d.CreateRec(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2);
         {result.interceptcoord.x := x + (l1end.x - x) * _t2;
         result.interceptcoord.y := y + (l1end.y - y) * _t2;}
       end;
