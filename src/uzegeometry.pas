@@ -92,24 +92,38 @@ const
 
   cBBNul:TBoundingBox=(LBN:(x:0;y:0;z:0);RTF:(x:0;y:0;z:0));
 
-type
-
-  TDistWitht=record
-    t,d:double;
-  end;
-  TCSDir=(TCSDLeft,TCSDRight);
-
-function pointinquad2d(const x1,y1,x2,y2,xp,yp:single):boolean;inline;
-
 function VectorAngle(const AVector:TzeVector2d):double;
 function TwoVectorAngle(const Vector1,Vector2:TzeVector3d):double;//inline;
 
 function MatrixMultiply(const M1,M2:TzeTypedMatrix4d):TzeTypedMatrix4d;overload;inline;
 function MatrixMultiply(const M1:TzeTypedMatrix4d;const M2:TzeTypedMatrix4s):TzeTypedMatrix4d;overload;inline;
 function MatrixMultiplyF(const M1,M2:TzeTypedMatrix4d):TzeTypedMatrix4s;inline;
+
+procedure MatrixTranspose(var M:TzeTypedMatrix4d);overload;inline;
+procedure MatrixTranspose(var M:TzeTypedMatrix4s);overload;inline;
+procedure MatrixNormalize(var M:TzeTypedMatrix4d);inline;
+procedure MatrixInvert(var M:TzeTypedMatrix4d);inline;
+
+function CreateRotationMatrixX(const angle:double):TzeTypedMatrix4d;inline;
+function CreateRotationMatrixY(const angle:double):TzeTypedMatrix4d;inline;
+function CreateRotationMatrixZ(const angle:double):TzeTypedMatrix4d;inline;
+function CreateRotatedXVector(const angle:double):TzeVector3d;inline;
+function CreateRotatedYVector(const angle:double):TzeVector3d;inline;
+function CreateAffineRotationMatrix(const anAxis:TzeVector3d;angle:double):TzeTypedMatrix4d;overload;inline;
+function CreateAffineRotationMatrix(const AAxis,ARefV,AV:TzeVector3d):TzeTypedMatrix4d;overload;inline;
+function CreateTranslationMatrix(const _V:TzeVector3d):TzeTypedMatrix4d;inline;overload;
+function CreateTranslationMatrix(const tx,ty,tz:double):TzeTypedMatrix4d;inline;overload;
+function CreateScaleMatrix(const V:TzeVector3d):TzeTypedMatrix4d;inline;overload;
+function CreateScaleMatrix(const s:double):TzeTypedMatrix4d;inline;overload;
+function CreateScaleMatrix(const sx,sy,sz:double):TzeTypedMatrix4d;inline;overload;
+function CreateReflectionMatrix(const plane:TzeVector4d):TzeTypedMatrix4d;
+
+
+
 function VectorTransform(const V:TzeVector4d;const M:TzeTypedMatrix4d):TzeVector4d;overload;inline;
 function VectorTransform(const V:TzeVector4d;const M:TzeTypedMatrix4s):TzeVector4d;overload;inline;
 function VectorTransform(const V:TzeVector4s;const M:TzeTypedMatrix4s):TzeVector4s;overload;inline;
+
 function VectorTransform2D(const V:TzePoint2d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzePoint3d;const M:TzeTypedMatrix4d):TzePoint3d;overload;inline;
 function VectorTransform3D(const V:TzeVector3d;const M:TzeTypedMatrix4d):TzeVector3d;overload;inline;
@@ -122,39 +136,18 @@ function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4d;
 function FrustumTransform(const frustum:TzeFrustum;const M:TzeTypedMatrix4s;
   MatrixAlreadyTransposed:boolean=False):TzeFrustum;overload;inline;
 
-procedure MatrixTranspose(var M:TzeTypedMatrix4d);overload;inline;
-procedure MatrixTranspose(var M:TzeTypedMatrix4s);overload;inline;
-procedure MatrixNormalize(var M:TzeTypedMatrix4d);inline;
-function CreateRotationMatrixX(const angle:double):TzeTypedMatrix4d;inline;
-function CreateRotationMatrixY(const angle:double):TzeTypedMatrix4d;inline;
-function CreateRotationMatrixZ(const angle:double):TzeTypedMatrix4d;inline;
-function CreateRotatedXVector(const angle:double):TzeVector3d;inline;
-function CreateRotatedYVector(const angle:double):TzeVector3d;inline;
-function CreateAffineRotationMatrix(const anAxis:TzeVector3d;angle:double):TzeTypedMatrix4d;overload;inline;
-function CreateAffineRotationMatrix(const AAxis,ARefV,AV:TzeVector3d):TzeTypedMatrix4d;overload;inline;
-
 function distance2piece(const q,p1,p2:TzePoint3d):double;overload;inline;
 
 function distance2piece_2Dmy(const q:TzePoint2d;const p1,p2:TzePoint2d):double;inline;
 
 function distance2ray(const q:TzePoint3d;const p1,p2:TzePoint3d):TDistWitht;
-function CreateTranslationMatrix(const _V:TzeVector3d):TzeTypedMatrix4d;inline;overload;
-function CreateTranslationMatrix(const tx,ty,tz:double):TzeTypedMatrix4d;inline;overload;
-function CreateScaleMatrix(const V:TzeVector3d):TzeTypedMatrix4d;inline;overload;
-function CreateScaleMatrix(const s:double):TzeTypedMatrix4d;inline;overload;
-function CreateScaleMatrix(const sx,sy,sz:double):TzeTypedMatrix4d;inline;overload;
-function CreateReflectionMatrix(const plane:TzeVector4d):TzeTypedMatrix4d;
-//**Создать 3D вершину
-//function CreateVertex(const _x,_y,_z:double):TzePoint3d;inline;
-//function CreateVector(const _x,_y,_z:double):TzeVector3d;inline;
+
 function CreateVertexFromArray(var counter:integer;const args:array of const):TzePoint3d;
 function CreateVertex2DFromArray(var counter:integer;const args:array of const):TzePoint2d;
 function CreateDoubleFromArray(var counter:integer;const args:array of const):double;
 function CreateStringFromArray(var counter:integer;const args:array of const):string;
 function CreateBooleanFromArray(var counter:integer;const args:array of const):boolean;
-//**Создать 2D вершину
-//function CreateVertex2D(const _x,_y:double):TzePoint2d;inline;
-//function CreateVector2D(const _x,_y:double):TzeVector2d;inline;
+
 function IsPointInBB(const point,LBN,RTF:TzePoint3d):boolean;overload;inline;
 function IsPointInBB(const point:TzePoint3d;const fistbb:TBoundingBox):boolean;overload;inline;
 function CreateBBFrom2Point(const p1,p2:TzePoint3d):TBoundingBox;
@@ -165,7 +158,6 @@ function IsBBNul(const v1,v2:TzePoint3d):boolean;overload;inline;
 function IsBBNul(const bb:TBoundingBox):boolean;overload;inline;
 function boundingintersect(const bb1,bb2:TBoundingBox):boolean;inline;
 function ScaleBB(const bb:TBoundingBox;const k:double):TBoundingBox;
-procedure MatrixInvert(var M:TzeTypedMatrix4d);inline;
 function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;inline;
 function scalardot(const v1,v2:TzeVector3d):double;inline;
 function SQRdist_Point_to_Segment(const p:TzePoint3d;const s0,s1:TzePoint3d):double;inline;
@@ -1140,14 +1132,6 @@ begin
     Result:=pi+temp
   else if (AVector.x>0) and (AVector.y<0) then
     Result:=2*pi-temp;
-end;
-
-function pointinquad2d(const x1,y1,x2,y2,xp,yp:single):boolean;
-begin
-  if (x1<=xp) and (x2>=xp) and (y1<=yp) and (y2>=yp) then
-    Result:=true
-  else
-    Result:=false;
 end;
 
 function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;

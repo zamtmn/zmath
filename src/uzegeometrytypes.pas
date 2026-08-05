@@ -326,6 +326,11 @@ type
 
   Intercept2DProp=InterceptProp<TzePoint2d>;
 
+  TDistWitht=record
+    t,d:double;
+  end;
+  TCSDir=(TCSDLeft,TCSDRight);
+
 const
  CMTScale=[MTIdentity,MTScale];
  CMTTranslate=[MTIdentity,MTTranslate];
