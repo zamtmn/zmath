@@ -54,18 +54,23 @@ const
 
   cV3d__0__0__0:TzeVector3d=(x:0;y:0;z:0);
   cV3d__1__0__0:TzeVector3d=(x:1;y:0;z:0);
+  cV3d_m1__0__0:TzeVector3d=(x:-1;y:0;z:0);
   cV3d__0__1__0:TzeVector3d=(x:0;y:1;z:0);
   cV3d__0__0__1:TzeVector3d=(x:0;y:0;z:1);
+  cV3d__0__0_m1:TzeVector3d=(x:0;y:0;z:-1);
   cV3d__1__1__1:TzeVector3d=(x:1;y:1;z:1);
   cV3d__1__1__0:TzeVector3d=(x:1;y:1;z:0);
   cV3d_m1__1__0:TzeVector3d=(x:-1;y:1;z:0);
   cV3d_m1_m1_m1:TzeVector3d=(x:-1;y:-1;z:-1);
 
   cP3d__0__0__0:TzePoint3d=(x:0;y:0;z:0);
+  cP3d__1__0__0:TzePoint3d=(x:1;y:0;z:0);
   cP3d__1__1__1:TzePoint3d=(x:1;y:1;z:1);
+  cP3d_m1__0__0:TzePoint3d=(x:-1;y:1;z:1);
   cP3d__0__0_m1:TzePoint3d=(x:0;y:0;z:-1);
   cP3d__0__0__1:TzePoint3d=(x:0;y:0;z:1);
   cP3d__0__1__0:TzePoint3d=(x:0;y:1;z:0);
+  cP3d__0_m1__0:TzePoint3d=(x:0;y:-1;z:0);
   cP3d_m1_m1_m1:TzePoint3d=(x:-1;y:-1;z:-1);
   cP3d_mInf_mnf_mInf:TzePoint3d=(x:NegInfinity;y:NegInfinity;z:NegInfinity);
   cP3d_Inf_nf_Inf:TzePoint3d=(x:Infinity;y:Infinity;z:Infinity);
@@ -1513,8 +1518,8 @@ function myPickMatrix(const x,y,deltax,deltay:double;const vp:TzeVector4i):TzeTy
 var
   tm,sm:TzeTypedMatrix4d;
 begin
-  tm:=CreateTranslationMatrix(TzeVector3d.CreateRec((vp.v[2]-2*(x-vp.v[0]))/deltax,(vp.v[3]-2*(y-vp.v[1]))/deltay,0));
-  sm:=CreateScaleMatrix(TzeVector3d.CreateRec(vp.v[2]/deltax,vp.v[3]/deltay,1.0));
+  tm:=CreateTranslationMatrix(TzeVector3d.Make((vp.v[2]-2*(x-vp.v[0]))/deltax,(vp.v[3]-2*(y-vp.v[1]))/deltay,0));
+  sm:=CreateScaleMatrix(TzeVector3d.Make(vp.v[2]/deltax,vp.v[3]/deltay,1.0));
   Result:=MatrixMultiply(sm,tm);
   Result.t:=CMTTransform;
 end;
@@ -2243,7 +2248,7 @@ begin
     //if ((t1 <= 1) and (t1 >= 0) and (t2 >= 0) and (t2 <= 1)) then
     begin
       with TzePoint2d((@l1begin)^) do begin
-        Result.interceptcoord:=TzePoint2d.CreateRec(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2);
+        Result.interceptcoord:=TzePoint2d.Make(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2);
         {result.interceptcoord.x := x + (l1end.x - x) * _t2;
         result.interceptcoord.y := y + (l1end.y - y) * _t2;}
       end;
