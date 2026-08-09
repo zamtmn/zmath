@@ -238,24 +238,6 @@ type
 
 implementation
 
-function CreateVertex(const _x,_y,_z:double):TzePoint3d;
-begin
-  with TzePoint3d((@Result)^) do begin
-    x:=_x;
-    y:=_y;
-    z:=_z;
-  end;
-end;
-
-{function CreateVector(const _x,_y,_z:double):TzeVector3d;
-begin
-  with TzeVector3d((@Result)^) do begin
-    x:=_x;
-    y:=_y;
-    z:=_z;
-  end;
-end;}
-
 operator -(const l:TzePoint2d;r:TzePoint2i):TzePoint2d;
 begin
   result.x:=l.x-r.x;
@@ -1684,13 +1666,13 @@ var
   d1,d2,d3,d4,d5,d6,d7,d8:double;
 begin
   p1:=AABB.LBN;
-  p2:=CreateVertex(AABB.RTF.x,AABB.LBN.y,AABB.LBN.Z);
-  p3:=CreateVertex(AABB.RTF.x,AABB.RTF.y,AABB.LBN.Z);
-  p4:=CreateVertex(AABB.LBN.x,AABB.RTF.y,AABB.LBN.Z);
-  p5:=CreateVertex(AABB.LBN.x,AABB.LBN.y,AABB.RTF.Z);
-  p6:=CreateVertex(AABB.RTF.x,AABB.LBN.y,AABB.RTF.Z);
+  p2:=TzePoint3d.Make(AABB.RTF.x,AABB.LBN.y,AABB.LBN.Z);
+  p3:=TzePoint3d.Make(AABB.RTF.x,AABB.RTF.y,AABB.LBN.Z);
+  p4:=TzePoint3d.Make(AABB.LBN.x,AABB.RTF.y,AABB.LBN.Z);
+  p5:=TzePoint3d.Make(AABB.LBN.x,AABB.LBN.y,AABB.RTF.Z);
+  p6:=TzePoint3d.Make(AABB.RTF.x,AABB.LBN.y,AABB.RTF.Z);
   p7:=AABB.RTF;
-  p8:=CreateVertex(AABB.LBN.x,AABB.RTF.y,AABB.RTF.Z);
+  p8:=TzePoint3d.Make(AABB.LBN.x,AABB.RTF.y,AABB.RTF.Z);
 
   Count:=0;
   for i:=0 to 5 do begin
@@ -2085,7 +2067,7 @@ begin
   if abs(Result.t2)<bigeps then
     Result.t2:=0;
   if ((Result.t1<=1) and (Result.t1>=0) and (Result.t2>=0) and (Result.t2<=1)) then begin
-    Result.interceptcoord:=CreateVertex(l1begin.x+t1*p21.x,l1begin.y+t1*p21.y,l1begin.z+t1*p21.z);
+    Result.interceptcoord:=TzePoint3d.Make(l1begin.x+t1*p21.x,l1begin.y+t1*p21.y,l1begin.z+t1*p21.z);
     //result.interceptcoord:=TzePoint3d.Make([l1begin.x+t1*p21.x,l1begin.y+t1*p21.y,l1begin.z+t1*p21.z]);
     {result.interceptcoord.x:= l1begin.x + t1 * p21.x;
     result.interceptcoord.y:= l1begin.y + t1 * p21.y;
@@ -2259,7 +2241,7 @@ begin
     _t2:=((l2begin.y-l1begin.y)*(l2begin.x-l2end.x)-(l2begin.y-l2end.y)*(l2begin.x-l1begin.x))/D;
     if ((_t1<=1) and (_t1>=0) and (_t2>=0) and (_t2<=1)) then begin
       with TzePoint3d((@l1begin)^) do begin
-        Result.interceptcoord:=CreateVertex(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2,z+(l1end.z-z)*_t2);
+        Result.interceptcoord:=TzePoint3d.Make(x+(l1end.x-x)*_t2,y+(l1end.y-y)*_t2,z+(l1end.z-z)*_t2);
       end;
       z:=l2begin.z+(l2end.z-l2begin.z)*_t1;
       if abs(Result.interceptcoord.z-z)<eps then begin
@@ -2307,7 +2289,7 @@ begin
 
   Result.t1:=numer/denom;
   Result.t2:=(d1343+d4321*Result.t1)/d4343;
-  Result.interceptcoord:=CreateVertex(l1begin.x+Result.t1*p21.x,l1begin.y+Result.t1*p21.y,l1begin.z+Result.t1*p21.z);
+  Result.interceptcoord:=TzePoint3d.Make(l1begin.x+Result.t1*p21.x,l1begin.y+Result.t1*p21.y,l1begin.z+Result.t1*p21.z);
   Result.isintercept:=true;
 end;
 
