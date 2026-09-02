@@ -1,12 +1,9 @@
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.SqrLength:Double;
-var
-  i:integer;
 begin
-  //Result:=SumOfSquares(v);
-  result:=sqr(v[0]);
-  for i:=1 to ArrH do begin
-    result:=result+sqr(v[i]);
-  end;
+  {$IfDef HAS_X}result:=sqr(x);{$Else}result:=0;{$EndIf}
+  {$IfDef HAS_Y}result:=result+sqr(y);{$EndIf}
+  {$IfDef HAS_Z}result:=result+sqr(z);{$EndIf}
+  {$IfDef HAS_W}result:=result+sqr(w);{$EndIf}
 end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Length:Double;
 begin
@@ -14,13 +11,11 @@ begin
   result:=Sqrt(SqrLength);
 end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.SqrLengthTo(const APt2:TSelf):Double;inline;
-var
-  i:integer;
 begin
-  result:=sqr(APt2.v[0]-v[0]);
-  for i:=1 to ArrH do begin
-    result:=result+sqr(APt2.v[i]-v[i]);
-  end;
+  {$IfDef HAS_X}result:=sqr(APt2.x-x);{$Else}result:=0;{$EndIf}
+  {$IfDef HAS_Y}result:=result+sqr(APt2.y-y);{$EndIf}
+  {$IfDef HAS_Z}result:=result+sqr(APt2.z-z);{$EndIf}
+  {$IfDef HAS_W}result:=result+sqr(APt2.w-w);{$EndIf}
 end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.LengthTo(const APt2:TSelf):Double;inline;
 begin
@@ -35,16 +30,15 @@ function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$el
   end;
 var
   len:Double;
-  i:integer;
 begin
   len:=Length;
   if abs(len)>eps then begin
-    for i:=0 to ArrH do begin
-      result.v[i]:=v[i]/len;
-    end;
-  end else begin
+    {$IfDef HAS_X}result.x:=x/len;{$EndIf}
+    {$IfDef HAS_Y}result.y:=y/len;{$EndIf}
+    {$IfDef HAS_Z}result.z:=z/len;{$EndIf}
+    {$IfDef HAS_W}result.w:=w/len;{$EndIf}
+  end else
     dbz;
-  end;
 end;
 procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Normalize;inline;
   procedure dbz;
@@ -53,24 +47,23 @@ procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$e
   end;
 var
   len:Double;
-  i:integer;
 begin
   len:=Length;
   if abs(len)>eps then begin
-    for i:=0 to ArrH do begin
-      v[i]:=v[i]/len;
-    end;
+    {$IfDef HAS_X}x:=x/len;{$EndIf}
+    {$IfDef HAS_Y}y:=y/len;{$EndIf}
+    {$IfDef HAS_Z}z:=z/len;{$EndIf}
+    {$IfDef HAS_W}w:=w/len;{$EndIf}
   end else begin
     dbz;
   end;
 end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.MulOnSc(const ASc:double):TSelf;
-var
-  i:integer;
 begin
-  for i:=0 to ArrH do begin
-    result.v[i]:=v[i]*ASc;
-  end;
+  {$IfDef HAS_X}result.x:=x*ASc;{$EndIf}
+  {$IfDef HAS_Y}result.y:=y*ASc;{$EndIf}
+  {$IfDef HAS_Z}result.z:=z*ASc;{$EndIf}
+  {$IfDef HAS_W}result.w:=w*ASc;{$EndIf}
 end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.LerpTo(const APt2:TSelf;const a:double):TSelf;
 begin
@@ -87,20 +80,18 @@ begin
 end;
 
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Add(const APt2:TSelf):TSelf;
-var
-  i:integer;
 begin
-  for i:=0 to ArrH do begin
-    result.v[i]:=v[i]+APt2.v[i];
-  end;
+  {$IfDef HAS_X}result.x:=x+APt2.x;{$EndIf}
+  {$IfDef HAS_Y}result.y:=y+APt2.y;{$EndIf}
+  {$IfDef HAS_Z}result.z:=z+APt2.z;{$EndIf}
+  {$IfDef HAS_W}result.w:=w+APt2.w;{$EndIf}
 end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Sub(const APt2:TSelf):TSelf;
-var
-  i:integer;
 begin
-  for i:=0 to ArrH do begin
-    result.v[i]:=v[i]-APt2.v[i];
-  end;
+  {$IfDef HAS_X}result.x:=x-APt2.x;{$EndIf}
+  {$IfDef HAS_Y}result.y:=y-APt2.y;{$EndIf}
+  {$IfDef HAS_Z}result.z:=z-APt2.z;{$EndIf}
+  {$IfDef HAS_W}result.w:=w-APt2.w;{$EndIf}
 end;
 (*class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName>.+(const l,r:TSelf):TSelf;
 var
@@ -111,20 +102,18 @@ begin
   end;
 end;*)
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.+(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
- var
-  i:integer;
 begin
-  for i:=0 to ArrH do begin
-    result.v[i]:=l.v[i]+{$if FPC_FULLVERSION<30205}TSelf{$endif}(r).v[i];
-  end;
+  {$IfDef HAS_X}result.x:=l.x+r.x;{$EndIf}
+  {$IfDef HAS_Y}result.y:=l.y+r.y;{$EndIf}
+  {$IfDef HAS_Z}result.z:=l.z+r.z;{$EndIf}
+  {$IfDef HAS_W}result.w:=l.w+r.w;{$EndIf}
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const l,r:TSelf):GVectorTypeName;
-var
-  i:integer;
 begin
-  for i:=0 to ArrH do begin
-    {$if FPC_FULLVERSION<30205}TSelf{$endif}(result).v[i]:=l.v[i]-{$if FPC_FULLVERSION<30205}TSelf{$endif}(r).v[i];
-  end;
+  {$IfDef HAS_X}result.x:=l.x-r.x;{$EndIf}
+  {$IfDef HAS_Y}result.y:=l.y-r.y;{$EndIf}
+  {$IfDef HAS_Z}result.z:=l.z-r.z;{$EndIf}
+  {$IfDef HAS_W}result.w:=l.w-r.w;{$EndIf}
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
 var
@@ -135,38 +124,33 @@ begin
   end;
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const r:TSelf):TSelf;
-var
-  i:integer;
 begin
-  for i:=0 to ArrH do begin
-    result.v[i]:=-r.v[i];
-  end;
+  {$IfDef HAS_X}result.x:=-r.x;{$EndIf}
+  {$IfDef HAS_Y}result.y:=-r.y;{$EndIf}
+  {$IfDef HAS_Z}result.z:=-r.z;{$EndIf}
+  {$IfDef HAS_W}result.w:=-r.w;{$EndIf}
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.*(const l:TSelf;const r:T):TSelf;
-var
-  i:integer;
 begin
-  for i:=0 to ArrH do begin
-    result.v[i]:=l.v[i]*r;
-  end;
+  {$IfDef HAS_X}result.x:=l.x*r;{$EndIf}
+  {$IfDef HAS_Y}result.y:=l.y*r;{$EndIf}
+  {$IfDef HAS_Z}result.z:=l.z*r;{$EndIf}
+  {$IfDef HAS_W}result.w:=l.w*r;{$EndIf}
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.*(const l,r:TSelf):Real;
-var
-  i:integer;
 begin
-  result:=l.v[0]*r.v[0];
-  for i:=1 to ArrH do begin
-    result:=result+l.v[i]*r.v[i];
-  end;
+  {$IfDef HAS_X}result:=l.x*r.x;{$else}result:=0{$EndIf}
+  {$IfDef HAS_Y}result:=result+l.y*r.y;{$EndIf}
+  {$IfDef HAS_Z}result:=result+l.z*r.z;{$EndIf}
+  {$IfDef HAS_W}result:=result+l.w*r.w;{$EndIf}
 end;
 {$IfNDef IntParam}
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>./(const l:TSelf;const r:Real):TSelf;
-var
-  i:integer;
 begin
-  for i:=0 to ArrH do begin
-    result.v[i]:=l.v[i]/r;
-  end;
+  {$IfDef HAS_X}result.x:=l.x/r;{$EndIf}
+  {$IfDef HAS_Y}result.y:=l.y/r;{$EndIf}
+  {$IfDef HAS_Z}result.z:=l.z/r;{$EndIf}
+  {$IfDef HAS_W}result.w:=l.w/r;{$EndIf}
 end;
 {$EndIf}
 
