@@ -1,9 +1,9 @@
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.SqrLength:Double;
 begin
-  {$IfDef HAS_X}result:=sqr(x);{$Else}result:=0;{$EndIf}
-  {$IfDef HAS_Y}result:=result+sqr(y);{$EndIf}
-  {$IfDef HAS_Z}result:=result+sqr(z);{$EndIf}
-  {$IfDef HAS_W}result:=result+sqr(w);{$EndIf}
+  {$IfDef HAS_X}result:=sqr({$if FPC_FULLVERSION<30205}T(x){$else}x{$endif});{$Else}result:=0;{$EndIf}
+  {$IfDef HAS_Y}result:=result+sqr({$if FPC_FULLVERSION<30205}T(y){$else}y{$endif});{$EndIf}
+  {$IfDef HAS_Z}result:=result+sqr({$if FPC_FULLVERSION<30205}T(z){$else}z{$endif});{$EndIf}
+  {$IfDef HAS_W}result:=result+sqr({$if FPC_FULLVERSION<30205}T(w){$else}w{$endif});{$EndIf}
 end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Length:Double;
 begin
@@ -103,17 +103,17 @@ begin
 end;*)
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.+(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
 begin
-  {$IfDef HAS_X}result.x:=l.x+r.x;{$EndIf}
-  {$IfDef HAS_Y}result.y:=l.y+r.y;{$EndIf}
-  {$IfDef HAS_Z}result.z:=l.z+r.z;{$EndIf}
-  {$IfDef HAS_W}result.w:=l.w+r.w;{$EndIf}
+  {$IfDef HAS_X}result.x:=l.x+{$if FPC_FULLVERSION<30205}TSelf{$endif}(r).x;{$EndIf}
+  {$IfDef HAS_Y}result.y:=l.y+{$if FPC_FULLVERSION<30205}TSelf{$endif}(r).y;{$EndIf}
+  {$IfDef HAS_Z}result.z:=l.z+{$if FPC_FULLVERSION<30205}TSelf{$endif}(r).z;{$EndIf}
+  {$IfDef HAS_W}result.w:=l.w+{$if FPC_FULLVERSION<30205}TSelf{$endif}(r).w;{$EndIf}
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const l,r:TSelf):GVectorTypeName;
 begin
-  {$IfDef HAS_X}result.x:=l.x-r.x;{$EndIf}
-  {$IfDef HAS_Y}result.y:=l.y-r.y;{$EndIf}
-  {$IfDef HAS_Z}result.z:=l.z-r.z;{$EndIf}
-  {$IfDef HAS_W}result.w:=l.w-r.w;{$EndIf}
+  {$IfDef HAS_X}{$if FPC_FULLVERSION<30205}TSelf{$endif}(result).x:=l.x-r.x;{$EndIf}
+  {$IfDef HAS_Y}{$if FPC_FULLVERSION<30205}TSelf{$endif}(result).y:=l.y-r.y;{$EndIf}
+  {$IfDef HAS_Z}{$if FPC_FULLVERSION<30205}TSelf{$endif}(result).z:=l.z-r.z;{$EndIf}
+  {$IfDef HAS_W}{$if FPC_FULLVERSION<30205}TSelf{$endif}(result).w:=l.w-r.w;{$EndIf}
 end;
 class operator PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.-(const l:TSelf;r:GVectorTypeName):TSelf;inline;overload;
 var

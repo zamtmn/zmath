@@ -1,9 +1,9 @@
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.SqrLength:Double;
 begin
-  {$IfDef HAS_X}result:=sqr(x);{$Else}result:=0;{$EndIf}
-  {$IfDef HAS_Y}result:=result+sqr(y);{$EndIf}
-  {$IfDef HAS_Z}result:=result+sqr(z);{$EndIf}
-  {$IfDef HAS_W}result:=result+sqr(w);{$EndIf}
+  {$IfDef HAS_X}result:=sqr({$if FPC_FULLVERSION<30205}T(x){$else}x{$endif});{$Else}result:=0;{$EndIf}
+  {$IfDef HAS_Y}result:=result+sqr({$if FPC_FULLVERSION<30205}T(y){$else}y{$endif});{$EndIf}
+  {$IfDef HAS_Z}result:=result+sqr({$if FPC_FULLVERSION<30205}T(z){$else}z{$endif});{$EndIf}
+  {$IfDef HAS_W}result:=result+sqr({$if FPC_FULLVERSION<30205}T(w){$else}w{$endif});{$EndIf}
 end;
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Length:Double;
 begin
