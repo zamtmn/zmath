@@ -39,6 +39,7 @@
     constructor Make(const AData:TCoordArray);overload;
     constructor Make(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}
                              {$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
+    constructor Fill(const AValue:TCoordType);overload;
     procedure setup(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}
                          {$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
     procedure setup(const ASlice:TSlice;const ACutOff:TCoordType);overload;

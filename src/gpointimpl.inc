@@ -172,6 +172,14 @@ begin
   {$IfDef HAS_W}w:=AW;{$EndIf}
 end;
 
+constructor PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Fill(const AValue:TCoordType);overload;
+begin
+  {$IfDef HAS_X}x:=AValue;{$EndIf}
+  {$IfDef HAS_Y}y:=AValue;{$EndIf}
+  {$IfDef HAS_Z}z:=AValue;{$EndIf}
+  {$IfDef HAS_W}w:=AValue;{$EndIf}
+end;
+
 procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.setup(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}{$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
 begin
   {$IfDef HAS_X}x:=AX;{$EndIf}

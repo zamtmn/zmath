@@ -185,6 +185,14 @@ begin
   {$IfDef HAS_W}w:=AW;{$EndIf}
 end;
 
+constructor VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Fill(const AValue:TCoordType);overload;
+begin
+  {$IfDef HAS_X}x:=AValue;{$EndIf}
+  {$IfDef HAS_Y}y:=AValue;{$EndIf}
+  {$IfDef HAS_Z}z:=AValue;{$EndIf}
+  {$IfDef HAS_W}w:=AValue;{$EndIf}
+end;
+
 procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.setup(const {$IfDef HAS_X}AX{$EndIf}{$IfDef HAS_Y},AY{$EndIf}{$IfDef HAS_Z},AZ{$EndIf}{$IfDef HAS_W},AW{$EndIf}:TCoordType);overload;
 begin
   {$IfDef HAS_X}x:=AX;{$EndIf}
