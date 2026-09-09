@@ -245,8 +245,10 @@ type
 
   FontFloat=Double;
   PFontFloat=^FontFloat;
-  GDBFontVertex2D=GVector2<FontFloat,FontFloat{$if FPC_FULLVERSION<30205},FontFloat{$endif}>;
-  PGDBFontVertex2D=^GDBFontVertex2D;
+  TzeVector2FontFloat=GVector2<FontFloat,FontFloat{$if FPC_FULLVERSION<30205},FontFloat{$endif}>;
+  PzeVector2FontFloat=^TzeVector2FontFloat;
+
+  TzePoint2FontFloat=GPoint2<FontFloat,TDummy1d{$if FPC_FULLVERSION<30205}FontFloat{$endif},TzeVector2FontFloat>;
 
   GDBPolyVertex2D=record
     coord:TzePoint2d;
