@@ -261,15 +261,19 @@ type
     pprojMatrix:PzeTypedMatrix4d;
     pviewport:PzeVector4i;
   end;
-{Bounding volume}
-  TBoundingBox=record
-    LBN:TzePoint3d;(*'Near'*)
-    RTF:TzePoint3d;(*'Far'*)
+
+  {Bounding volume}
+  GAABoundingVolume<GVecType,GCoordType>=record
+    { TODO: переименовать в MIN MAX или подобное}
+    LBN:GVecType;
+    RTF:GVecType;
+    constructor Fill(const AMinValue,AMaxValue:GCoordType);
+    procedure Concat(const APoint:GVecType);
   end;
-  TBoundingRect=record
-    LB:TzePoint2d;(*'Near'*)
-    RT:TzePoint2d;(*'Far'*)
-  end;
+
+  TBoundingBox=GAABoundingVolume<TzePoint3d,double>;
+  TBoundingRect=GAABoundingVolume<TzePoint2d,double>;
+
   TInBoundingVolume=(IRFully,IRPartially,IREmpty,IRNotAplicable);
   OutBound4V=packed array [0..3]of TzePoint3d;
   PGDBQuad3d=^GDBQuad3d;
@@ -342,6 +346,17 @@ const
  CMTShear=[MTShear];
 
 implementation
+
+constructor GAABoundingVolume<GVecType,GCoordType>.Fill(const AMinValue,AMaxValue:GCoordType);
+begin
+  LBN.Fill(AMinValue);
+  RTF.Fill(AMaxValue);
+end;
+procedure GAABoundingVolume<GVecType,GCoordType>.Concat(const APoint:GVecType);
+begin
+  LBN.ConcatFromMinSide(APoint);
+  RTF.ConcatFromMaxSide(APoint);
+end;
 
 {$Define VectorTypeName := GVector4}
 {$Define HAS_X}{$Define HAS_Y}{$Define HAS_Z}{$Define HAS_W}

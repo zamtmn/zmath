@@ -49,6 +49,8 @@
     procedure Turn90R;inline;
     procedure Turn90L;inline;
     {$EndIf}
+    procedure ConcatFromMinSide(const AValue:TSelf);
+    procedure ConcatFromMaxSide(const AValue:TSelf);
     var
     case integer of
       0:({$IfDef HAS_X}x{$EndIf}{$IfDef HAS_Y},y{$EndIf}{$IfDef HAS_Z},z{$EndIf}{$IfDef HAS_W},w{$EndIf}:TCoordType);

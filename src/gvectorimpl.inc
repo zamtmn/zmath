@@ -233,4 +233,43 @@ begin
 end;
 {$EndIf}
 
+procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.ConcatFromMinSide(const AValue:TSelf);
+begin
+{$IfDef HAS_X}
+  if x>AValue.x then
+    x:=AValue.x;
+{$EndIf}
+{$IfDef HAS_Y}
+  if y>AValue.y then
+    y:=AValue.y;
+{$EndIf}
+{$IfDef HAS_Z}
+  if z>AValue.z then
+    z:=AValue.z;
+{$EndIf}
+{$IfDef HAS_W}
+  if w>AValue.w then
+    w:=AValue.w;
+{$EndIf}
+end;
+
+procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.ConcatFromMaxSide(const AValue:TSelf);
+begin
+{$IfDef HAS_X}
+  if x<AValue.x then
+    x:=AValue.x;
+{$EndIf}
+{$IfDef HAS_Y}
+  if y<AValue.y then
+    y:=AValue.y;
+{$EndIf}
+{$IfDef HAS_Z}
+  if z<AValue.z then
+    z:=AValue.z;
+{$EndIf}
+{$IfDef HAS_W}
+  if w<AValue.w then
+    w:=AValue.w;
+{$EndIf}
+end;
 
