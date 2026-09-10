@@ -271,8 +271,8 @@ type
     procedure Concat(const APoint:GVecType);
   end;
 
-  TBoundingBox=GAABoundingVolume<TzePoint3d,double>;
-  TBoundingRect=GAABoundingVolume<TzePoint2d,double>;
+  TBoundingBox=GAABoundingVolume<TzePoint3d,TzePoint3d.TCoordType>;
+  TBoundingRect=GAABoundingVolume<TzePoint2d,TzePoint2d.TCoordType>;
 
   TInBoundingVolume=(IRFully,IRPartially,IREmpty,IRNotAplicable);
   OutBound4V=packed array [0..3]of TzePoint3d;
