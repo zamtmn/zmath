@@ -74,6 +74,21 @@ begin
     v[High(TCoordArray)]:=1;
   end;
 end;
+
+procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.EWAbs;
+begin
+  {$IfDef HAS_X}x:=abs(x);{$EndIf}
+  {$IfDef HAS_Y}y:=abs(y);{$EndIf}
+  {$IfDef HAS_Z}z:=abs(z);{$EndIf}
+  {$IfDef HAS_W}w:=abs(w);{$EndIf}
+end;
+
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.EWAbsed:TSelf;
+begin
+  result:=self;
+  result.EWAbs;
+end;
+
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.MulOnSc(const ASc:double):TSelf;
 begin
   {$IfDef HAS_X}result.x:=x*ASc;{$EndIf}
@@ -100,13 +115,35 @@ end;
 
 
 {$EndIf}
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsEqual(const AVector2:TSelf;const AEps:Double=sqreps):boolean;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsEqual(const AVector2:TSelf;const ASqrEps:Double=sqreps):boolean;
 begin
-  Result:=SqrLengthTo(AVector2)<AEps;
+  Result:=SqrLengthTo(AVector2)<ASqrEps;
 end;
-function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsNul(const AEps:Double=sqreps):boolean;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsEqualEW(const AVector2:TSelf;const AEps:Double=eps):boolean;inline;//element-wise compare
 begin
-  Result:=SqrLength<AEps;
+  result:=(AVector2-self).IsNulEW(AEps);
+end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsTrueEqual(const AVector2:TSelf):boolean;inline;
+begin
+  result:=
+  {$IfDef HAS_X}(x=AVector2.x){$EndIf}
+  {$IfDef HAS_Y}and(y=AVector2.y){$EndIf}
+  {$IfDef HAS_Z}and(z=AVector2.z){$EndIf}
+  {$IfDef HAS_W}and(w=AVector2.w){$EndIf}
+  ;
+end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsNul(const ASqrEps:Double=sqreps):boolean;
+begin
+  Result:=SqrLength<ASqrEps;
+end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsNulEW(const AEps:Double=sqreps):boolean;
+begin
+  result:=
+  {$IfDef HAS_X}    (Abs(x)<AEps){$EndIf}
+  {$IfDef HAS_Y}and (Abs(y)<AEps){$EndIf}
+  {$IfDef HAS_Z}and (Abs(z)<AEps){$EndIf}
+  {$IfDef HAS_W}and (Abs(w)<AEps){$EndIf}
+  ;
 end;
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Add(const AVector2:TSelf):TSelf;
 begin
@@ -271,5 +308,41 @@ begin
   if w<AValue.w then
     w:=AValue.w;
 {$EndIf}
+end;
+
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.LessOrEqual(const AValue:TSelf):boolean;
+begin
+  Result:=
+{$IfDef HAS_X}
+  (x<=AValue.x+eps)
+{$EndIf}
+{$IfDef HAS_Y}
+  and(y<=AValue.y+eps)
+{$EndIf}
+{$IfDef HAS_Z}
+  and(z<=AValue.z+eps)
+{$EndIf}
+{$IfDef HAS_W}
+  and(w<=AValue.w+eps)
+{$EndIf}
+  ;
+end;
+
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.GreaterOrEqual(const AValue:TSelf):boolean;
+begin
+  Result:=
+{$IfDef HAS_X}
+  (x>=AValue.x-eps)
+{$EndIf}
+{$IfDef HAS_Y}
+  and(y>=AValue.y-eps)
+{$EndIf}
+{$IfDef HAS_Z}
+  and(z>=AValue.z-eps)
+{$EndIf}
+{$IfDef HAS_W}
+  and(w>=AValue.w-eps)
+{$EndIf}
+  ;
 end;
 

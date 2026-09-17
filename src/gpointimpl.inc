@@ -58,6 +58,18 @@ begin
     dbz;
   end;
 end;
+procedure PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.EWAbs;
+begin
+  {$IfDef HAS_X}x:=abs(x);{$EndIf}
+  {$IfDef HAS_Y}y:=abs(y);{$EndIf}
+  {$IfDef HAS_Z}z:=abs(z);{$EndIf}
+  {$IfDef HAS_W}w:=abs(w);{$EndIf}
+end;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.EWAbsed:TSelf;
+begin
+  result:=self;
+  result.EWAbs;
+end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.MulOnSc(const ASc:double):TSelf;
 begin
   {$IfDef HAS_X}result.x:=x*ASc;{$EndIf}
@@ -70,15 +82,36 @@ begin
   result:=self.Add(APt2.Sub(self).MulOnSC(a));
 end;
 {$EndIf}
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsEqual(const APt2:TSelf;const AEps:Double=sqreps):boolean;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsEqual(const APt2:TSelf;const ASqrEps:Double=sqreps):boolean;
 begin
-  Result:=SqrLengthTo(APt2)<AEps;
+  Result:=SqrLengthTo(APt2)<ASqrEps;
 end;
-function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsNul(const AEps:Double=sqreps):boolean;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsEqualEW(const APt2:TSelf;const AEps:Double=eps):boolean;inline;//element-wise compare
 begin
-  Result:=SqrLength<AEps;
+  result:=(APt2-self.asVector).IsNulEW(AEps);
 end;
-
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsTrueEqual(const APt2:TSelf):boolean;inline;
+begin
+  result:=
+  {$IfDef HAS_X}(x=APt2.x){$EndIf}
+  {$IfDef HAS_Y}and(y=APt2.y){$EndIf}
+  {$IfDef HAS_Z}and(z=APt2.z){$EndIf}
+  {$IfDef HAS_W}and(w=APt2.w){$EndIf}
+  ;
+end;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsNul(const ASqrEps:Double=sqreps):boolean;
+begin
+  Result:=SqrLength<ASqrEps;
+end;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsNulEW(const AEps:Double=sqreps):boolean;
+begin
+  result:=
+  {$IfDef HAS_X}    (Abs(x)<AEps){$EndIf}
+  {$IfDef HAS_Y}and (Abs(y)<AEps){$EndIf}
+  {$IfDef HAS_Z}and (Abs(z)<AEps){$EndIf}
+  {$IfDef HAS_W}and (Abs(w)<AEps){$EndIf}
+  ;
+end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Add(const APt2:TSelf):TSelf;
 begin
   {$IfDef HAS_X}result.x:=x+APt2.x;{$EndIf}
@@ -265,3 +298,40 @@ begin
     w:=AValue.w;
 {$EndIf}
  end;
+
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.LessOrEqual(const AValue:TSelf):boolean;
+begin
+  Result:=
+{$IfDef HAS_X}
+  (x<=AValue.x+eps)
+{$EndIf}
+{$IfDef HAS_Y}
+  and(y<=AValue.y+eps)
+{$EndIf}
+{$IfDef HAS_Z}
+  and(z<=AValue.z+eps)
+{$EndIf}
+{$IfDef HAS_W}
+  and(w<=AValue.w+eps)
+{$EndIf}
+  ;
+end;
+
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.GreaterOrEqual(const AValue:TSelf):boolean;
+begin
+  Result:=
+{$IfDef HAS_X}
+  (x>=AValue.x-eps)
+{$EndIf}
+{$IfDef HAS_Y}
+  and(y>=AValue.y-eps)
+{$EndIf}
+{$IfDef HAS_Z}
+  and(z>=AValue.z-eps)
+{$EndIf}
+{$IfDef HAS_W}
+  and(w>=AValue.w-eps)
+{$EndIf}
+  ;
+end;
+

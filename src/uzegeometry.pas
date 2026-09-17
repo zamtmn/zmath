@@ -90,7 +90,7 @@ const
 
   cP2d__0__0:TzePoint2d=(x:0;y:0);
 
-  cBBNul:TBoundingBox=(LBN:(x:0;y:0;z:0);RTF:(x:0;y:0;z:0));
+  cBBNul:TBoundingBox=(pMin:(x:0;y:0;z:0);pMax:(x:0;y:0;z:0));
 
 function VectorAngle(const AVector:TzeVector2d):double;
 function TwoVectorAngle(const Vector1,Vector2:TzeVector3d):double;//inline;
@@ -148,18 +148,18 @@ function CreateDoubleFromArray(var counter:integer;const args:array of const):do
 function CreateStringFromArray(var counter:integer;const args:array of const):string;
 function CreateBooleanFromArray(var counter:integer;const args:array of const):boolean;
 
-function IsPointInBB(const point,LBN,RTF:TzePoint3d):boolean;overload;inline;
-function IsPointInBB(const point:TzePoint3d;const fistbb:TBoundingBox):boolean;overload;inline;
-function CreateBBFrom2Point(const p1,p2:TzePoint3d):TBoundingBox;
-function CreateBBFromPoint(const p:TzePoint3d):TBoundingBox;inline;
-procedure ConcatBB(var fistbb:TBoundingBox;const secbb:TBoundingBox);inline;
-procedure concatBBandPoint(var fistbb:TBoundingBox;const point:TzePoint3d);inline;
-function IsBBNul(const v1,v2:TzePoint3d):boolean;overload;inline;
-function IsBBNul(const bb:TBoundingBox):boolean;overload;inline;
-function boundingintersect(const bb1,bb2:TBoundingBox):boolean;inline;
-function ScaleBB(const bb:TBoundingBox;const k:double):TBoundingBox;
+//function IsPointInBB(const point,LBN,RTF:TzePoint3d):boolean;overload;inline;
+//function IsPointInBB(const point:TzePoint3d;const fistbb:TBoundingBox):boolean;overload;inline;
+//function CreateBBFrom2Point(const p1,p2:TzePoint3d):TBoundingBox;
+//function CreateBfrBFromPoint(const p:TzePoint3d):TBoundingBox;inline;
+//procedure ConcatBB(var fistbb:TBoundingBox;const secbb:TBoundingBox);inline;
+//procedure concatBBandPoint(var fistbb:TBoundingBox;const point:TzePoint3d);inline;
+//function IsBBNul(const bb:TBoundingBox):boolean;overload;inline;
+//function boundingintersect(const bb1,bb2:TBoundingBox):boolean;inline;
+//function ScaleBB(const bb:TBoundingBox;const k:double):TBoundingBox;
+
 function VectorDot(const v1,v2:TzeVector3d):TzeVector3d;inline;
-function scalardot(const v1,v2:TzeVector3d):double;inline;
+function ScalarDot(const v1,v2:TzeVector3d):double;inline;
 function SQRdist_Point_to_Segment(const p:TzePoint3d;const s0,s1:TzePoint3d):double;inline;
 function NearestPointOnSegment(const p:TzePoint3d;const s0,s1:TzePoint3d):TzePoint3d;inline;
 
@@ -1125,7 +1125,7 @@ begin
   end;
 end;
 
-function scalardot(const v1,v2:TzeVector3d):double;
+function ScalarDot(const v1,v2:TzeVector3d):double;
 begin
   with TzePoint3d((@v1)^) do
     Result:=x*v2.x+y*v2.y+z*v2.z;
@@ -1158,9 +1158,11 @@ begin
   end;
 end;}
 
-procedure concatBBandPoint(var fistbb:TBoundingBox;const point:TzePoint3d);
+(*procedure concatBBandPoint(var fistbb:TBoundingBox;const point:TzePoint3d);
 begin
-  with TzePoint3d((@fistbb.LBN)^) do begin
+  fistbb.min.ConcatFromMinSide(point);
+  fistbb.max.ConcatFromMaxSide(point);
+  {with TzePoint3d((@fistbb.min)^) do begin
     if x>point.x then
       x:=point.x;
     if y>point.y then
@@ -1169,89 +1171,86 @@ begin
       z:=point.z;
   end;
 
-  with TzePoint3d((@fistbb.RTF)^) do begin
+  with TzePoint3d((@fistbb.max)^) do begin
     if x<point.x then
       x:=point.x;
     if y<point.y then
       y:=point.y;
     if z<point.z then
       z:=point.z;
-  end;
-end;
+  end;}
+end;*)
 
-function CreateBBFrom2Point(const p1,p2:TzePoint3d):TBoundingBox;
+{function CreateBBFrom2Point(const p1,p2:TzePoint3d):TBoundingBox;
 begin
   if p1.x<p2.x then begin
-    Result.LBN.x:=p1.x;
-    Result.RTF.x:=p2.x;
+    Result.min.x:=p1.x;
+    Result.max.x:=p2.x;
   end else begin
-    Result.LBN.x:=p2.x;
-    Result.RTF.x:=p1.x;
+    Result.min.x:=p2.x;
+    Result.max.x:=p1.x;
   end;
   if p1.y<p2.y then begin
-    Result.LBN.y:=p1.y;
-    Result.RTF.y:=p2.y;
+    Result.min.y:=p1.y;
+    Result.max.y:=p2.y;
   end else begin
-    Result.LBN.y:=p2.y;
-    Result.RTF.y:=p1.y;
+    Result.min.y:=p2.y;
+    Result.max.y:=p1.y;
   end;
   if p1.z<p2.z then begin
-    Result.LBN.z:=p1.z;
-    Result.RTF.z:=p2.z;
+    Result.min.z:=p1.z;
+    Result.max.z:=p2.z;
   end else begin
-    Result.LBN.z:=p2.z;
-    Result.RTF.z:=p1.z;
+    Result.min.z:=p2.z;
+    Result.max.z:=p1.z;
   end;
-end;
+end;}
 
-function CreateBBFromPoint(const p:TzePoint3d):TBoundingBox;
+{function CreateBBFromPoint(const p:TzePoint3d):TBoundingBox;
 begin
-  Result.LBN:=p;
-  Result.RTF:=p;
-end;
+  Result.Fill(p);
+  //Result.min:=p;
+  //Result.max:=p;
+end;}
 
 function GDBvertexEqual(const v1,v2:TzePoint3d):boolean;inline;
 begin
   Result:=(v1.x=v2.x) and (v1.y=v2.y) and (v1.z=v2.z);
 end;
 
-function IsBBZero(const bb:TBoundingBox):boolean;inline;
+{function IsBBZero(const bb:TBoundingBox):boolean;inline;
 begin
   with TBoundingBox((@bb)^) do
-    Result:=GDBvertexEqual(RTF,LBN);
-end;
+    Result:=GDBvertexEqual(max,min);
+end;}
 
-procedure ConcatBB(var fistbb:TBoundingBox;const secbb:TBoundingBox);
+{procedure ConcatBB(var fistbb:TBoundingBox;const secbb:TBoundingBox);
 begin
-  if IsBBZero(fistbb) then begin
+  if fistbb.IsZero then begin
     fistbb:=secbb;
-  end else if not IsBBZero(secbb) then begin
-    concatBBandPoint(fistbb,secbb.LBN);
-    concatBBandPoint(fistbb,secbb.RTF);
+  end else if not secbb.IsZero then begin
+    fistbb.Concat(secbb.min);
+    fistbb.Concat(secbb.max);
   end;
-end;
+end;}
 
-function IsBBNul(const v1,v2:TzePoint3d):boolean;
-begin
-  Result:=(abs(v1.x-v2.x)<eps) and (abs(v1.y-v2.y)<eps) and (abs(v1.z-v2.z)<eps);
-end;
-
-function IsBBNul(const bb:TBoundingBox):boolean;
+{function IsBBNul(const bb:TBoundingBox):boolean;
 begin
   with TBoundingBox((@bb)^) do
-    Result:=IsBBNul(LBN,RTF);
-end;
+    Result:=(min-max).IsNul(eps);
+end;}
 
 function IsPointInBB(const point,LBN,RTF:TzePoint3d):boolean;
 begin
-  with TzePoint3d((@point)^) do
-    Result:=(LBN.x<=x+eps)and(RTF.x>=x-eps) and  (LBN.y<=y+eps)and(RTF.y>=y-eps) and  (LBN.z<=z+eps)and(RTF.z>=z-eps);
+  //with TzePoint3d((@point)^) do
+  //  Result:=(LBN.x<=x+eps)and(RTF.x>=x-eps) and  (LBN.y<=y+eps)and(RTF.y>=y-eps) and  (LBN.z<=z+eps)and(RTF.z>=z-eps);
+  result:=LBN.LessOrEqual(point) and RTF.GreaterOrEqual(point);
 end;
 
 function IsPointInBB(const point:TzePoint3d;const fistbb:TBoundingBox):boolean;
 begin
   with TBoundingBox((@fistbb)^) do
-    Result:=IsPointInBB(point,LBN,RTF);
+    Result:=IsPointInBB(point,pMin,pMax);
 end;
 
 function ScaleBB(const bb:TBoundingBox;const k:double):TBoundingBox;
@@ -1259,28 +1258,29 @@ var
   p:TzePoint3d;
   v:TzeVector3d;
 begin
-  p:=(bb.RTF+bb.LBN.asVector)/2;
-  v:=(bb.RTF-p)*k;
-  Result.LBN:=p-v;
-  Result.RTF:=p+v;
+  p:=(bb.pMax+bb.pMin.asVector)/2;
+  v:=(bb.pMax-p)*k;
+  Result.Make(p-v,p+v);
+  {Result.pMin:=p-v;
+  Result.pMax:=p+v;}
 end;
 
-function boundingintersect(const bb1,bb2:TBoundingBox):boolean;
+{function boundingintersect(const bb1,bb2:TBoundingBox):boolean;
 var
   b1,b2,b1c,b2c:TzePoint3d;
   dist:TzeVector3d;
 begin
   //половина диагонали первого бокса
-  b1.x:=(bb1.RTF.x-bb1.LBN.x)/2;
-  b1.y:=(bb1.RTF.y-bb1.LBN.y)/2;
-  b1.z:=(bb1.RTF.z-bb1.LBN.z)/2;
+  b1.x:=(bb1.max.x-bb1.min.x)/2;
+  b1.y:=(bb1.max.y-bb1.min.y)/2;
+  b1.z:=(bb1.max.z-bb1.min.z)/2;
   //половина диагонали второго бокса
-  b2.x:=(bb2.RTF.x-bb2.LBN.x)/2;
-  b2.y:=(bb2.RTF.y-bb2.LBN.y)/2;
-  b2.z:=(bb2.RTF.z-bb2.LBN.z)/2;
+  b2.x:=(bb2.max.x-bb2.min.x)/2;
+  b2.y:=(bb2.max.y-bb2.min.y)/2;
+  b2.z:=(bb2.max.z-bb2.min.z)/2;
   //центры боксов
-  b1c:=bb1.LBN+b1.asVector;
-  b2c:=bb2.LBN+b2.asVector;
+  b1c:=bb1.min+b1.asVector;
+  b2c:=bb2.min+b2.asVector;
   //расстояние между центрами
   dist:=b1c-b2c;
   dist.x:=abs(dist.x);
@@ -1290,7 +1290,7 @@ begin
   Result:=false;
   if (((b1.x+b2.x)-dist.x)>-bigeps)  and(((b1.y+b2.y)-dist.y)>-bigeps)  and(((b1.z+b2.z)-dist.z)>-bigeps) then
     Result:=true;
-end;
+end;}
 
 function CreateMatrixFromBasis(const ox,oy,oz:TzeVector3d):TzeTypedMatrix4d;
 begin
@@ -1665,14 +1665,14 @@ var
   p1,p2,p3,p4,p5,p6,p7,p8:TzePoint3d;
   d1,d2,d3,d4,d5,d6,d7,d8:double;
 begin
-  p1:=AABB.LBN;
-  p2:=TzePoint3d.Make(AABB.RTF.x,AABB.LBN.y,AABB.LBN.Z);
-  p3:=TzePoint3d.Make(AABB.RTF.x,AABB.RTF.y,AABB.LBN.Z);
-  p4:=TzePoint3d.Make(AABB.LBN.x,AABB.RTF.y,AABB.LBN.Z);
-  p5:=TzePoint3d.Make(AABB.LBN.x,AABB.LBN.y,AABB.RTF.Z);
-  p6:=TzePoint3d.Make(AABB.RTF.x,AABB.LBN.y,AABB.RTF.Z);
-  p7:=AABB.RTF;
-  p8:=TzePoint3d.Make(AABB.LBN.x,AABB.RTF.y,AABB.RTF.Z);
+  p1:=AABB.pMin;
+  p2:=TzePoint3d.Make(AABB.pMax.x,AABB.pMin.y,AABB.pMin.Z);
+  p3:=TzePoint3d.Make(AABB.pMax.x,AABB.pMax.y,AABB.pMin.Z);
+  p4:=TzePoint3d.Make(AABB.pMin.x,AABB.pMax.y,AABB.pMin.Z);
+  p5:=TzePoint3d.Make(AABB.pMin.x,AABB.pMin.y,AABB.pMax.Z);
+  p6:=TzePoint3d.Make(AABB.pMax.x,AABB.pMin.y,AABB.pMax.Z);
+  p7:=AABB.pMax;
+  p8:=TzePoint3d.Make(AABB.pMin.x,AABB.pMax.y,AABB.pMax.Z);
 
   Count:=0;
   for i:=0 to 5 do begin
@@ -1731,7 +1731,7 @@ begin
   a1:=n23*p1.CutOff;
   a2:=n31*p2.CutOff;
   a3:=n12*p3.CutOff;
-  a4:=scalardot(n1,n23);
+  a4:=ScalarDot(n1,n23);
   if abs(a4)<eps then
     exit;
   a4:=1/a4;
@@ -1901,13 +1901,13 @@ begin
   v:=s1-s0;
   w:=p-s0;
 
-  c1:=scalardot(w,v);
+  c1:=ScalarDot(w,v);
   if c1<=0 then begin
     Result:=p.SqrLengthTo(s0);
     exit;
   end;
 
-  c2:=scalardot(v,v);
+  c2:=ScalarDot(v,v);
   if c2<=c1 then begin
     Result:=p.SqrLengthTo(s1);
     exit;
@@ -1926,11 +1926,11 @@ begin
   v:=s1-s0;
   w:=p-s0;
 
-  c1:=scalardot(w,v);
+  c1:=ScalarDot(w,v);
   if c1<=0 then
     exit(s0);
 
-  c2:=scalardot(v,v);
+  c2:=ScalarDot(v,v);
   if c2<=c1 then
     exit(s1);
 
@@ -1944,8 +1944,8 @@ var
 begin
   v:=p2-p1;
   w:=q-p1;
-  c1:=scalardot(w,v);
-  c2:=scalardot(v,v);
+  c1:=ScalarDot(w,v);
+  c2:=ScalarDot(v,v);
   if abs(c2)>eps then begin
     Result.t:=c1/c2;
     Result.d:=q.LengthTo(p1+v*Result.t);
@@ -1990,7 +1990,7 @@ end;
 
 function TwoVectorAngle(const Vector1,Vector2:TzeVector3d):double;inline;
 begin
-  Result:=ArcCos(scalardot(Vector1,Vector2));
+  Result:=ArcCos(ScalarDot(Vector1,Vector2));
 end;
 
 function intercept3d(const l1begin,l1end,l2begin,l2end:TzePoint3d):intercept3dprop;
@@ -2160,7 +2160,7 @@ begin
     BZ:=ScaledBZ/scale.z;
 
 
-    if scalardot(BX,VectorDot(BY,Bz))<0 then
+    if ScalarDot(BX,VectorDot(BY,Bz))<0 then
       scale.x:=-scale.x;
 
     result.Basis.ox:=BX;

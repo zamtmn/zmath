@@ -17,11 +17,16 @@
     {$IfNDef IntParam}
     function Normalized:TSelf;inline;
     procedure Normalize;inline;
+    procedure EWAbs;inline;//element-wise Abs
+    function EWAbsed:TSelf;inline;//element-wise Abs
     function MulOnSc(const ASc:double):TSelf;inline;
     function LerpTo(const APt2:TSelf;const a:double):TSelf;inline;
     {$EndIf}
-    function IsEqual(const APt2:TSelf;const AEps:Double=sqreps):boolean;inline;
-    function IsNul(const AEps:Double=sqreps):boolean;inline;
+    function IsEqual(const APt2:TSelf;const ASqrEps:Double=sqreps):boolean;inline;
+    function IsEqualEW(const APt2:TSelf;const AEps:Double=eps):boolean;inline;//element-wise compare
+    function IsTrueEqual(const APt2:TSelf):boolean;inline;
+    function IsNul(const ASqrEps:Double=sqreps):boolean;inline;
+    function IsNulEW(const AEps:Double=sqreps):boolean;inline;//element-wise compare
     function Add(const APt2:TSelf):TSelf;inline;
     function Sub(const APt2:TSelf):TSelf;inline;
 
@@ -51,6 +56,8 @@
     {$EndIf}
     procedure ConcatFromMinSide(const AValue:TSelf);
     procedure ConcatFromMaxSide(const AValue:TSelf);
+    function LessOrEqual(const AValue:TSelf):boolean;
+    function GreaterOrEqual(const AValue:TSelf):boolean;
     var
     case integer of
       0:({$IfDef HAS_X}x{$EndIf}{$IfDef HAS_Y},y{$EndIf}{$IfDef HAS_Z},z{$EndIf}{$IfDef HAS_W},w{$EndIf}:TCoordType);

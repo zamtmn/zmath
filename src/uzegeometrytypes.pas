@@ -264,11 +264,22 @@ type
 
   {Bounding volume}
   GAABoundingVolume<GVecType,GCoordType>=record
-    { TODO: переименовать в MIN MAX или подобное}
-    LBN:GVecType;
-    RTF:GVecType;
-    constructor Fill(const AMinValue,AMaxValue:GCoordType);
+  type
+    Tself=GAABoundingVolume<GVecType,GCoordType>;
+  var
+    pMin:GVecType;
+    pMax:GVecType;
+    constructor Make(const AMinPt,AMaxPt:GVecType);
+    constructor MakeFrom2Pt(const APt1,APt2:GVecType);
+    constructor Fill(const AValue:GVecType);overload;
+    constructor Fill(const AMinValue,AMaxValue:GCoordType);overload;
     procedure Concat(const APoint:GVecType);
+    function IsZero:boolean;
+    function IsNull:boolean;
+    procedure CheckAndConcat(const ASecAABV:Tself);
+    class operator *(const l:TSelf;r:GCoordType):TSelf;inline;
+    function IsContainsPoint(const APoint:GVecType):boolean;
+    function IsIntersectWith(const ABV:Tself):boolean;
   end;
 
   TBoundingBox=GAABoundingVolume<TzePoint3d,TzePoint3d.TCoordType>;
@@ -347,15 +358,92 @@ const
 
 implementation
 
+constructor GAABoundingVolume<GVecType,GCoordType>.Make(const AMinPt,AMaxPt:GVecType);
+begin
+  pMin:=AMinPt;
+  pMax:=AMaxPt;
+end;
+constructor GAABoundingVolume<GVecType,GCoordType>.MakeFrom2Pt(const APt1,APt2:GVecType);
+begin
+  pMin:=APt1;
+  pMin.ConcatFromMinSide(Apt2);
+  pMax:=APt1;
+  pMax.ConcatFromMaxSide(Apt2);
+end;
+
+constructor GAABoundingVolume<GVecType,GCoordType>.Fill(const AValue:GVecType);
+begin
+  pMin:=AValue;
+  pMax:=AValue;
+end;
 constructor GAABoundingVolume<GVecType,GCoordType>.Fill(const AMinValue,AMaxValue:GCoordType);
 begin
-  LBN.Fill(AMinValue);
-  RTF.Fill(AMaxValue);
+  pMin.fill(AMinValue);
+  pMax.fill(AMaxValue);
 end;
+
+
 procedure GAABoundingVolume<GVecType,GCoordType>.Concat(const APoint:GVecType);
 begin
-  LBN.ConcatFromMinSide(APoint);
-  RTF.ConcatFromMaxSide(APoint);
+  pMin.ConcatFromMinSide(APoint);
+  pMax.ConcatFromMaxSide(APoint);
+end;
+function GAABoundingVolume<GVecType,GCoordType>.IsZero:boolean;
+begin
+  result:=pMin.isTrueEqual(pMax);
+end;
+
+function GAABoundingVolume<GVecType,GCoordType>.IsNull:boolean;
+begin
+  Result:=(pMin-pMax).IsNul(eps);
+end;
+
+procedure GAABoundingVolume<GVecType,GCoordType>.CheckAndConcat(const ASecAABV:Tself);
+begin
+  if IsZero then begin
+    self:=ASecAABV;
+  end else if not ASecAABV.IsZero then begin
+    Concat(ASecAABV.pMin);
+    Concat(ASecAABV.pMax);
+  end;
+end;
+
+class operator GAABoundingVolume<GVecType,GCoordType>.*(const l:TSelf;r:GCoordType):TSelf;
+var
+  p:GVecType;
+  v:GVecType;
+begin
+  p:=(l.pMax+l.pMin.asVector)/2;
+  v.asvector:=(l.pMax-p)*r;
+  Result.pMin:=p-v.asvector;
+  Result.pMax:=p+v.asvector;
+end;
+
+function GAABoundingVolume<GVecType,GCoordType>.IsContainsPoint(const APoint:GVecType):boolean;
+begin
+  result:=pMin.LessOrEqual(APoint) and pMax.GreaterOrEqual(APoint);
+end;
+
+function GAABoundingVolume<GVecType,GCoordType>.IsIntersectWith(const ABV:Tself):boolean;
+var
+  b1,b2,b1c,b2c:GVecType;
+  dist:GVecType;
+begin
+  //половина диагонали первого бокса
+  b1.asVector:=(pMax-pMin)/2;
+  //половина диагонали второго бокса
+  b2.asVector:=(ABV.pMax-ABV.pMin)/2;
+  //центры боксов
+  b1c:=pMin+b1.asVector;
+  b2c:=ABV.pMin+b2.asVector;
+  //расстояние между центрами
+  dist.asVector:=(b1c-b2c).EWAbsed;
+  //пересечение боксов
+  Result:=false;
+  if (b1+(b2-dist)).isNulEW(bigeps) then
+    Result:=true;
+  {if (((b1.x+b2.x)-dist.x)>-bigeps)  and(((b1.y+b2.y)-dist.y)>-bigeps)  and(((b1.z+b2.z)-dist.z)>-bigeps) then
+    Result:=true;}
 end;
 
 {$Define VectorTypeName := GVector4}
