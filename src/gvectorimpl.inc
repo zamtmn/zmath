@@ -77,10 +77,10 @@ end;
 
 procedure VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.EWAbs;
 begin
-  {$IfDef HAS_X}x:=abs(x);{$EndIf}
-  {$IfDef HAS_Y}y:=abs(y);{$EndIf}
-  {$IfDef HAS_Z}z:=abs(z);{$EndIf}
-  {$IfDef HAS_W}w:=abs(w);{$EndIf}
+  {$IfDef HAS_X}x:={$if FPC_FULLVERSION<30205}x*sign(T(x));{$else}Abs(x);{$EndIf}{$endif}
+  {$IfDef HAS_Y}y:={$if FPC_FULLVERSION<30205}y*sign(T(y));{$else}Abs(y);{$EndIf}{$endif}
+  {$IfDef HAS_Z}z:={$if FPC_FULLVERSION<30205}z*sign(T(z));{$else}Abs(z);{$EndIf}{$endif}
+  {$IfDef HAS_W}w:={$if FPC_FULLVERSION<30205}w*sign(T(w));{$else}Abs(w);{$EndIf}{$endif}
 end;
 
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.EWAbsed:TSelf;
@@ -139,10 +139,10 @@ end;
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsNulEW(const AEps:Double=sqreps):boolean;
 begin
   result:=
-  {$IfDef HAS_X}    (Abs(x)<AEps){$EndIf}
-  {$IfDef HAS_Y}and (Abs(y)<AEps){$EndIf}
-  {$IfDef HAS_Z}and (Abs(z)<AEps){$EndIf}
-  {$IfDef HAS_W}and (Abs(w)<AEps){$EndIf}
+  {$IfDef HAS_X}    ({$if FPC_FULLVERSION<30205}x*sign(T(x)){$else}Abs(x){$EndIf}<AEps){$EndIf}
+  {$IfDef HAS_Y}and ({$if FPC_FULLVERSION<30205}y*sign(T(y)){$else}Abs(y){$EndIf}<AEps){$EndIf}
+  {$IfDef HAS_Z}and ({$if FPC_FULLVERSION<30205}z*sign(T(z)){$else}Abs(z){$EndIf}<AEps){$EndIf}
+  {$IfDef HAS_W}and ({$if FPC_FULLVERSION<30205}w*sign(T(w)){$else}Abs(w){$EndIf}<AEps){$EndIf}
   ;
 end;
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Add(const AVector2:TSelf):TSelf;
