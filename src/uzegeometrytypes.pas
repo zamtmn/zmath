@@ -23,7 +23,7 @@ unit uzeGeometryTypes;
 interface
 
 uses
-  uzbLogIntf;
+  uzbLogIntf{$if FPC_FULLVERSION<30205},math{$endif};
 
 resourcestring
   rsDivByZero='Divide by zero';
