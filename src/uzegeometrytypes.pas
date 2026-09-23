@@ -440,8 +440,10 @@ begin
   dist.asVector:=(b1c-b2c).EWAbsed;
   //пересечение боксов
   Result:=false;
-  if (b1+(b2-dist)).isNulEW(bigeps) then
+
+  if (b1+(b2-dist)).isBiggerEW(-bigeps) then
     Result:=true;
+
   {if (((b1.x+b2.x)-dist.x)>-bigeps)  and(((b1.y+b2.y)-dist.y)>-bigeps)  and(((b1.z+b2.z)-dist.z)>-bigeps) then
     Result:=true;}
 end;

@@ -30,6 +30,7 @@
     function IsTrueEqual(const AVector2:TSelf):boolean;inline;
     function IsNul(const ASqrEps:Double=sqreps):boolean;inline;
     function IsNulEW(const AEps:Double=sqreps):boolean;inline;//element-wise compare
+    function IsBiggerEW(const AValue:Double=sqreps):boolean;inline;//element-wise compare
     function Add(const AVector2:TSelf):TSelf;inline;
     function Sub(const AVector2:TSelf):TSelf;inline;
 

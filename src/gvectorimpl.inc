@@ -145,6 +145,15 @@ begin
   {$IfDef HAS_W}and ({$if FPC_FULLVERSION<30205}w*sign(T(w)){$else}Abs(w){$EndIf}<AEps){$EndIf}
   ;
 end;
+function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.IsBiggerEW(const AValue:Double=sqreps):boolean;
+begin
+  result:=
+  {$IfDef HAS_X}    (x>AValue){$EndIf}
+  {$IfDef HAS_Y}and (y>AValue){$EndIf}
+  {$IfDef HAS_Z}and (z>AValue){$EndIf}
+  {$IfDef HAS_W}and (w>AValue){$EndIf}
+  ;
+end;
 function VectorTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record{$else},GSlice{$endif}>.Add(const AVector2:TSelf):TSelf;
 begin
   {$IfDef HAS_X}result.x:=x+AVector2.x;{$EndIf}

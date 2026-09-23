@@ -112,6 +112,15 @@ begin
   {$IfDef HAS_W}and ({$if FPC_FULLVERSION<30205}w*sign(T(w)){$else}Abs(w){$EndIf}<AEps){$EndIf}
   ;
 end;
+function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.IsBiggerEW(const AValue:Double=sqreps):boolean;
+begin
+  result:=
+  {$IfDef HAS_X}    (x>AValue){$EndIf}
+  {$IfDef HAS_Y}and (y>AValue){$EndIf}
+  {$IfDef HAS_Z}and (z>AValue){$EndIf}
+  {$IfDef HAS_W}and (w>AValue){$EndIf}
+  ;
+end;
 function PointTypeName<T{$if FPC_FULLVERSION<30205};GSlice:record;TT:record;{$else},GSlice,{$endif}GVectorTypeName{$if FPC_FULLVERSION<30205}:record{$endif}>.Add(const APt2:TSelf):TSelf;
 begin
   {$IfDef HAS_X}result.x:=x+APt2.x;{$EndIf}
